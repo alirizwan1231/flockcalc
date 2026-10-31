@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
+import ToolIcon from "@/components/ToolIcon";
 import { site, tools } from "@/lib/site";
 import { faqSchema, websiteSchema, type Faq } from "@/lib/schema";
 
@@ -56,6 +57,11 @@ export default function HomePage() {
             under a minute — no sign-up, no fluff, just the numbers extension
             services recommend.
           </p>
+          <div className="hero-chips">
+            <span className="chip">100% free — no sign-up</span>
+            <span className="chip">Extension-service numbers</span>
+            <span className="chip">Metric &amp; imperial results</span>
+          </div>
           <div className="btn-row">
             <Link className="btn btn-primary" href="/quail-coop-size-calculator">
               Start with the quail coop calculator
@@ -76,6 +82,9 @@ export default function HomePage() {
           <div className="tool-grid">
             {tools.map((t) => (
               <Link key={t.slug} href={t.path} className="tool-card">
+                <span className="tool-icon" aria-hidden="true">
+                  <ToolIcon slug={t.slug} />
+                </span>
                 <h3>{t.name}</h3>
                 <p>{t.blurb}</p>
                 <span className="card-cta">Open the {t.shortName.toLowerCase()} calculator →</span>
@@ -84,7 +93,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section aria-labelledby="trust-heading">
+        <section aria-labelledby="trust-heading" className="trust-band">
           <h2 id="trust-heading">How our numbers work</h2>
           <div className="trust-box">
             <p>
