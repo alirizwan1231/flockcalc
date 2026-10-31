@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Egg } from "lucide-react";
 import { site, tools } from "@/lib/site";
 
 export default function Footer() {
@@ -6,7 +7,12 @@ export default function Footer() {
     <footer className="site-footer no-print">
       <div className="wrap footer-grid">
         <div>
-          <p className="footer-brand">{site.name}</p>
+          <p className="footer-brand">
+            <span className="brand-mark brand-mark-sm" aria-hidden="true">
+              <Egg size={17} strokeWidth={2.2} />
+            </span>
+            {site.name}
+          </p>
           <p className="footer-tag">{site.tagline}. Free forever, no sign-up.</p>
         </div>
         <nav aria-label="All calculators">

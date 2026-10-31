@@ -11,71 +11,97 @@ import {
   sqm,
   type ChickenSize,
 } from "@/lib/math";
-import PrintButton from "./PrintButton";
+import CountField from "./CountField";
+import ResultActions from "./ResultActions";
+import SegmentedControl from "./SegmentedControl";
+
+const SIZE_SEGMENTS = (Object.keys(CHICKEN_RATES) as ChickenSize[]).map(
+  (id) => {
+    const r = CHICKEN_RATES[id];
+    const title =
+      id === "large"
+        ? "Large / heavy"
+        : id === "bantam"
+          ? "Bantam"
+          : "Standard";
+    return {
+      value: id,
+      title,
+      detail: `${r.coop} sq ft coop / ${r.run} sq ft run per bird`,
+    };
+  }
+);
+
+const DEFAULTS = { birds: "6", size: "standard" as ChickenSize };
 
 export default function CoopCalc() {
-  const [birdsIn, setBirdsIn] = useState("6");
-  const [size, setSize] = useState<ChickenSize>("standard");
+  const [birdsIn, setBirdsIn] = useState(DEFAULTS.birds);
+  const [size, setSize] = useState<ChickenSize>(DEFAULTS.size);
 
   const birds = num(birdsIn);
   const rate = CHICKEN_RATES[size];
   const s = chickenSpace(birds, size);
 
+  function reset() {
+    setBirdsIn(DEFAULTS.birds);
+    setSize(DEFAULTS.size);
+  }
+
+  const summary = [
+    "Chicken Coop Size Calculator — FlockCalc",
+    `Coop (indoor floor): ${fmt(r1(s.coopSqft))} sq ft (${fmt(r1(sqm(s.coopSqft)))} m²)`,
+    `Run (outdoor): ${fmt(r1(s.runSqft))} sq ft (${fmt(r1(sqm(s.runSqft)))} m²)`,
+    `Roost length (10 in per bird): ${fmt(r1(s.roostFeet))} ft (${fmt(r1(s.roostFeet * 0.3048))} m)`,
+    `Nesting boxes: ${s.nestingBoxes} ${s.nestingBoxes === 1 ? "box" : "boxes"} (1 per 4 hens)`,
+  ].join("\n");
+
   return (
     <div className="calc-card">
       <div className="calc-grid">
         <div>
+          <CountField
+            id="c-birds"
+            label="Number of chickens"
+            sliderLabel="Number of chickens"
+            value={birdsIn}
+            onChange={setBirdsIn}
+            min={1}
+            max={50}
+          />
           <div className="field">
-            <label htmlFor="c-birds">Number of chickens</label>
-            <input
-              id="c-birds"
-              type="number"
-              min="1"
-              value={birdsIn}
-              onChange={(e) => setBirdsIn(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="c-size">Bird size</label>
-            <select
+            <span className="field-label" id="c-size-label">
+              Bird size
+            </span>
+            <SegmentedControl
               id="c-size"
+              labelledBy="c-size-label"
+              options={SIZE_SEGMENTS}
               value={size}
-              onChange={(e) => setSize(e.target.value as ChickenSize)}
-            >
-              <option value="bantam">
-                Bantam — {CHICKEN_RATES.bantam.coop} sq ft coop /{" "}
-                {CHICKEN_RATES.bantam.run} sq ft run per bird
-              </option>
-              <option value="standard">
-                Standard — {CHICKEN_RATES.standard.coop} sq ft coop /{" "}
-                {CHICKEN_RATES.standard.run} sq ft run per bird
-              </option>
-              <option value="large">
-                Large / heavy — {CHICKEN_RATES.large.coop} sq ft coop /{" "}
-                {CHICKEN_RATES.large.run} sq ft run per bird
-              </option>
-            </select>
+              onChange={(v) => setSize(v as ChickenSize)}
+            />
           </div>
           <p>
             These are comfortable, commonly recommended figures — not the tight
             legal minimums factory farms use. More space always means a calmer,
             healthier flock.
           </p>
-          <h3 style={{ marginTop: 22 }}>Ready-made coop sizes</h3>
-          {COOP_FOOTPRINTS.map((f) => {
-            const area = f.l * f.w;
-            return (
-              <div className="result-row" key={`${f.l}x${f.w}`}>
-                <span className="k">
-                  {f.l} × {f.w} ft coop ({area} sq ft)
-                </span>
-                <span className="v">
-                  fits {Math.floor(area / rate.coop)} {rate.label.toLowerCase()}{" "}
-                  birds
-                </span>
-              </div>
-            );
-          })}
+          <h3 className="subhead">Ready-made coop sizes</h3>
+          <div className="mini-rows">
+            {COOP_FOOTPRINTS.map((f) => {
+              const area = f.l * f.w;
+              return (
+                <div className="mini-row" key={`${f.l}x${f.w}`}>
+                  <span className="k">
+                    {f.l} × {f.w} ft coop ({area} sq ft)
+                  </span>
+                  <span className="v">
+                    fits {Math.floor(area / rate.coop)} {rate.label.toLowerCase()}{" "}
+                    birds
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className="result-panel" aria-live="polite">
@@ -119,9 +145,7 @@ export default function CoopCalc() {
               : "a custom walk-in build"}
             .
           </div>
-          <div className="btn-row">
-            <PrintButton />
-          </div>
+          <ResultActions summary={summary} onReset={reset} />
         </div>
       </div>
     </div>

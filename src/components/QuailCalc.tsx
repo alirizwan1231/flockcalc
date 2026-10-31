@@ -2,13 +2,27 @@
 
 import { useMemo, useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
-import PrintButton from "./PrintButton";
+import CountField from "./CountField";
+import ResultActions from "./ResultActions";
+import SegmentedControl from "./SegmentedControl";
 
 const RATES = [
   { id: "minimum", label: "Minimum — 0.75 sq ft per bird", rate: 0.75 },
   { id: "standard", label: "Standard — 1 sq ft per bird (recommended)", rate: 1 },
   { id: "roomy", label: "Roomy — 1.25 sq ft per bird", rate: 1.25 },
 ] as const;
+
+type ComfortId = (typeof RATES)[number]["id"];
+
+const COMFORT_SEGMENTS = RATES.map((r) => {
+  const [title, detail] = r.label.split(" — ");
+  return { value: r.id, title, detail };
+});
+
+const MODE_SEGMENTS = [
+  { value: "forward", title: "Plan a new cage or coop" },
+  { value: "reverse", title: "Already have a cage?" },
+];
 
 const CAGES = [
   { l: 2, w: 3 },
@@ -21,12 +35,21 @@ const CAGES = [
   { l: 4, w: 8 },
 ];
 
+const DEFAULTS = {
+  birds: "12",
+  purpose: "layers",
+  comfort: "standard" as ComfortId,
+  len: "4",
+  wid: "2",
+};
+
 export default function QuailCalc() {
-  const [birdsIn, setBirdsIn] = useState("12");
-  const [purpose, setPurpose] = useState("layers");
-  const [comfort, setComfort] = useState<(typeof RATES)[number]["id"]>("standard");
-  const [lenIn, setLenIn] = useState("4");
-  const [widIn, setWidIn] = useState("2");
+  const [mode, setMode] = useState("forward");
+  const [birdsIn, setBirdsIn] = useState(DEFAULTS.birds);
+  const [purpose, setPurpose] = useState(DEFAULTS.purpose);
+  const [comfort, setComfort] = useState<ComfortId>(DEFAULTS.comfort);
+  const [lenIn, setLenIn] = useState(DEFAULTS.len);
+  const [widIn, setWidIn] = useState(DEFAULTS.wid);
 
   const rate = RATES.find((r) => r.id === comfort)!.rate;
   const birds = num(birdsIn);
@@ -45,121 +68,190 @@ export default function QuailCalc() {
     label: r.id,
     birds: Math.floor(revArea / r.rate),
   }));
+  const revStandard = rev.find((x) => x.label === "standard")!.birds;
+  const revMinimum = rev.find((x) => x.label === "minimum")!.birds;
+  const revRoomy = rev.find((x) => x.label === "roomy")!.birds;
+
+  function reset() {
+    setBirdsIn(DEFAULTS.birds);
+    setPurpose(DEFAULTS.purpose);
+    setComfort(DEFAULTS.comfort);
+    setLenIn(DEFAULTS.len);
+    setWidIn(DEFAULTS.wid);
+  }
+
+  const summary =
+    mode === "forward"
+      ? [
+          "Quail Coop Size Calculator — FlockCalc",
+          `Number of quail: ${birds}`,
+          `Space per bird: ${rate} sq ft`,
+          `Floor space needed: ${fmt(r1(needed))} sq ft (${fmt(r1(sqm(needed)))} m²)`,
+          ...(fitting.length > 0
+            ? [
+                "Cage sizes that fit: " +
+                  fitting
+                    .map((c) => `${c.l} × ${c.w} ft (up to ${c.fits} quail)`)
+                    .join("; "),
+              ]
+            : []),
+        ].join("\n")
+      : [
+          "Quail Coop Size Calculator (reverse mode) — FlockCalc",
+          `Cage: ${num(lenIn)} × ${num(widIn)} ft = ${fmt(revArea)} sq ft (${fmt(r1(sqm(revArea)))} m²)`,
+          `Fits about ${revStandard} quail at the standard rate (${revMinimum} at minimum, ${revRoomy} at roomy)`,
+        ].join("\n");
 
   return (
     <div className="calc-card">
+      <div className="calc-mode">
+        <SegmentedControl
+          id="q-mode"
+          ariaLabel="Calculator mode"
+          options={MODE_SEGMENTS}
+          value={mode}
+          onChange={setMode}
+        />
+      </div>
+
       <div className="calc-grid">
         <div>
-          <h3>Plan a new cage or coop</h3>
-          <div className="field">
-            <label htmlFor="q-birds">Number of quail</label>
-            <input
-              id="q-birds"
-              type="number"
-              min="1"
-              inputMode="numeric"
-              value={birdsIn}
-              onChange={(e) => setBirdsIn(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="q-purpose">
-              Purpose
-              <span className="hint">
-                For your own planning only — floor space per bird is the same;
-                breeding groups just need extra hiding spots.
-              </span>
-            </label>
-            <select
-              id="q-purpose"
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
-            >
-              <option value="layers">Egg layers</option>
-              <option value="breeding">Breeding</option>
-              <option value="meat">Meat birds</option>
-              <option value="pets">Pets / hobby</option>
-            </select>
-          </div>
-          <div className="field">
-            <label htmlFor="q-comfort">Space per bird</label>
-            <select
-              id="q-comfort"
-              value={comfort}
-              onChange={(e) => setComfort(e.target.value as typeof comfort)}
-            >
-              {RATES.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <h3 style={{ marginTop: 26 }}>Already have a cage?</h3>
-          <div className="input-row">
-            <div className="field">
-              <label htmlFor="q-len">Cage length (ft)</label>
-              <input
-                id="q-len"
-                type="number"
-                min="0"
-                step="0.5"
-                value={lenIn}
-                onChange={(e) => setLenIn(e.target.value)}
+          {mode === "forward" ? (
+            <>
+              <CountField
+                id="q-birds"
+                label="Number of quail"
+                sliderLabel="Number of quail"
+                value={birdsIn}
+                onChange={setBirdsIn}
+                min={1}
+                max={100}
               />
-            </div>
-            <div className="field">
-              <label htmlFor="q-wid">Cage width (ft)</label>
-              <input
-                id="q-wid"
-                type="number"
-                min="0"
-                step="0.5"
-                value={widIn}
-                onChange={(e) => setWidIn(e.target.value)}
-              />
-            </div>
-          </div>
-          <p style={{ margin: 0 }}>
-            That cage is <strong>{fmt(revArea)} sq ft</strong> (
-            {fmt(r1(sqm(revArea)))} m²) and fits about{" "}
-            <strong>{rev.find((x) => x.label === "standard")!.birds} quail</strong>{" "}
-            at the standard rate ({rev.find((x) => x.label === "minimum")!.birds}{" "}
-            at minimum, {rev.find((x) => x.label === "roomy")!.birds} at roomy).
-          </p>
+              <div className="field">
+                <label htmlFor="q-purpose">
+                  Purpose
+                  <span className="hint">
+                    For your own planning only — floor space per bird is the same;
+                    breeding groups just need extra hiding spots.
+                  </span>
+                </label>
+                <select
+                  id="q-purpose"
+                  value={purpose}
+                  onChange={(e) => setPurpose(e.target.value)}
+                >
+                  <option value="layers">Egg layers</option>
+                  <option value="breeding">Breeding</option>
+                  <option value="meat">Meat birds</option>
+                  <option value="pets">Pets / hobby</option>
+                </select>
+              </div>
+              <div className="field">
+                <span className="field-label" id="q-comfort-label">
+                  Space per bird
+                </span>
+                <SegmentedControl
+                  id="q-comfort"
+                  labelledBy="q-comfort-label"
+                  options={COMFORT_SEGMENTS}
+                  value={comfort}
+                  onChange={(v) => setComfort(v as ComfortId)}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="input-row">
+                <div className="field">
+                  <label htmlFor="q-len">Cage length (ft)</label>
+                  <input
+                    id="q-len"
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={lenIn}
+                    onChange={(e) => setLenIn(e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="q-wid">Cage width (ft)</label>
+                  <input
+                    id="q-wid"
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={widIn}
+                    onChange={(e) => setWidIn(e.target.value)}
+                  />
+                </div>
+              </div>
+              <p style={{ margin: 0 }}>
+                That cage is <strong>{fmt(revArea)} sq ft</strong> (
+                {fmt(r1(sqm(revArea)))} m²) and fits about{" "}
+                <strong>{revStandard} quail</strong> at the standard rate (
+                {revMinimum} at minimum, {revRoomy} at roomy).
+              </p>
+            </>
+          )}
         </div>
 
         <div className="result-panel" aria-live="polite">
-          <h3>Your quail need</h3>
-          <p className="result-big">
-            {fmt(r1(needed))} sq ft of floor space
-          </p>
-          <div className="result-row">
-            <span className="k">In metric</span>
-            <span className="v">{fmt(r1(sqm(needed)))} m²</span>
-          </div>
-          <div className="result-row">
-            <span className="k">Per bird</span>
-            <span className="v">{rate} sq ft</span>
-          </div>
-          {fitting.length > 0 ? (
+          {mode === "forward" ? (
             <>
-              <h3 style={{ marginTop: 16 }}>Cage sizes that fit</h3>
-              {fitting.map((c) => (
-                <div className="result-row" key={`${c.l}x${c.w}`}>
-                  <span className="k">
-                    {c.l} × {c.w} ft cage ({c.area} sq ft)
-                  </span>
-                  <span className="v">up to {c.fits} quail</span>
-                </div>
-              ))}
+              <h3>Your quail need</h3>
+              <p className="result-big">
+                {fmt(r1(needed))} sq ft of floor space
+              </p>
+              <div className="result-row">
+                <span className="k">In metric</span>
+                <span className="v">{fmt(r1(sqm(needed)))} m²</span>
+              </div>
+              <div className="result-row">
+                <span className="k">Per bird</span>
+                <span className="v">{rate} sq ft</span>
+              </div>
+              {fitting.length > 0 ? (
+                <>
+                  <h3 className="result-subhead">Cage sizes that fit</h3>
+                  {fitting.map((c) => (
+                    <div className="result-row" key={`${c.l}x${c.w}`}>
+                      <span className="k">
+                        {c.l} × {c.w} ft cage ({c.area} sq ft)
+                      </span>
+                      <span className="v">up to {c.fits} quail</span>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p>
+                  Your flock needs more room than a standard single cage — look at a
+                  walk-in aviary or split the covey across two cages.
+                </p>
+              )}
             </>
           ) : (
-            <p>
-              Your flock needs more room than a standard single cage — look at a
-              walk-in aviary or split the covey across two cages.
-            </p>
+            <>
+              <h3>Your cage fits</h3>
+              <p className="result-big">about {revStandard} quail</p>
+              <div className="result-row">
+                <span className="k">Cage floor area</span>
+                <span className="v">
+                  {fmt(revArea)} sq ft ({fmt(r1(sqm(revArea)))} m²)
+                </span>
+              </div>
+              <div className="result-row">
+                <span className="k">At the standard rate</span>
+                <span className="v">{revStandard} quail</span>
+              </div>
+              <div className="result-row">
+                <span className="k">At minimum</span>
+                <span className="v">{revMinimum} quail</span>
+              </div>
+              <div className="result-row">
+                <span className="k">At roomy</span>
+                <span className="v">{revRoomy} quail</span>
+              </div>
+            </>
           )}
           <div className="result-note">
             <strong>Ceiling height matters with quail.</strong> Quail flush
@@ -168,9 +260,7 @@ export default function QuailCalc() {
             1.8 m or more) so they can fly up and settle. Mid-height coops
             around 2–4 ft are where head injuries happen.
           </div>
-          <div className="btn-row">
-            <PrintButton />
-          </div>
+          <ResultActions summary={summary} onReset={reset} />
         </div>
       </div>
     </div>

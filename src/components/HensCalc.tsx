@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { chickenSpace, fmt, num, r1, sqm } from "@/lib/math";
-import PrintButton from "./PrintButton";
+import ResultActions from "./ResultActions";
+import SegmentedControl from "./SegmentedControl";
 
 const RATES = [
   { id: "6", label: "Heavy layer — about 6 eggs/week (e.g. ISA Brown, Leghorn)" },
@@ -11,10 +12,19 @@ const RATES = [
   { id: "4", label: "Light / heritage — about 4 eggs/week" },
 ] as const;
 
+type RateId = (typeof RATES)[number]["id"];
+
+const RATE_SEGMENTS = RATES.map((r) => {
+  const [title, detail] = r.label.split(" — ");
+  return { value: r.id, title, detail };
+});
+
+const DEFAULTS = { people: "4", eggs: "5", rate: "5" as RateId };
+
 export default function HensCalc() {
-  const [peopleIn, setPeopleIn] = useState("4");
-  const [eggsIn, setEggsIn] = useState("5");
-  const [rateId, setRateId] = useState<(typeof RATES)[number]["id"]>("5");
+  const [peopleIn, setPeopleIn] = useState(DEFAULTS.people);
+  const [eggsIn, setEggsIn] = useState(DEFAULTS.eggs);
+  const [rateId, setRateId] = useState<RateId>(DEFAULTS.rate);
 
   const people = num(peopleIn);
   const eggsPerPerson = num(eggsIn);
@@ -25,6 +35,21 @@ export default function HensCalc() {
   const recommended = hensNeeded > 0 ? hensNeeded + 1 : 0;
   const dozenPerWeek = (recommended * rate) / 12;
   const space = chickenSpace(recommended, "standard");
+
+  function reset() {
+    setPeopleIn(DEFAULTS.people);
+    setEggsIn(DEFAULTS.eggs);
+    setRateId(DEFAULTS.rate);
+  }
+
+  const summary = [
+    "How Many Chickens Do I Need? — FlockCalc",
+    `Hens minimum: ${hensNeeded}`,
+    `Recommended (with buffer hen): ${recommended} hens`,
+    `Expected eggs: ${fmt(recommended * rate)} / week (about ${fmt(dozenPerWeek, 2)} dozen / week)`,
+    `Coop space for ${recommended} hens: ${fmt(r1(space.coopSqft))} sq ft (${fmt(r1(sqm(space.coopSqft)))} m²)`,
+    `Run space: ${fmt(r1(space.runSqft))} sq ft (${fmt(r1(sqm(space.runSqft)))} m²)`,
+  ].join("\n");
 
   return (
     <div className="calc-card">
@@ -57,18 +82,16 @@ export default function HensCalc() {
             />
           </div>
           <div className="field">
-            <label htmlFor="h-rate">How well your hens will lay</label>
-            <select
+            <span className="field-label" id="h-rate-label">
+              How well your hens will lay
+            </span>
+            <SegmentedControl
               id="h-rate"
+              labelledBy="h-rate-label"
+              options={RATE_SEGMENTS}
               value={rateId}
-              onChange={(e) => setRateId(e.target.value as typeof rateId)}
-            >
-              {RATES.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
+              onChange={(v) => setRateId(v as RateId)}
+            />
           </div>
           <p>
             Your household needs about <strong>{fmt(weeklyNeeded)} eggs a week</strong>{" "}
@@ -108,8 +131,8 @@ export default function HensCalc() {
             go broody in spring, and slow down in winter. One buffer hen keeps
             eggs coming through all of it — most keepers are glad they added her.
           </div>
+          <ResultActions summary={summary} onReset={reset} />
           <div className="btn-row">
-            <PrintButton />
             <Link className="btn btn-primary" href="/chicken-coop-size-calculator">
               Plan the coop for {recommended} hens →
             </Link>

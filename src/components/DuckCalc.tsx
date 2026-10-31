@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
-import PrintButton from "./PrintButton";
+import CountField from "./CountField";
+import ResultActions from "./ResultActions";
+import SegmentedControl from "./SegmentedControl";
 
 const SIZES = [
   { id: "light", label: "Light breeds — 3 sq ft (Runners, Campbell)", coop: 3 },
@@ -10,10 +12,24 @@ const SIZES = [
   { id: "heavy", label: "Heavy breeds — 5 sq ft (Muscovy, Aylesbury, Toulouse-sized)", coop: 5 },
 ] as const;
 
+type SizeId = (typeof SIZES)[number]["id"];
+
+const SIZE_SEGMENTS = SIZES.map((s) => {
+  const [title, detail] = s.label.split(" — ");
+  return { value: s.id, title, detail };
+});
+
+const RUN_SEGMENTS = [
+  { value: "10", title: "Minimum", detail: "10 sq ft per duck" },
+  { value: "15", title: "Recommended", detail: "15 sq ft per duck" },
+];
+
+const DEFAULTS = { ducks: "6", size: "standard" as SizeId, run: "15" };
+
 export default function DuckCalc() {
-  const [ducksIn, setDucksIn] = useState("6");
-  const [sizeId, setSizeId] = useState<(typeof SIZES)[number]["id"]>("standard");
-  const [runId, setRunId] = useState("15");
+  const [ducksIn, setDucksIn] = useState(DEFAULTS.ducks);
+  const [sizeId, setSizeId] = useState<SizeId>(DEFAULTS.size);
+  const [runId, setRunId] = useState(DEFAULTS.run);
 
   const ducks = num(ducksIn);
   const coopRate = SIZES.find((s) => s.id === sizeId)!.coop;
@@ -22,42 +38,58 @@ export default function DuckCalc() {
   const run = ducks * runRate;
   const boxes = Math.max(1, Math.ceil(ducks / 4));
 
+  function reset() {
+    setDucksIn(DEFAULTS.ducks);
+    setSizeId(DEFAULTS.size);
+    setRunId(DEFAULTS.run);
+  }
+
+  const summary = [
+    "Duck Coop Size Calculator — FlockCalc",
+    `Coop space: ${fmt(r1(coop))} sq ft (${fmt(r1(sqm(coop)))} m²)`,
+    `Run space: ${fmt(r1(run))} sq ft (${fmt(r1(sqm(run)))} m²)`,
+    `Nesting boxes (ground level): ${boxes} ${boxes === 1 ? "box" : "boxes"} (1 per 4 ducks)`,
+    "Roost bars needed: None — ducks sleep on bedding",
+  ].join("\n");
+
   return (
     <div className="calc-card">
       <div className="calc-grid">
         <div>
+          <CountField
+            id="d-ducks"
+            label="Number of ducks"
+            sliderLabel="Number of ducks"
+            value={ducksIn}
+            onChange={setDucksIn}
+            min={1}
+            max={50}
+          />
           <div className="field">
-            <label htmlFor="d-ducks">Number of ducks</label>
-            <input
-              id="d-ducks"
-              type="number"
-              min="1"
-              value={ducksIn}
-              onChange={(e) => setDucksIn(e.target.value)}
+            <span className="field-label" id="d-size-label">
+              Duck size / breed type
+            </span>
+            <SegmentedControl
+              id="d-size"
+              labelledBy="d-size-label"
+              options={SIZE_SEGMENTS}
+              value={sizeId}
+              onChange={(v) => setSizeId(v as SizeId)}
             />
           </div>
           <div className="field">
-            <label htmlFor="d-size">Duck size / breed type</label>
-            <select
-              id="d-size"
-              value={sizeId}
-              onChange={(e) => setSizeId(e.target.value as typeof sizeId)}
-            >
-              {SIZES.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
+            <span className="field-label" id="d-run-label">
+              Outdoor run space
+            </span>
+            <SegmentedControl
+              id="d-run"
+              labelledBy="d-run-label"
+              options={RUN_SEGMENTS}
+              value={runId}
+              onChange={setRunId}
+            />
           </div>
-          <div className="field">
-            <label htmlFor="d-run">Outdoor run space</label>
-            <select id="d-run" value={runId} onChange={(e) => setRunId(e.target.value)}>
-              <option value="10">Minimum — 10 sq ft per duck</option>
-              <option value="15">Recommended — 15 sq ft per duck</option>
-            </select>
-          </div>
-          <div className="result-note" style={{ marginTop: 4 }}>
+          <div className="result-note">
             <strong>Ducks are not wet chickens.</strong> They sleep on the floor
             (no roosts), nest on the ground, and turn any water bowl into a
             splash zone — plan drainage and dry bedding space into the numbers
@@ -106,9 +138,7 @@ export default function DuckCalc() {
               water to clean their bills and eyes, not a pond.
             </li>
           </ul>
-          <div className="btn-row">
-            <PrintButton />
-          </div>
+          <ResultActions summary={summary} onReset={reset} />
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Check } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
 import ToolIcon from "@/components/ToolIcon";
@@ -49,35 +50,70 @@ export default function HomePage() {
       <JsonLd data={websiteSchema()} />
       <JsonLd data={faqSchema(faqs)} />
       <div className="hero">
-        <div className="wrap">
-          <h1>Free calculators for backyard chickens, quail and ducks</h1>
-          <p className="lede">
-            How big should the coop be? How many hens does your family actually
-            need? What does a home-laid egg really cost? Answer all three in
-            under a minute — no sign-up, no fluff, just the numbers extension
-            services recommend.
-          </p>
-          <div className="hero-chips">
-            <span className="chip">100% free — no sign-up</span>
-            <span className="chip">Extension-service numbers</span>
-            <span className="chip">Metric &amp; imperial results</span>
+        <div className="wrap hero-grid">
+          <div className="hero-copy">
+            <span className="eyebrow">Free • No sign-up</span>
+            <h1>Free calculators for backyard chickens, quail and ducks</h1>
+            <p className="lede">
+              How big should the coop be? How many hens does your family actually
+              need? What does a home-laid egg really cost? Answer all three in
+              under a minute — no sign-up, no fluff, just the numbers extension
+              services recommend.
+            </p>
+            <div className="btn-row">
+              <Link className="btn btn-primary" href="/quail-coop-size-calculator">
+                Start with the quail coop calculator
+              </Link>
+              <Link
+                className="btn btn-secondary"
+                href="/how-many-chickens-do-i-need"
+              >
+                How many chickens do I need?
+              </Link>
+            </div>
+            <div className="hero-chips">
+              <span className="chip">
+                <Check size={14} strokeWidth={3} aria-hidden="true" />
+                100% free — no sign-up
+              </span>
+              <span className="chip">
+                <Check size={14} strokeWidth={3} aria-hidden="true" />
+                Extension-service numbers
+              </span>
+              <span className="chip">
+                <Check size={14} strokeWidth={3} aria-hidden="true" />
+                Metric &amp; imperial results
+              </span>
+            </div>
           </div>
-          <div className="btn-row">
-            <Link className="btn btn-primary" href="/quail-coop-size-calculator">
-              Start with the quail coop calculator
-            </Link>
-            <Link
-              className="btn btn-secondary"
-              href="/how-many-chickens-do-i-need"
-            >
-              How many chickens do I need?
-            </Link>
+
+          <div className="sample-card" aria-label="Example result">
+            <span className="sample-badge">Example result</span>
+            <h3>Your quail need</h3>
+            <p className="result-big">12 sq ft of floor space</p>
+            <div className="result-row">
+              <span className="k">In metric</span>
+              <span className="v">1.1 m²</span>
+            </div>
+            <div className="result-row">
+              <span className="k">Per bird</span>
+              <span className="v">1 sq ft</span>
+            </div>
+            <h3 className="result-subhead">Cage sizes that fit</h3>
+            <div className="result-row">
+              <span className="k">2 × 6 ft cage (12 sq ft)</span>
+              <span className="v">up to 12 quail</span>
+            </div>
+            <div className="result-row">
+              <span className="k">3 × 4 ft cage (12 sq ft)</span>
+              <span className="v">up to 12 quail</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="wrap">
-        <section aria-labelledby="tools-heading">
+        <section id="tools" aria-labelledby="tools-heading">
           <h2 id="tools-heading">All five calculators</h2>
           <div className="tool-grid">
             {tools.map((t) => (

@@ -2,15 +2,25 @@
 
 import { useState } from "react";
 import { eggCost, fmt, money, num, r2 } from "@/lib/math";
-import PrintButton from "./PrintButton";
+import CountField from "./CountField";
+import ResultActions from "./ResultActions";
+
+const DEFAULTS = {
+  hens: "6",
+  eggs: "5",
+  price: "25",
+  weight: "40",
+  extra: "0",
+  store: "4",
+};
 
 export default function EggCostCalc() {
-  const [hensIn, setHensIn] = useState("6");
-  const [eggsIn, setEggsIn] = useState("5");
-  const [priceIn, setPriceIn] = useState("25");
-  const [weightIn, setWeightIn] = useState("40");
-  const [extraIn, setExtraIn] = useState("0");
-  const [storeIn, setStoreIn] = useState("4");
+  const [hensIn, setHensIn] = useState(DEFAULTS.hens);
+  const [eggsIn, setEggsIn] = useState(DEFAULTS.eggs);
+  const [priceIn, setPriceIn] = useState(DEFAULTS.price);
+  const [weightIn, setWeightIn] = useState(DEFAULTS.weight);
+  const [extraIn, setExtraIn] = useState(DEFAULTS.extra);
+  const [storeIn, setStoreIn] = useState(DEFAULTS.store);
 
   const r = eggCost({
     hens: num(hensIn),
@@ -23,20 +33,37 @@ export default function EggCostCalc() {
   const diff = storeDozen - r.costPerDozen;
   const saving = diff >= 0;
 
+  function reset() {
+    setHensIn(DEFAULTS.hens);
+    setEggsIn(DEFAULTS.eggs);
+    setPriceIn(DEFAULTS.price);
+    setWeightIn(DEFAULTS.weight);
+    setExtraIn(DEFAULTS.extra);
+    setStoreIn(DEFAULTS.store);
+  }
+
+  const summary = [
+    "Cost Per Egg Calculator — FlockCalc",
+    `Cost per egg: ${money(r2(r.costPerEgg))}`,
+    `Cost per dozen: ${money(r2(r.costPerDozen))}`,
+    `Feed used per month: ${fmt(r.monthlyFeedLb)} lb`,
+    `Total monthly cost: ${money(r2(r.totalMonthly))}`,
+    `Eggs per month: about ${fmt(Math.round(r.monthlyEggs))}`,
+  ].join("\n");
+
   return (
     <div className="calc-card">
       <div className="calc-grid">
         <div>
-          <div className="field">
-            <label htmlFor="e-hens">Number of hens</label>
-            <input
-              id="e-hens"
-              type="number"
-              min="1"
-              value={hensIn}
-              onChange={(e) => setHensIn(e.target.value)}
-            />
-          </div>
+          <CountField
+            id="e-hens"
+            label="Number of hens"
+            sliderLabel="Number of hens"
+            value={hensIn}
+            onChange={setHensIn}
+            min={1}
+            max={100}
+          />
           <div className="field">
             <label htmlFor="e-eggs">Eggs per hen, per week</label>
             <input
@@ -51,24 +78,34 @@ export default function EggCostCalc() {
           <div className="input-row">
             <div className="field">
               <label htmlFor="e-price">Feed bag price ($)</label>
-              <input
-                id="e-price"
-                type="number"
-                min="0"
-                step="0.5"
-                value={priceIn}
-                onChange={(e) => setPriceIn(e.target.value)}
-              />
+              <div className="input-affix">
+                <span className="affix affix-pre" aria-hidden="true">
+                  $
+                </span>
+                <input
+                  id="e-price"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  value={priceIn}
+                  onChange={(e) => setPriceIn(e.target.value)}
+                />
+              </div>
             </div>
             <div className="field">
               <label htmlFor="e-weight">Bag weight (lb)</label>
-              <input
-                id="e-weight"
-                type="number"
-                min="0"
-                value={weightIn}
-                onChange={(e) => setWeightIn(e.target.value)}
-              />
+              <div className="input-affix">
+                <input
+                  id="e-weight"
+                  type="number"
+                  min="0"
+                  value={weightIn}
+                  onChange={(e) => setWeightIn(e.target.value)}
+                />
+                <span className="affix affix-post" aria-hidden="true">
+                  lb
+                </span>
+              </div>
             </div>
           </div>
           <div className="field">
@@ -76,25 +113,35 @@ export default function EggCostCalc() {
               Other monthly costs — bedding, treats, grit ($)
               <span className="hint">Optional. Leave at 0 for feed-only cost.</span>
             </label>
-            <input
-              id="e-extra"
-              type="number"
-              min="0"
-              step="1"
-              value={extraIn}
-              onChange={(e) => setExtraIn(e.target.value)}
-            />
+            <div className="input-affix">
+              <span className="affix affix-pre" aria-hidden="true">
+                $
+              </span>
+              <input
+                id="e-extra"
+                type="number"
+                min="0"
+                step="1"
+                value={extraIn}
+                onChange={(e) => setExtraIn(e.target.value)}
+              />
+            </div>
           </div>
           <div className="field">
             <label htmlFor="e-store">Store price per dozen ($)</label>
-            <input
-              id="e-store"
-              type="number"
-              min="0"
-              step="0.25"
-              value={storeIn}
-              onChange={(e) => setStoreIn(e.target.value)}
-            />
+            <div className="input-affix">
+              <span className="affix affix-pre" aria-hidden="true">
+                $
+              </span>
+              <input
+                id="e-store"
+                type="number"
+                min="0"
+                step="0.25"
+                value={storeIn}
+                onChange={(e) => setStoreIn(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
@@ -133,9 +180,7 @@ export default function EggCostCalc() {
               "Add at least one hen and one egg per week to see your cost."
             )}
           </div>
-          <div className="btn-row">
-            <PrintButton />
-          </div>
+          <ResultActions summary={summary} onReset={reset} />
         </div>
       </div>
     </div>
