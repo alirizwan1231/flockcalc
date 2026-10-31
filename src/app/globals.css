@@ -1,0 +1,521 @@
+/* FlockCalc — single global stylesheet. Warm farm palette:
+   deep green + warm cream + amber accent. System fonts only. */
+
+:root {
+  --green-900: #123524;
+  --green-800: #1d5c38;
+  --green-700: #26734a;
+  --green-100: #e3efe4;
+  --cream: #faf6ee;
+  --cream-dark: #f3ecdc;
+  --paper: #fffdf8;
+  --ink: #26312a;
+  --ink-soft: #54645a;
+  --amber: #d97706;
+  --amber-soft: #fdf0dc;
+  --line: #ddd5c2;
+  --radius: 14px;
+  --shadow: 0 6px 24px rgba(18, 53, 36, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: ui-sans-system, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--green-900);
+  line-height: 1.25;
+  margin: 0 0 0.55em;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  margin-top: 1.4em;
+}
+
+h3 {
+  font-size: 1.12rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--green-800);
+}
+
+main {
+  padding-bottom: 64px;
+}
+
+section {
+  margin-top: 8px;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 246, 238, 0.96);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--green-900);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 4px 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.main-nav a:hover {
+  color: var(--green-800);
+  border-bottom-color: var(--amber);
+}
+
+/* ---------- Hero / page head ---------- */
+.hero {
+  background: linear-gradient(160deg, var(--green-900), var(--green-800));
+  color: #f4efe2;
+  border-radius: 0 0 26px 26px;
+  padding: 52px 0 44px;
+  margin-bottom: 34px;
+}
+
+.hero h1 {
+  color: #fff;
+  max-width: 720px;
+}
+
+.hero .lede {
+  font-size: 1.15rem;
+  max-width: 640px;
+  color: #e7e2cf;
+}
+
+.page-head {
+  padding: 34px 0 6px;
+}
+
+.lede {
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+  max-width: 700px;
+}
+
+.breadcrumb {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.breadcrumb a {
+  color: var(--ink-soft);
+}
+
+/* ---------- Tool cards ---------- */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  margin: 18px 0 8px;
+}
+
+.tool-card {
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--amber);
+}
+
+.tool-card h3 {
+  margin-bottom: 6px;
+}
+
+.tool-card p {
+  color: var(--ink-soft);
+  font-size: 0.97rem;
+  margin-bottom: 10px;
+}
+
+.card-cta {
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* ---------- Calculator ---------- */
+.calc-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--green-800);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px;
+  margin: 22px 0 10px;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+@media (max-width: 760px) {
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 5px;
+  font-size: 0.98rem;
+}
+
+.field .hint {
+  display: block;
+  font-weight: 400;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  margin-top: 2px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 11px 13px;
+  font-size: 1.05rem;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+  border-color: var(--amber);
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.result-panel {
+  background: var(--green-100);
+  border-radius: 11px;
+  padding: 18px 20px;
+}
+
+.result-panel h3 {
+  margin-top: 0;
+}
+
+.result-big {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--green-900);
+  line-height: 1.3;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(18, 53, 36, 0.18);
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+.result-row .k {
+  color: var(--ink-soft);
+}
+
+.result-row .v {
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.result-note {
+  background: var(--amber-soft);
+  border-left: 4px solid var(--amber);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  margin-top: 14px;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 9px;
+  padding: 11px 20px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--amber);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--green-800);
+  border: 1.5px solid var(--green-800);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* ---------- Tables ---------- */
+.table-scroll {
+  overflow-x: auto;
+  margin: 14px 0 6px;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: 0.97rem;
+}
+
+table.data th {
+  background: var(--green-800);
+  color: #fff;
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+}
+
+table.data td {
+  padding: 9px 14px;
+  border-top: 1px solid var(--line);
+}
+
+table.data tr:nth-child(even) td {
+  background: var(--cream);
+}
+
+/* ---------- Content blocks ---------- */
+.trust-box {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  box-shadow: var(--shadow);
+}
+
+.faq-list {
+  display: grid;
+  gap: 14px;
+}
+
+.faq-item {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+}
+
+.faq-item h3 {
+  margin-bottom: 4px;
+}
+
+.faq-item p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+ul.tight li {
+  margin-bottom: 6px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--green-900);
+  color: #dfe8d8;
+  margin-top: 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 28px;
+  padding-top: 36px;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 760px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-brand {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.footer-tag {
+  color: #b9cbb2;
+  max-width: 300px;
+}
+
+.footer-head {
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.site-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer li {
+  margin-bottom: 6px;
+}
+
+.site-footer a {
+  color: #dfe8d8;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--amber);
+  text-decoration: underline;
+}
+
+.footer-base {
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: 12px;
+  padding-bottom: 18px;
+  font-size: 0.88rem;
+  color: #b9cbb2;
+}
+
+.footer-base p {
+  margin: 0;
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .no-print,
+  .site-header,
+  .site-footer {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    font-size: 12.5pt;
+  }
+
+  .calc-card,
+  .faq-item,
+  .tool-card,
+  .trust-box {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  main {
+    padding-bottom: 0;
+  }
+}
