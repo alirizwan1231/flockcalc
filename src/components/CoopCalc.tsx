@@ -56,85 +56,87 @@ export default function CoopCalc() {
   ].join("\n");
 
   return (
-    <div className="calc-card">
-      <div className="calc-grid">
-        <div>
-          <CountField
-            id="c-birds"
-            label="Number of chickens"
-            sliderLabel="Number of chickens"
-            value={birdsIn}
-            onChange={setBirdsIn}
-            min={1}
-            max={50}
+    <div className="workbench">
+      <div>
+        <CountField
+          id="c-birds"
+          label="Number of chickens"
+          sliderLabel="Number of chickens"
+          value={birdsIn}
+          onChange={setBirdsIn}
+          min={1}
+          max={50}
+        />
+        <div className="field">
+          <span className="field-label" id="c-size-label">
+            Bird size
+          </span>
+          <SegmentedControl
+            id="c-size"
+            labelledBy="c-size-label"
+            options={SIZE_SEGMENTS}
+            value={size}
+            onChange={(v) => setSize(v as ChickenSize)}
           />
-          <div className="field">
-            <span className="field-label" id="c-size-label">
-              Bird size
-            </span>
-            <SegmentedControl
-              id="c-size"
-              labelledBy="c-size-label"
-              options={SIZE_SEGMENTS}
-              value={size}
-              onChange={(v) => setSize(v as ChickenSize)}
-            />
-          </div>
+        </div>
+        <div className="form-note">
           <p>
             These are comfortable, commonly recommended figures — not the tight
             legal minimums factory farms use. More space always means a calmer,
             healthier flock.
           </p>
-          <h3 className="subhead">Ready-made coop sizes</h3>
-          <div className="mini-rows">
-            {COOP_FOOTPRINTS.map((f) => {
-              const area = f.l * f.w;
-              return (
-                <div className="mini-row" key={`${f.l}x${f.w}`}>
-                  <span className="k">
-                    {f.l} × {f.w} ft coop ({area} sq ft)
-                  </span>
-                  <span className="v">
-                    fits {Math.floor(area / rate.coop)} {rate.label.toLowerCase()}{" "}
-                    birds
-                  </span>
-                </div>
-              );
-            })}
-          </div>
         </div>
+        <h3 className="subhead">Ready-made coop sizes</h3>
+        <div className="mini-rows">
+          {COOP_FOOTPRINTS.map((f) => {
+            const area = f.l * f.w;
+            return (
+              <div className="mini-row" key={`${f.l}x${f.w}`}>
+                <span className="k">
+                  {f.l} × {f.w} ft coop ({area} sq ft)
+                </span>
+                <span className="v">
+                  fits {Math.floor(area / rate.coop)} {rate.label.toLowerCase()}{" "}
+                  birds
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-        <div className="result-panel" aria-live="polite">
-          <h3>Your coop plan</h3>
-          <p className="result-big">
-            {fmt(r1(s.coopSqft))} sq ft coop · {fmt(r1(s.runSqft))} sq ft run
-          </p>
-          <div className="result-row">
-            <span className="k">Coop (indoor floor)</span>
-            <span className="v">
-              {fmt(r1(s.coopSqft))} sq ft ({fmt(r1(sqm(s.coopSqft)))} m²)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Run (outdoor)</span>
-            <span className="v">
-              {fmt(r1(s.runSqft))} sq ft ({fmt(r1(sqm(s.runSqft)))} m²)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Roost length (10 in per bird)</span>
-            <span className="v">
-              {fmt(r1(s.roostFeet))} ft ({fmt(r1(s.roostFeet * 0.3048))} m)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Nesting boxes</span>
-            <span className="v">
-              {s.nestingBoxes} {s.nestingBoxes === 1 ? "box" : "boxes"} (1 per 4
-              hens)
-            </span>
-          </div>
-          <div className="result-note">
+      <div className="result-panel" aria-live="polite">
+        <h3>Your coop plan</h3>
+        <p className="result-big">
+          {fmt(r1(s.coopSqft))} sq ft coop · {fmt(r1(s.runSqft))} sq ft run
+        </p>
+        <div className="result-row">
+          <span className="k">Coop (indoor floor)</span>
+          <span className="v">
+            {fmt(r1(s.coopSqft))} sq ft ({fmt(r1(sqm(s.coopSqft)))} m²)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Run (outdoor)</span>
+          <span className="v">
+            {fmt(r1(s.runSqft))} sq ft ({fmt(r1(sqm(s.runSqft)))} m²)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Roost length (10 in per bird)</span>
+          <span className="v">
+            {fmt(r1(s.roostFeet))} ft ({fmt(r1(s.roostFeet * 0.3048))} m)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Nesting boxes</span>
+          <span className="v">
+            {s.nestingBoxes} {s.nestingBoxes === 1 ? "box" : "boxes"} (1 per 4
+            hens)
+          </span>
+        </div>
+        <div className="result-note">
+          <p>
             A {birds || 0}-bird flock of {rate.label.toLowerCase()} chickens fits
             comfortably in a coop of about {fmt(r1(s.coopSqft))} sq ft — for
             example{" "}
@@ -144,9 +146,9 @@ export default function CoopCalc() {
                 } ft`
               : "a custom walk-in build"}
             .
-          </div>
-          <ResultActions summary={summary} onReset={reset} />
+          </p>
         </div>
+        <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>
   );

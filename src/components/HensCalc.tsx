@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { chickenSpace, fmt, num, r1, sqm } from "@/lib/math";
 import ResultActions from "./ResultActions";
 import SegmentedControl from "./SegmentedControl";
@@ -52,91 +53,94 @@ export default function HensCalc() {
   ].join("\n");
 
   return (
-    <div className="calc-card">
-      <div className="calc-grid">
-        <div>
-          <div className="field">
-            <label htmlFor="h-people">People in your household</label>
-            <input
-              id="h-people"
-              type="number"
-              min="1"
-              value={peopleIn}
-              onChange={(e) => setPeopleIn(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="h-eggs">
-              Eggs eaten per person, per week
-              <span className="hint">
-                Count breakfasts, baking and cooking. The average person eats
-                roughly 5 eggs a week.
-              </span>
-            </label>
-            <input
-              id="h-eggs"
-              type="number"
-              min="0"
-              value={eggsIn}
-              onChange={(e) => setEggsIn(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <span className="field-label" id="h-rate-label">
-              How well your hens will lay
+    <div className="workbench">
+      <div>
+        <div className="field">
+          <label htmlFor="h-people">People in your household</label>
+          <input
+            id="h-people"
+            type="number"
+            min="1"
+            value={peopleIn}
+            onChange={(e) => setPeopleIn(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="h-eggs">
+            Eggs eaten per person, per week
+            <span className="hint">
+              Count breakfasts, baking and cooking. The average person eats
+              roughly 5 eggs a week.
             </span>
-            <SegmentedControl
-              id="h-rate"
-              labelledBy="h-rate-label"
-              options={RATE_SEGMENTS}
-              value={rateId}
-              onChange={(v) => setRateId(v as RateId)}
-            />
-          </div>
+          </label>
+          <input
+            id="h-eggs"
+            type="number"
+            min="0"
+            value={eggsIn}
+            onChange={(e) => setEggsIn(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <span className="field-label" id="h-rate-label">
+            How well your hens will lay
+          </span>
+          <SegmentedControl
+            id="h-rate"
+            labelledBy="h-rate-label"
+            options={RATE_SEGMENTS}
+            value={rateId}
+            onChange={(v) => setRateId(v as RateId)}
+          />
+        </div>
+        <div className="form-note">
           <p>
             Your household needs about <strong>{fmt(weeklyNeeded)} eggs a week</strong>{" "}
             ({fmt((weeklyNeeded * 52) / 12)} dozen a year).
           </p>
         </div>
+      </div>
 
-        <div className="result-panel" aria-live="polite">
-          <h3>Your flock size</h3>
-          <p className="result-big">{hensNeeded} hens minimum</p>
-          <div className="result-row">
-            <span className="k">Recommended (with buffer hen)</span>
-            <span className="v">{recommended} hens</span>
-          </div>
-          <div className="result-row">
-            <span className="k">Expected eggs</span>
-            <span className="v">{fmt(recommended * rate)} / week</span>
-          </div>
-          <div className="result-row">
-            <span className="k">That is about</span>
-            <span className="v">{fmt(dozenPerWeek, 2)} dozen / week</span>
-          </div>
-          <div className="result-row">
-            <span className="k">Coop space for {recommended} hens</span>
-            <span className="v">
-              {fmt(r1(space.coopSqft))} sq ft ({fmt(r1(sqm(space.coopSqft)))} m²)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Run space</span>
-            <span className="v">
-              {fmt(r1(space.runSqft))} sq ft ({fmt(r1(sqm(space.runSqft)))} m²)
-            </span>
-          </div>
-          <div className="result-note">
+      <div className="result-panel" aria-live="polite">
+        <h3>Your flock size</h3>
+        <p className="result-big">{hensNeeded} hens minimum</p>
+        <div className="result-row">
+          <span className="k">Recommended (with buffer hen)</span>
+          <span className="v">{recommended} hens</span>
+        </div>
+        <div className="result-row">
+          <span className="k">Expected eggs</span>
+          <span className="v">{fmt(recommended * rate)} / week</span>
+        </div>
+        <div className="result-row">
+          <span className="k">That is about</span>
+          <span className="v">{fmt(dozenPerWeek, 2)} dozen / week</span>
+        </div>
+        <div className="result-row">
+          <span className="k">Coop space for {recommended} hens</span>
+          <span className="v">
+            {fmt(r1(space.coopSqft))} sq ft ({fmt(r1(sqm(space.coopSqft)))} m²)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Run space</span>
+          <span className="v">
+            {fmt(r1(space.runSqft))} sq ft ({fmt(r1(sqm(space.runSqft)))} m²)
+          </span>
+        </div>
+        <div className="result-note">
+          <p>
             <strong>Why the extra hen?</strong> Hens stop laying while moulting,
             go broody in spring, and slow down in winter. One buffer hen keeps
             eggs coming through all of it — most keepers are glad they added her.
-          </div>
-          <ResultActions summary={summary} onReset={reset} />
-          <div className="btn-row">
-            <Link className="btn btn-primary" href="/chicken-coop-size-calculator">
-              Plan the coop for {recommended} hens →
-            </Link>
-          </div>
+          </p>
+        </div>
+        <ResultActions summary={summary} onReset={reset} />
+        <div className="btn-row">
+          <Link className="btn btn-primary" href="/chicken-coop-size-calculator">
+            Plan the coop for {recommended} hens
+            <ArrowRight size={17} aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </div>

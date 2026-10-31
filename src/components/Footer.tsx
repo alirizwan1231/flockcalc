@@ -8,9 +8,7 @@ export default function Footer() {
       <div className="wrap footer-grid">
         <div>
           <p className="footer-brand">
-            <span className="brand-mark brand-mark-sm" aria-hidden="true">
-              <Egg size={17} strokeWidth={2.2} />
-            </span>
+            <Egg size={20} strokeWidth={2} aria-hidden="true" />
             {site.name}
           </p>
           <p className="footer-tag">{site.tagline}. Free forever, no sign-up.</p>

@@ -9,16 +9,16 @@ type Props = {
   sliderLabel: string;
   value: string;
   onChange: (value: string) => void;
-  /** Slider range (the number input itself stays free-form, as before). */
+  /** Slider range (the number input itself stays free-form). */
   min: number;
   max: number;
   step?: number;
 };
 
 /**
- * Bird-count field: the original number input paired with a synced range
- * slider writing into the same state. Typing keeps the old free-form
- * behaviour; the slider clamps to its sane range.
+ * Count field: a number input paired with a synced range slider writing
+ * into the same state. Typing stays free-form; the slider clamps to its
+ * range.
  */
 export default function CountField({
   id,

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import HensCalc from "@/components/HensCalc";
 import FaqSection from "@/components/FaqSection";
@@ -66,7 +67,9 @@ export default function HensPage() {
 
       <div className="page-head">
         <p className="breadcrumb">
-          <Link href="/">Home</Link> › How Many Chickens Do I Need?
+          <Link href="/">Home</Link>
+          <ChevronRight size={13} aria-hidden="true" />
+          <span aria-current="page">How Many Chickens Do I Need?</span>
         </p>
         <h1>How Many Chickens Do I Need?</h1>
         <p className="lede">
@@ -79,7 +82,10 @@ export default function HensPage() {
 
       <HensCalc />
 
-      <section aria-labelledby="how-heading">
+      <section className="section-block" aria-labelledby="how-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">01</span> Method
+        </p>
         <h2 id="how-heading">How it works</h2>
         <p>
           The formula is:{" "}
@@ -106,7 +112,10 @@ export default function HensPage() {
         </p>
       </section>
 
-      <section aria-labelledby="table-heading">
+      <section className="section-block" aria-labelledby="table-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">02</span> Reference
+        </p>
         <h2 id="table-heading">Hens needed by weekly egg target</h2>
         <div className="table-scroll">
           <table className="data">
@@ -136,7 +145,7 @@ export default function HensPage() {
         </p>
       </section>
 
-      <FaqSection faqs={faqs} />
+      <FaqSection faqs={faqs} index="03" />
       <RelatedTools currentSlug={tool.slug} />
     </div>
   );

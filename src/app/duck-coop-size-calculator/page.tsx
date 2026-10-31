@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import DuckCalc from "@/components/DuckCalc";
 import FaqSection from "@/components/FaqSection";
@@ -65,7 +66,9 @@ export default function DuckPage() {
 
       <div className="page-head">
         <p className="breadcrumb">
-          <Link href="/">Home</Link> › Duck Coop Size Calculator
+          <Link href="/">Home</Link>
+          <ChevronRight size={13} aria-hidden="true" />
+          <span aria-current="page">Duck Coop Size Calculator</span>
         </p>
         <h1>Duck Coop Size Calculator</h1>
         <p className="lede">
@@ -77,7 +80,10 @@ export default function DuckPage() {
 
       <DuckCalc />
 
-      <section aria-labelledby="how-heading">
+      <section className="section-block" aria-labelledby="how-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">01</span> Method
+        </p>
         <h2 id="how-heading">How it works</h2>
         <p>
           The calculation is <strong>ducks × space per duck</strong>, using the
@@ -103,7 +109,10 @@ export default function DuckPage() {
         </p>
       </section>
 
-      <section aria-labelledby="table-heading">
+      <section className="section-block" aria-labelledby="table-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">02</span> Reference
+        </p>
         <h2 id="table-heading">Duck coop size chart (standard breeds)</h2>
         <div className="table-scroll">
           <table className="data">
@@ -133,7 +142,7 @@ export default function DuckPage() {
         </div>
       </section>
 
-      <FaqSection faqs={faqs} />
+      <FaqSection faqs={faqs} index="03" />
       <RelatedTools currentSlug={tool.slug} />
     </div>
   );

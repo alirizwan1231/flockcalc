@@ -1,10 +1,12 @@
 "use client";
 
+import { useRef } from "react";
+
 export type SegmentOption = {
   value: string;
   /** Short primary label shown on the segment. */
   title: string;
-  /** Optional detail line under the title (same words as the old select). */
+  /** Optional detail line under the title. */
   detail?: string;
 };
 
@@ -21,9 +23,9 @@ type Props = {
 };
 
 /**
- * Segmented (radio-style) control used in place of <select> for small
- * option sets. Roving tabindex: only the selected segment is tabbable,
- * arrow keys move between segments — standard radiogroup behaviour.
+ * Flat segmented control with radiogroup semantics: only the selected
+ * segment is tabbable, arrow keys move the selection — the standard
+ * radio-group keyboard pattern.
  */
 export default function SegmentedControl({
   id,
@@ -33,6 +35,7 @@ export default function SegmentedControl({
   value,
   onChange,
 }: Props) {
+  const groupRef = useRef<HTMLDivElement>(null);
   const selectedIndex = Math.max(
     0,
     options.findIndex((o) => o.value === value)
@@ -42,29 +45,29 @@ export default function SegmentedControl({
     let next: number | null = null;
     if (e.key === "ArrowRight" || e.key === "ArrowDown")
       next = (selectedIndex + 1) % options.length;
-    if (e.key === "ArrowLeft" || e.key === "ArrowUp")
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
       next = (selectedIndex - 1 + options.length) % options.length;
-    if (e.key === "Home") next = 0;
-    if (e.key === "End") next = options.length - 1;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = options.length - 1;
     if (next === null) return;
     e.preventDefault();
     onChange(options[next].value);
-    const group = e.currentTarget as HTMLElement;
+    const target = next;
     requestAnimationFrame(() => {
-      group
-        .querySelectorAll<HTMLElement>('[role="radio"]')
-        [next!]?.focus();
+      groupRef.current
+        ?.querySelectorAll<HTMLElement>('[role="radio"]')
+        [target]?.focus();
     });
   }
 
   return (
     <div
       id={id}
+      ref={groupRef}
       role="radiogroup"
       aria-labelledby={labelledBy}
       aria-label={ariaLabel}
       className="segmented"
-      data-count={options.length}
       onKeyDown={onKeyDown}
     >
       {options.map((o, i) => {

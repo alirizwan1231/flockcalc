@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import EggCostCalc from "@/components/EggCostCalc";
 import FaqSection from "@/components/FaqSection";
@@ -65,7 +66,9 @@ export default function EggCostPage() {
 
       <div className="page-head">
         <p className="breadcrumb">
-          <Link href="/">Home</Link> › Cost Per Egg Calculator
+          <Link href="/">Home</Link>
+          <ChevronRight size={13} aria-hidden="true" />
+          <span aria-current="page">Cost Per Egg Calculator</span>
         </p>
         <h1>Cost Per Egg Calculator</h1>
         <p className="lede">
@@ -78,7 +81,10 @@ export default function EggCostPage() {
 
       <EggCostCalc />
 
-      <section aria-labelledby="how-heading">
+      <section className="section-block" aria-labelledby="how-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">01</span> Method
+        </p>
         <h2 id="how-heading">How it works</h2>
         <p>
           A laying hen eats about <strong>0.25 lb of feed a day</strong>, which
@@ -97,7 +103,10 @@ export default function EggCostPage() {
         </p>
       </section>
 
-      <section aria-labelledby="table-heading">
+      <section className="section-block" aria-labelledby="table-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">02</span> Reference
+        </p>
         <h2 id="table-heading">Cost per egg by flock size</h2>
         <p>
           Using the default feed price ($25 per 40 lb bag) and 5 eggs per hen
@@ -148,7 +157,7 @@ export default function EggCostPage() {
         </p>
       </section>
 
-      <FaqSection faqs={faqs} />
+      <FaqSection faqs={faqs} index="03" />
       <RelatedTools currentSlug={tool.slug} />
     </div>
   );

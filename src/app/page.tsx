@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
-import ToolIcon from "@/components/ToolIcon";
 import { site, tools } from "@/lib/site";
 import { faqSchema, websiteSchema, type Faq } from "@/lib/schema";
 
@@ -49,125 +48,110 @@ export default function HomePage() {
     <>
       <JsonLd data={websiteSchema()} />
       <JsonLd data={faqSchema(faqs)} />
-      <div className="hero">
-        <div className="wrap hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow">Free • No sign-up</span>
-            <h1>Free calculators for backyard chickens, quail and ducks</h1>
-            <p className="lede">
-              How big should the coop be? How many hens does your family actually
-              need? What does a home-laid egg really cost? Answer all three in
-              under a minute — no sign-up, no fluff, just the numbers extension
-              services recommend.
-            </p>
-            <div className="btn-row">
-              <Link className="btn btn-primary" href="/quail-coop-size-calculator">
-                Start with the quail coop calculator
-              </Link>
-              <Link
-                className="btn btn-secondary"
-                href="/how-many-chickens-do-i-need"
-              >
-                How many chickens do I need?
-              </Link>
+      <div className="wrap">
+        <div className="hero">
+          <div className="hero-grid">
+            <div>
+              <p className="kicker">
+                Free calculators — no sign-up
+              </p>
+              <h1>Free calculators for backyard chickens, quail and ducks</h1>
+              <p className="lede">
+                How big should the coop be? How many hens does your family actually
+                need? What does a home-laid egg really cost? Answer all three in
+                under a minute — no sign-up, no fluff, just the numbers extension
+                services recommend.
+              </p>
+              <div className="btn-row">
+                <Link className="btn btn-primary" href="/quail-coop-size-calculator">
+                  Start with the quail coop calculator
+                  <ArrowRight size={17} aria-hidden="true" />
+                </Link>
+                <Link className="btn-text" href="/how-many-chickens-do-i-need">
+                  How many chickens do I need?
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </div>
+              <ul className="hero-points">
+                <li>
+                  <Check size={16} strokeWidth={3} aria-hidden="true" />
+                  100% free — no sign-up
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} aria-hidden="true" />
+                  Extension-service numbers
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} aria-hidden="true" />
+                  Metric &amp; imperial results
+                </li>
+              </ul>
             </div>
-            <div className="hero-chips">
-              <span className="chip">
-                <Check size={14} strokeWidth={3} aria-hidden="true" />
-                100% free — no sign-up
-              </span>
-              <span className="chip">
-                <Check size={14} strokeWidth={3} aria-hidden="true" />
-                Extension-service numbers
-              </span>
-              <span className="chip">
-                <Check size={14} strokeWidth={3} aria-hidden="true" />
-                Metric &amp; imperial results
-              </span>
-            </div>
-          </div>
 
-          <div className="sample-card" aria-label="Example result">
-            <span className="sample-badge">Example result</span>
-            <h3>Your quail need</h3>
-            <p className="result-big">12 sq ft of floor space</p>
-            <div className="result-row">
-              <span className="k">In metric</span>
-              <span className="v">1.1 m²</span>
-            </div>
-            <div className="result-row">
-              <span className="k">Per bird</span>
-              <span className="v">1 sq ft</span>
-            </div>
-            <h3 className="result-subhead">Cage sizes that fit</h3>
-            <div className="result-row">
-              <span className="k">2 × 6 ft cage (12 sq ft)</span>
-              <span className="v">up to 12 quail</span>
-            </div>
-            <div className="result-row">
-              <span className="k">3 × 4 ft cage (12 sq ft)</span>
-              <span className="v">up to 12 quail</span>
-            </div>
+            <nav className="hero-index" aria-label="All calculators">
+              <div className="hero-index-head">
+                <span>The calculators</span>
+                <span>05 tools</span>
+              </div>
+              {tools.map((t, i) => (
+                <Link key={t.slug} href={t.path} className="index-row">
+                  <span className="index-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="index-name">{t.name}</span>
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
-      </div>
 
-      <div className="wrap">
-        <section id="tools" aria-labelledby="tools-heading">
-          <h2 id="tools-heading">All five calculators</h2>
-          <div className="tool-grid">
-            {tools.map((t) => (
-              <Link key={t.slug} href={t.path} className="tool-card">
-                <span className="tool-icon" aria-hidden="true">
-                  <ToolIcon slug={t.slug} />
-                </span>
-                <h3>{t.name}</h3>
-                <p>{t.blurb}</p>
-                <span className="card-cta">Open the {t.shortName.toLowerCase()} calculator →</span>
-              </Link>
-            ))}
+        <section className="section-block" aria-labelledby="trust-heading">
+          <div className="prose-grid">
+            <div>
+              <p className="kicker" aria-hidden="true">
+                <span className="kicker-num">01</span> The numbers
+              </p>
+              <h2 id="trust-heading">How our numbers work</h2>
+            </div>
+            <div>
+              <p>
+                Every figure on this site comes from published poultry-keeping
+                guidance — the same space allowances taught by university
+                extension services (such as the poultry programmes at US
+                land-grant universities and extension.org) and UK poultry welfare
+                organisations. In short:
+              </p>
+              <ul className="tight">
+                <li>
+                  <strong>Quail:</strong> about 1 sq ft of floor space per Coturnix
+                  bird (0.75 sq ft absolute minimum, 1.25 sq ft roomy).
+                </li>
+                <li>
+                  <strong>Chickens:</strong> 3.5–4 sq ft of coop and 10 sq ft of
+                  run per standard bird, 10 inches of roost each, one nesting box
+                  per four hens.
+                </li>
+                <li>
+                  <strong>Ducks:</strong> 4 sq ft of coop and 10–15 sq ft of run
+                  per standard duck, ground-level nesting, no roosts.
+                </li>
+                <li>
+                  <strong>Feed:</strong> a laying hen eats roughly 0.25 lb of feed
+                  a day — about 7.5 lb a month — the standard planning figure
+                  used by feed companies and extension guides.
+                </li>
+              </ul>
+              <p style={{ marginBottom: 0 }}>
+                Rules and minimums vary by country and council, and these tools
+                give planning guidance, not legal advice. When a range exists, we
+                show it honestly and let you choose.
+              </p>
+            </div>
           </div>
         </section>
 
-        <section aria-labelledby="trust-heading" className="trust-band">
-          <h2 id="trust-heading">How our numbers work</h2>
-          <div className="trust-box">
-            <p>
-              Every figure on this site comes from published poultry-keeping
-              guidance — the same space allowances taught by university
-              extension services (such as the poultry programmes at US
-              land-grant universities and extension.org) and UK poultry welfare
-              organisations. In short:
-            </p>
-            <ul className="tight">
-              <li>
-                <strong>Quail:</strong> about 1 sq ft of floor space per Coturnix
-                bird (0.75 sq ft absolute minimum, 1.25 sq ft roomy).
-              </li>
-              <li>
-                <strong>Chickens:</strong> 3.5–4 sq ft of coop and 10 sq ft of
-                run per standard bird, 10 inches of roost each, one nesting box
-                per four hens.
-              </li>
-              <li>
-                <strong>Ducks:</strong> 4 sq ft of coop and 10–15 sq ft of run
-                per standard duck, ground-level nesting, no roosts.
-              </li>
-              <li>
-                <strong>Feed:</strong> a laying hen eats roughly 0.25 lb of feed
-                a day — about 7.5 lb a month — the standard planning figure
-                used by feed companies and extension guides.
-              </li>
-            </ul>
-            <p style={{ marginBottom: 0 }}>
-              Rules and minimums vary by country and council, and these tools
-              give planning guidance, not legal advice. When a range exists, we
-              show it honestly and let you choose.
-            </p>
-          </div>
-        </section>
-
-        <FaqSection faqs={faqs} />
+        <FaqSection faqs={faqs} index="02" />
       </div>
     </>
   );

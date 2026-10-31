@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { site, tools } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default function AboutPage() {
     <div className="wrap">
       <div className="page-head">
         <p className="breadcrumb">
-          <Link href="/">Home</Link> › About
+          <Link href="/">Home</Link>
+          <ChevronRight size={13} aria-hidden="true" />
+          <span aria-current="page">About</span>
         </p>
         <h1>About {site.name}</h1>
         <p className="lede">
@@ -29,8 +32,11 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <section>
-        <h2>What the site does</h2>
+      <section className="section-block" aria-labelledby="what-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">01</span> The tools
+        </p>
+        <h2 id="what-heading">What the site does</h2>
         <p>
           Most poultry questions are really arithmetic: floor space per bird,
           eggs eaten per week, pounds of feed per month. {site.name} does that
@@ -49,8 +55,11 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <section>
-        <h2>How the figures are sourced</h2>
+      <section className="section-block" aria-labelledby="sources-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">02</span> Sources
+        </p>
+        <h2 id="sources-heading">How the figures are sourced</h2>
         <p>
           Space and feed figures follow mainstream guidance published by
           university poultry extension services in the United States (via
@@ -68,8 +77,11 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <section>
-        <h2>Contact</h2>
+      <section className="section-block" aria-labelledby="contact-heading">
+        <p className="kicker" aria-hidden="true">
+          <span className="kicker-num">03</span> Contact
+        </p>
+        <h2 id="contact-heading">Contact</h2>
         <p>
           Spotted a number that looks wrong, or want a calculator we
           don&rsquo;t have yet? Email{" "}

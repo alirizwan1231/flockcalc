@@ -103,7 +103,7 @@ export default function QuailCalc() {
         ].join("\n");
 
   return (
-    <div className="calc-card">
+    <div className="calc">
       <div className="calc-mode">
         <SegmentedControl
           id="q-mode"
@@ -114,7 +114,7 @@ export default function QuailCalc() {
         />
       </div>
 
-      <div className="calc-grid">
+      <div className="workbench">
         <div>
           {mode === "forward" ? (
             <>
@@ -185,12 +185,14 @@ export default function QuailCalc() {
                   />
                 </div>
               </div>
-              <p style={{ margin: 0 }}>
-                That cage is <strong>{fmt(revArea)} sq ft</strong> (
-                {fmt(r1(sqm(revArea)))} m²) and fits about{" "}
-                <strong>{revStandard} quail</strong> at the standard rate (
-                {revMinimum} at minimum, {revRoomy} at roomy).
-              </p>
+              <div className="form-note">
+                <p>
+                  That cage is <strong>{fmt(revArea)} sq ft</strong> (
+                  {fmt(r1(sqm(revArea)))} m²) and fits about{" "}
+                  <strong>{revStandard} quail</strong> at the standard rate (
+                  {revMinimum} at minimum, {revRoomy} at roomy).
+                </p>
+              </div>
             </>
           )}
         </div>
@@ -254,11 +256,13 @@ export default function QuailCalc() {
             </>
           )}
           <div className="result-note">
-            <strong>Ceiling height matters with quail.</strong> Quail flush
-            straight up when startled. Keep cages low (about 12 inches / 30 cm)
-            so they cannot build up speed, or go tall like an aviary (6 ft /
-            1.8 m or more) so they can fly up and settle. Mid-height coops
-            around 2–4 ft are where head injuries happen.
+            <p>
+              <strong>Ceiling height matters with quail.</strong> Quail flush
+              straight up when startled. Keep cages low (about 12 inches / 30 cm)
+              so they cannot build up speed, or go tall like an aviary (6 ft /
+              1.8 m or more) so they can fly up and settle. Mid-height coops
+              around 2–4 ft are where head injuries happen.
+            </p>
           </div>
           <ResultActions summary={summary} onReset={reset} />
         </div>

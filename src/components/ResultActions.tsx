@@ -11,9 +11,9 @@ type Props = {
 };
 
 /**
- * Action row for a calculator's result panel: Copy results (real clipboard
- * write with a transient "Copied" confirmation), Reset (real state reset)
- * and Print (the original print action, now with an icon instead of emoji).
+ * Quiet text actions for a result block: Copy results (real clipboard
+ * write with a transient "Copied" confirmation), Reset (restores the
+ * tool's defaults) and Print.
  */
 export default function ResultActions({ summary, onReset }: Props) {
   const [copied, setCopied] = useState(false);
@@ -51,30 +51,30 @@ export default function ResultActions({ summary, onReset }: Props) {
   }
 
   return (
-    <div className="btn-row result-actions no-print">
+    <div className="result-actions no-print">
       <button
         type="button"
-        className="btn btn-light"
+        className="action-btn"
         onClick={copyResults}
         aria-live="polite"
       >
         {copied ? (
-          <Check size={18} aria-hidden="true" />
+          <Check size={16} aria-hidden="true" />
         ) : (
-          <Copy size={18} aria-hidden="true" />
+          <Copy size={16} aria-hidden="true" />
         )}
         {copied ? "Copied" : "Copy results"}
       </button>
-      <button type="button" className="btn btn-ghost-light" onClick={onReset}>
-        <RotateCcw size={18} aria-hidden="true" />
+      <button type="button" className="action-btn" onClick={onReset}>
+        <RotateCcw size={16} aria-hidden="true" />
         Reset
       </button>
       <button
         type="button"
-        className="btn btn-ghost-light"
+        className="action-btn"
         onClick={() => window.print()}
       >
-        <Printer size={18} aria-hidden="true" />
+        <Printer size={16} aria-hidden="true" />
         Print this result
       </button>
     </div>

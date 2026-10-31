@@ -19,9 +19,7 @@ export default function Header() {
     <header className="site-header no-print">
       <div className="wrap header-inner">
         <Link href="/" className="brand" aria-label={`${site.name} home`}>
-          <span className="brand-mark" aria-hidden="true">
-            <Egg size={20} strokeWidth={2.2} />
-          </span>
+          <Egg size={23} strokeWidth={2} aria-hidden="true" />
           <span className="brand-name">{site.name}</span>
         </Link>
 
@@ -31,6 +29,7 @@ export default function Header() {
               key={t.slug}
               href={t.path}
               className={pathname === t.path ? "is-active" : undefined}
+              aria-current={pathname === t.path ? "page" : undefined}
             >
               {t.shortName}
             </Link>
@@ -38,6 +37,7 @@ export default function Header() {
           <Link
             href="/about"
             className={pathname === "/about" ? "is-active" : undefined}
+            aria-current={pathname === "/about" ? "page" : undefined}
           >
             About
           </Link>
@@ -46,7 +46,7 @@ export default function Header() {
         <div className="header-actions">
           <Link href={tools[0].path} className="btn btn-primary header-cta">
             Try the calculators
-            <ArrowRight size={18} aria-hidden="true" />
+            <ArrowRight size={17} aria-hidden="true" />
           </Link>
           <button
             type="button"
@@ -57,9 +57,9 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
           >
             {open ? (
-              <X size={24} aria-hidden="true" />
+              <X size={22} aria-hidden="true" />
             ) : (
-              <Menu size={24} aria-hidden="true" />
+              <Menu size={22} aria-hidden="true" />
             )}
           </button>
         </div>
@@ -72,6 +72,7 @@ export default function Header() {
               key={t.slug}
               href={t.path}
               className={pathname === t.path ? "is-active" : undefined}
+              aria-current={pathname === t.path ? "page" : undefined}
               onClick={() => setOpen(false)}
             >
               {t.name}
@@ -80,6 +81,7 @@ export default function Header() {
           <Link
             href="/about"
             className={pathname === "/about" ? "is-active" : undefined}
+            aria-current={pathname === "/about" ? "page" : undefined}
             onClick={() => setOpen(false)}
           >
             About
@@ -90,7 +92,7 @@ export default function Header() {
             onClick={() => setOpen(false)}
           >
             Try the calculators
-            <ArrowRight size={18} aria-hidden="true" />
+            <ArrowRight size={17} aria-hidden="true" />
           </Link>
         </nav>
       </div>

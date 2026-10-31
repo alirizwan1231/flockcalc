@@ -53,93 +53,93 @@ export default function DuckCalc() {
   ].join("\n");
 
   return (
-    <div className="calc-card">
-      <div className="calc-grid">
-        <div>
-          <CountField
-            id="d-ducks"
-            label="Number of ducks"
-            sliderLabel="Number of ducks"
-            value={ducksIn}
-            onChange={setDucksIn}
-            min={1}
-            max={50}
+    <div className="workbench">
+      <div>
+        <CountField
+          id="d-ducks"
+          label="Number of ducks"
+          sliderLabel="Number of ducks"
+          value={ducksIn}
+          onChange={setDucksIn}
+          min={1}
+          max={50}
+        />
+        <div className="field">
+          <span className="field-label" id="d-size-label">
+            Duck size / breed type
+          </span>
+          <SegmentedControl
+            id="d-size"
+            labelledBy="d-size-label"
+            options={SIZE_SEGMENTS}
+            value={sizeId}
+            onChange={(v) => setSizeId(v as SizeId)}
           />
-          <div className="field">
-            <span className="field-label" id="d-size-label">
-              Duck size / breed type
-            </span>
-            <SegmentedControl
-              id="d-size"
-              labelledBy="d-size-label"
-              options={SIZE_SEGMENTS}
-              value={sizeId}
-              onChange={(v) => setSizeId(v as SizeId)}
-            />
-          </div>
-          <div className="field">
-            <span className="field-label" id="d-run-label">
-              Outdoor run space
-            </span>
-            <SegmentedControl
-              id="d-run"
-              labelledBy="d-run-label"
-              options={RUN_SEGMENTS}
-              value={runId}
-              onChange={setRunId}
-            />
-          </div>
-          <div className="result-note">
+        </div>
+        <div className="field">
+          <span className="field-label" id="d-run-label">
+            Outdoor run space
+          </span>
+          <SegmentedControl
+            id="d-run"
+            labelledBy="d-run-label"
+            options={RUN_SEGMENTS}
+            value={runId}
+            onChange={setRunId}
+          />
+        </div>
+        <div className="form-note">
+          <p>
             <strong>Ducks are not wet chickens.</strong> They sleep on the floor
             (no roosts), nest on the ground, and turn any water bowl into a
             splash zone — plan drainage and dry bedding space into the numbers
             on the right.
-          </div>
-        </div>
-
-        <div className="result-panel" aria-live="polite">
-          <h3>Your duck housing</h3>
-          <p className="result-big">
-            {fmt(r1(coop))} sq ft coop · {fmt(r1(run))} sq ft run
           </p>
-          <div className="result-row">
-            <span className="k">Coop space</span>
-            <span className="v">
-              {fmt(r1(coop))} sq ft ({fmt(r1(sqm(coop)))} m²)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Run space</span>
-            <span className="v">
-              {fmt(r1(run))} sq ft ({fmt(r1(sqm(run)))} m²)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Nesting boxes (ground level)</span>
-            <span className="v">
-              {boxes} {boxes === 1 ? "box" : "boxes"} (1 per 4 ducks)
-            </span>
-          </div>
-          <div className="result-row">
-            <span className="k">Roost bars needed</span>
-            <span className="v">None — ducks sleep on bedding</span>
-          </div>
-          <ul className="tight" style={{ marginTop: 14, paddingLeft: 18 }}>
-            <li>
-              <strong>Water splash zone:</strong> keep drinkers on a wire or
-              gravel patch outside the sleeping area, or bedding turns to soup.
-            </li>
-            <li>
-              <strong>Ground nesting:</strong> a quiet corner with deep straw is
-              enough; ducks rarely use raised boxes.
-            </li>
-            <li>
-              <strong>Swimming water is optional</strong> — ducks need deep
-              water to clean their bills and eyes, not a pond.
-            </li>
-          </ul>
-          <ResultActions summary={summary} onReset={reset} />
         </div>
+      </div>
+
+      <div className="result-panel" aria-live="polite">
+        <h3>Your duck housing</h3>
+        <p className="result-big">
+          {fmt(r1(coop))} sq ft coop · {fmt(r1(run))} sq ft run
+        </p>
+        <div className="result-row">
+          <span className="k">Coop space</span>
+          <span className="v">
+            {fmt(r1(coop))} sq ft ({fmt(r1(sqm(coop)))} m²)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Run space</span>
+          <span className="v">
+            {fmt(r1(run))} sq ft ({fmt(r1(sqm(run)))} m²)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Nesting boxes (ground level)</span>
+          <span className="v">
+            {boxes} {boxes === 1 ? "box" : "boxes"} (1 per 4 ducks)
+          </span>
+        </div>
+        <div className="result-row">
+          <span className="k">Roost bars needed</span>
+          <span className="v">None — ducks sleep on bedding</span>
+        </div>
+        <ul className="tight" style={{ marginTop: 16 }}>
+          <li>
+            <strong>Water splash zone:</strong> keep drinkers on a wire or
+            gravel patch outside the sleeping area, or bedding turns to soup.
+          </li>
+          <li>
+            <strong>Ground nesting:</strong> a quiet corner with deep straw is
+            enough; ducks rarely use raised boxes.
+          </li>
+          <li>
+            <strong>Swimming water is optional</strong> — ducks need deep
+            water to clean their bills and eyes, not a pond.
+          </li>
+        </ul>
+        <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>
   );

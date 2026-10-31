@@ -1,14 +1,23 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import type { Faq } from "@/lib/schema";
 
-export default function FaqSection({ faqs }: { faqs: Faq[] }) {
+type Props = {
+  faqs: Faq[];
+  /** Numbered section label, e.g. "03". */
+  index: string;
+};
+
+/**
+ * Rule-separated FAQ list with a plus/minus toggle. First item is open
+ * by default so content is visible (and present for no-JS readers);
+ * printing expands every item.
+ */
+export default function FaqSection({ faqs, index }: Props) {
   const listRef = useRef<HTMLDivElement>(null);
 
-  // Print should show every answer, not just the open accordions:
-  // expand all <details> for the print render, then restore state.
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
@@ -35,18 +44,17 @@ export default function FaqSection({ faqs }: { faqs: Faq[] }) {
   }, []);
 
   return (
-    <section aria-labelledby="faq-heading">
+    <section className="section-block" aria-labelledby="faq-heading">
+      <p className="kicker" aria-hidden="true">
+        <span className="kicker-num">{index}</span> Questions
+      </p>
       <h2 id="faq-heading">Frequently asked questions</h2>
       <div className="faq-list" ref={listRef}>
         {faqs.map((f, i) => (
           <details className="faq-item" key={f.q} open={i === 0}>
             <summary>
               <span className="faq-q">{f.q}</span>
-              <ChevronDown
-                className="faq-chevron"
-                size={20}
-                aria-hidden="true"
-              />
+              <Plus className="faq-icon" size={20} aria-hidden="true" />
             </summary>
             <div className="faq-a">
               <p>{f.a}</p>
