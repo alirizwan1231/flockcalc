@@ -3,8 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Egg, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import EggMark from "./EggMark";
 import { site, tools } from "@/lib/site";
+
+/** Concept nav: Calculators (quail) · How it works (home anchor) · About. */
+const NAV = [
+  { href: tools[0].path, label: "Calculators" },
+  { href: "/#how-numbers-work", label: "How it works" },
+  { href: "/about", label: "About" },
+] as const;
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -15,86 +23,76 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
+  const isActive = (href: string) =>
+    href.startsWith("/#") ? pathname === "/" : pathname === href;
+
   return (
     <header className="site-header no-print">
       <div className="wrap header-inner">
         <Link href="/" className="brand" aria-label={`${site.name} home`}>
-          <Egg size={23} strokeWidth={2} aria-hidden="true" />
+          <EggMark />
           <span className="brand-name">{site.name}</span>
         </Link>
 
-        <nav className="main-nav" aria-label="Calculators">
-          {tools.map((t) => (
+        <nav className="main-nav" aria-label="Site">
+          {NAV.map((item) => (
             <Link
-              key={t.slug}
-              href={t.path}
-              className={pathname === t.path ? "is-active" : undefined}
-              aria-current={pathname === t.path ? "page" : undefined}
+              key={item.label}
+              href={item.href}
+              className={isActive(item.href) ? "is-active" : undefined}
+              aria-current={
+                isActive(item.href) && !item.href.startsWith("/#")
+                  ? "page"
+                  : undefined
+              }
             >
-              {t.shortName}
+              {item.label}
             </Link>
           ))}
-          <Link
-            href="/about"
-            className={pathname === "/about" ? "is-active" : undefined}
-            aria-current={pathname === "/about" ? "page" : undefined}
-          >
-            About
+          <Link href={tools[0].path} className="btn btn-primary header-cta">
+            Open a tool
           </Link>
         </nav>
 
-        <div className="header-actions">
-          <Link href={tools[0].path} className="btn btn-primary header-cta">
-            Try the calculators
-            <ArrowRight size={17} aria-hidden="true" />
-          </Link>
-          <button
-            type="button"
-            className="menu-toggle"
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? (
-              <X size={22} aria-hidden="true" />
-            ) : (
-              <Menu size={22} aria-hidden="true" />
-            )}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="menu-toggle"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? (
+            <X size={22} aria-hidden="true" />
+          ) : (
+            <Menu size={22} aria-hidden="true" />
+          )}
+        </button>
       </div>
 
       <div id="mobile-menu" className={`mobile-menu${open ? " is-open" : ""}`}>
-        <nav className="wrap mobile-nav" aria-label="Calculators">
-          {tools.map((t) => (
+        <div className="wrap">
+          <nav className="mobile-nav" aria-label="Site">
+            {[...tools, { path: "/about", name: "About" }].map((t) => (
+              <Link
+                key={t.path}
+                href={t.path}
+                className={pathname === t.path ? "is-active" : undefined}
+                aria-current={pathname === t.path ? "page" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                {t.name}
+              </Link>
+            ))}
             <Link
-              key={t.slug}
-              href={t.path}
-              className={pathname === t.path ? "is-active" : undefined}
-              aria-current={pathname === t.path ? "page" : undefined}
+              href={tools[0].path}
+              className="btn btn-primary mobile-cta"
               onClick={() => setOpen(false)}
             >
-              {t.name}
+              Open a tool
             </Link>
-          ))}
-          <Link
-            href="/about"
-            className={pathname === "/about" ? "is-active" : undefined}
-            aria-current={pathname === "/about" ? "page" : undefined}
-            onClick={() => setOpen(false)}
-          >
-            About
-          </Link>
-          <Link
-            href={tools[0].path}
-            className="btn btn-primary mobile-cta"
-            onClick={() => setOpen(false)}
-          >
-            Try the calculators
-            <ArrowRight size={17} aria-hidden="true" />
-          </Link>
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );

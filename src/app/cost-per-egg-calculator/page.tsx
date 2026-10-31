@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import EggCostCalc from "@/components/EggCostCalc";
 import FaqSection from "@/components/FaqSection";
+import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
 import { site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
@@ -64,55 +64,73 @@ export default function EggCostPage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema(tool)} />
 
-      <div className="page-head">
-        <p className="breadcrumb">
-          <Link href="/">Home</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">Cost Per Egg Calculator</span>
-        </p>
-        <h1>Cost Per Egg Calculator</h1>
-        <p className="lede">
-          &ldquo;Free eggs&rdquo; are not quite free — the feed bag sees to
-          that. Enter your flock size, laying rate and feed price to find your
-          honest cost per egg and per dozen, and how it compares with the
-          store.
-        </p>
-      </div>
+      <PageHead
+        crumb="Cost Per Egg Calculator"
+        title="Cost Per Egg Calculator"
+        lede={
+          <>
+            &ldquo;Free eggs&rdquo; are not quite free — the feed bag sees to
+            that. Enter your flock size, laying rate and feed price to find your
+            honest cost per egg and per dozen, and how it compares with the
+            store.
+          </>
+        }
+      />
 
       <EggCostCalc />
 
       <section className="section-block" aria-labelledby="how-heading">
-        <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">01</span> Method
-        </p>
-        <h2 id="how-heading">How it works</h2>
-        <p>
-          A laying hen eats about <strong>0.25 lb of feed a day</strong>, which
-          is <strong>7.5 lb a month</strong> — the standard planning figure in
-          extension poultry guides. The calculator multiplies that by your
-          hens, prices it from your feed bag, adds any extra monthly costs you
-          enter, and divides by the eggs you collect (
-          <strong>hens × eggs per week × 52 ÷ 12</strong> for a monthly total).
-        </p>
-        <p>
-          Worked example with the default values: 6 hens eat 45 lb of feed a
-          month, costing $28.13 from a $25 / 40 lb bag. They lay about 130 eggs
-          a month, so each egg costs about $0.22 — <strong>$2.60 per dozen</strong>,
-          against a $4 store dozen. Change any input above and your own numbers
-          update instantly.
-        </p>
+        <div className="prose-grid">
+          <div>
+            <p className="kicker" aria-hidden="true">
+              <span>01</span>&nbsp;&nbsp;Method
+            </p>
+            <h2 id="how-heading">How it works</h2>
+          </div>
+          <div className="body-col">
+            <p>
+              A laying hen eats about <strong>0.25 lb of feed a day</strong>, which
+              is <strong>7.5 lb a month</strong> — the standard planning figure in
+              extension poultry guides. The calculator multiplies that by your
+              hens, prices it from your feed bag, adds any extra monthly costs you
+              enter, and divides by the eggs you collect (
+              <strong>hens × eggs per week × 52 ÷ 12</strong> for a monthly total).
+            </p>
+            <p>
+              Worked example with the default values: 6 hens eat 45 lb of feed a
+              month, costing $28.13 from a $25 / 40 lb bag. They lay about 130 eggs
+              a month, so each egg costs about $0.22 — <strong>$2.60 per dozen</strong>,
+              against a $4 store dozen. Change any input above and your own numbers
+              update instantly.
+            </p>
+            <div className="btn-row">
+              <Link className="btn" href="/quail-coop-size-calculator">
+                Quail coop
+              </Link>
+              <Link className="btn" href="/chicken-coop-size-calculator">
+                Chicken coop
+              </Link>
+              <Link className="btn" href="/duck-coop-size-calculator">
+                Duck coop
+              </Link>
+              <Link className="btn" href="/how-many-chickens-do-i-need">
+                How many chickens
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">02</span> Reference
+          <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Cost per egg by flock size</h2>
         <p>
           Using the default feed price ($25 per 40 lb bag) and 5 eggs per hen
           per week, feed only:
         </p>
-        <div className="table-scroll">
+        <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>
@@ -145,7 +163,7 @@ export default function EggCostPage() {
             </tbody>
           </table>
         </div>
-        <p>
+        <p className="table-note">
           Notice the cost per dozen stays flat — feed and eggs both scale with
           flock size. What actually moves your cost per egg is the feed price
           and the laying rate, not the number of hens. Not sure how many hens

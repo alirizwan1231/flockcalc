@@ -53,7 +53,7 @@ export default function EggCostCalc() {
 
   return (
     <div className="workbench">
-      <div>
+      <div className="calc-inputs">
         <CountField
           id="e-hens"
           label="Number of hens"
@@ -145,23 +145,27 @@ export default function EggCostCalc() {
       </div>
 
       <div className="result-panel" aria-live="polite">
-        <h3>Your true cost per egg</h3>
-        <p className="result-big">{money(r2(r.costPerEgg))} per egg</p>
-        <div className="result-row">
-          <span className="k">Cost per dozen</span>
-          <span className="v">{money(r2(r.costPerDozen))}</span>
+        <p className="kicker">Your true cost per egg</p>
+        <div className="result-hero">
+          <div className="rh-label">Cost per egg</div>
+          <div className="result-num">{money(r2(r.costPerEgg))}</div>
+          <div className="result-metric">
+            {money(r2(r.costPerDozen))} per dozen
+          </div>
         </div>
-        <div className="result-row">
-          <span className="k">Feed used per month</span>
-          <span className="v">{fmt(r.monthlyFeedLb)} lb</span>
-        </div>
-        <div className="result-row">
-          <span className="k">Total monthly cost</span>
-          <span className="v">{money(r2(r.totalMonthly))}</span>
-        </div>
-        <div className="result-row">
-          <span className="k">Eggs per month</span>
-          <span className="v">about {fmt(Math.round(r.monthlyEggs))}</span>
+        <div className="result-stats three">
+          <div>
+            <div className="rs-label">Feed used per month</div>
+            <div className="rs-value">{fmt(r.monthlyFeedLb)} lb</div>
+          </div>
+          <div>
+            <div className="rs-label">Total monthly cost</div>
+            <div className="rs-value">{money(r2(r.totalMonthly))}</div>
+          </div>
+          <div>
+            <div className="rs-label">Eggs per month</div>
+            <div className="rs-value">about {fmt(Math.round(r.monthlyEggs))}</div>
+          </div>
         </div>
         <div className="result-note">
           <p>

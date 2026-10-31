@@ -2,7 +2,7 @@
 
 Free calculators for backyard chickens, quail and ducks — coop/cage sizes, how many hens you need, and cost per egg.
 
-Next.js 15 (App Router) + TypeScript, statically generated, no backend. Design: Swiss/minimal system (Lexend + Source Sans 3) built with the UI UX Pro Max skill.
+Next.js 15 (App Router) + TypeScript, statically generated, no backend. Design language: DM Serif Display + DM Sans on cream (#FBF8F1) with ink (#10231A) 2px borders and amber (#F4B31F) hard offset shadows.
 
 ## Run locally
 

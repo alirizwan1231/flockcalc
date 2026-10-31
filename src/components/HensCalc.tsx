@@ -54,7 +54,7 @@ export default function HensCalc() {
 
   return (
     <div className="workbench">
-      <div>
+      <div className="calc-inputs">
         <div className="field">
           <label htmlFor="h-people">People in your household</label>
           <input
@@ -102,31 +102,35 @@ export default function HensCalc() {
       </div>
 
       <div className="result-panel" aria-live="polite">
-        <h3>Your flock size</h3>
-        <p className="result-big">{hensNeeded} hens minimum</p>
-        <div className="result-row">
-          <span className="k">Recommended (with buffer hen)</span>
-          <span className="v">{recommended} hens</span>
+        <p className="kicker">Your flock size</p>
+        <div className="result-hero">
+          <div className="rh-label">Hens minimum</div>
+          <div className="result-num">
+            {hensNeeded}
+            <span className="unit"> hens</span>
+          </div>
+          <div className="result-metric">
+            {fmt(recommended * rate)} eggs a week · about{" "}
+            {fmt(dozenPerWeek, 2)} dozen
+          </div>
         </div>
-        <div className="result-row">
-          <span className="k">Expected eggs</span>
-          <span className="v">{fmt(recommended * rate)} / week</span>
-        </div>
-        <div className="result-row">
-          <span className="k">That is about</span>
-          <span className="v">{fmt(dozenPerWeek, 2)} dozen / week</span>
-        </div>
-        <div className="result-row">
-          <span className="k">Coop space for {recommended} hens</span>
-          <span className="v">
-            {fmt(r1(space.coopSqft))} sq ft ({fmt(r1(sqm(space.coopSqft)))} m²)
-          </span>
-        </div>
-        <div className="result-row">
-          <span className="k">Run space</span>
-          <span className="v">
-            {fmt(r1(space.runSqft))} sq ft ({fmt(r1(sqm(space.runSqft)))} m²)
-          </span>
+        <div className="result-stats three">
+          <div>
+            <div className="rs-label">Recommended (with buffer hen)</div>
+            <div className="rs-value">{recommended} hens</div>
+          </div>
+          <div>
+            <div className="rs-label">Coop space for {recommended} hens</div>
+            <div className="rs-value">
+              {fmt(r1(space.coopSqft))} sq ft ({fmt(r1(sqm(space.coopSqft)))} m²)
+            </div>
+          </div>
+          <div>
+            <div className="rs-label">Run space</div>
+            <div className="rs-value">
+              {fmt(r1(space.runSqft))} sq ft ({fmt(r1(sqm(space.runSqft)))} m²)
+            </div>
+          </div>
         </div>
         <div className="result-note">
           <p>
@@ -136,7 +140,7 @@ export default function HensCalc() {
           </p>
         </div>
         <ResultActions summary={summary} onReset={reset} />
-        <div className="btn-row">
+        <div className="result-link">
           <Link className="btn btn-primary" href="/chicken-coop-size-calculator">
             Plan the coop for {recommended} hens
             <ArrowRight size={17} aria-hidden="true" />

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import DuckCalc from "@/components/DuckCalc";
 import FaqSection from "@/components/FaqSection";
+import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
 import { site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
@@ -64,57 +64,69 @@ export default function DuckPage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema(tool)} />
 
-      <div className="page-head">
-        <p className="breadcrumb">
-          <Link href="/">Home</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">Duck Coop Size Calculator</span>
-        </p>
-        <h1>Duck Coop Size Calculator</h1>
-        <p className="lede">
-          Ducks need more floor than chickens and none of the perches. Enter
-          your flock size and breed type for coop space, run space and nesting
-          spots — plus the duck-specific details that chicken calculators miss.
-        </p>
-      </div>
+      <PageHead
+        crumb="Duck Coop Size Calculator"
+        title="Duck Coop Size Calculator"
+        lede="Ducks need more floor than chickens and none of the perches. Enter your flock size and breed type for coop space, run space and nesting spots — plus the duck-specific details that chicken calculators miss."
+      />
 
       <DuckCalc />
 
       <section className="section-block" aria-labelledby="how-heading">
-        <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">01</span> Method
-        </p>
-        <h2 id="how-heading">How it works</h2>
-        <p>
-          The calculation is <strong>ducks × space per duck</strong>, using the
-          allowances commonly given in waterfowl-keeping guides and extension
-          poultry publications: <strong>3 sq ft per light breed, 4 sq ft per
-          standard breed and 5 sq ft per heavy breed</strong> of coop floor,
-          with <strong>10 sq ft of run per duck minimum</strong> and 15 sq ft
-          recommended. Nesting works out at one ground-level box or corner per
-          4 ducks.
-        </p>
-        <p>
-          Two duck facts shape these numbers. First, ducks live entirely at
-          ground level — they do not roost or use raised nest boxes — so every
-          square foot must be usable floor. Second, ducks are wet: they splash
-          drinking water and produce wetter droppings than chickens, so the
-          coop needs the space (and ventilation) to keep bedding dry. If ducks
-          will share housing with chickens, use these duck figures for the
-          shared floor — and compare with the{" "}
-          <Link href="/chicken-coop-size-calculator">
-            chicken coop size calculator
-          </Link>{" "}
-          for the chicken side of the flock.
-        </p>
+        <div className="prose-grid">
+          <div>
+            <p className="kicker" aria-hidden="true">
+              <span>01</span>&nbsp;&nbsp;Method
+            </p>
+            <h2 id="how-heading">How it works</h2>
+          </div>
+          <div className="body-col">
+            <p>
+              The calculation is <strong>ducks × space per duck</strong>, using the
+              allowances commonly given in waterfowl-keeping guides and extension
+              poultry publications: <strong>3 sq ft per light breed, 4 sq ft per
+              standard breed and 5 sq ft per heavy breed</strong> of coop floor,
+              with <strong>10 sq ft of run per duck minimum</strong> and 15 sq ft
+              recommended. Nesting works out at one ground-level box or corner per
+              4 ducks.
+            </p>
+            <p>
+              Two duck facts shape these numbers. First, ducks live entirely at
+              ground level — they do not roost or use raised nest boxes — so every
+              square foot must be usable floor. Second, ducks are wet: they splash
+              drinking water and produce wetter droppings than chickens, so the
+              coop needs the space (and ventilation) to keep bedding dry. If ducks
+              will share housing with chickens, use these duck figures for the
+              shared floor — and compare with the{" "}
+              <Link href="/chicken-coop-size-calculator">
+                chicken coop size calculator
+              </Link>{" "}
+              for the chicken side of the flock.
+            </p>
+            <div className="btn-row">
+              <Link className="btn" href="/quail-coop-size-calculator">
+                Quail coop
+              </Link>
+              <Link className="btn" href="/chicken-coop-size-calculator">
+                Chicken coop
+              </Link>
+              <Link className="btn" href="/cost-per-egg-calculator">
+                Cost per egg
+              </Link>
+              <Link className="btn" href="/how-many-chickens-do-i-need">
+                How many chickens
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">02</span> Reference
+          <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Duck coop size chart (standard breeds)</h2>
-        <div className="table-scroll">
+        <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>

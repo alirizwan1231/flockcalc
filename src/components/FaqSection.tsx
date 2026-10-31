@@ -6,14 +6,14 @@ import type { Faq } from "@/lib/schema";
 
 type Props = {
   faqs: Faq[];
-  /** Numbered section label, e.g. "03". */
+  /** Section label word, e.g. "Questions" (numbered index is the .num). */
   index: string;
 };
 
 /**
- * Rule-separated FAQ list with a plus/minus toggle. First item is open
- * by default so content is visible (and present for no-JS readers);
- * printing expands every item.
+ * FAQ in the concept language: white 2px-bordered blocks with a plus
+ * toggle. First item is open by default so content is visible (and
+ * present for no-JS readers); printing expands every item.
  */
 export default function FaqSection({ faqs, index }: Props) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,7 @@ export default function FaqSection({ faqs, index }: Props) {
   return (
     <section className="section-block" aria-labelledby="faq-heading">
       <p className="kicker" aria-hidden="true">
-        <span className="kicker-num">{index}</span> Questions
+        <span>{index}</span>&nbsp;&nbsp;Questions
       </p>
       <h2 id="faq-heading">Frequently asked questions</h2>
       <div className="faq-list" ref={listRef}>
@@ -54,7 +54,7 @@ export default function FaqSection({ faqs, index }: Props) {
           <details className="faq-item" key={f.q} open={i === 0}>
             <summary>
               <span className="faq-q">{f.q}</span>
-              <Plus className="faq-icon" size={20} aria-hidden="true" />
+              <Plus className="faq-icon" size={22} aria-hidden="true" />
             </summary>
             <div className="faq-a">
               <p>{f.a}</p>

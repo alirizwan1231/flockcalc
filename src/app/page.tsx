@@ -43,6 +43,15 @@ const faqs: Faq[] = [
   },
 ];
 
+/** Giant bottom stat per tool for the bento cards (display figures). */
+const STATS: Record<string, { big: string; unit?: string }> = {
+  "quail-coop-size-calculator": { big: "1", unit: " sq ft per bird" },
+  "how-many-chickens-do-i-need": { big: "+1", unit: " buffer hen" },
+  "cost-per-egg-calculator": { big: "$0.22", unit: " per egg" },
+  "duck-coop-size-calculator": { big: "4", unit: " sq ft per duck" },
+  "chicken-coop-size-calculator": { big: "3.5", unit: " sq ft per bird" },
+};
+
 export default function HomePage() {
   return (
     <>
@@ -50,12 +59,10 @@ export default function HomePage() {
       <JsonLd data={faqSchema(faqs)} />
       <div className="wrap">
         <div className="hero">
+          <p className="kicker">Free calculators — no sign-up</p>
           <div className="hero-grid">
-            <div>
-              <p className="kicker">
-                Free calculators — no sign-up
-              </p>
-              <h1>Free calculators for backyard chickens, quail and ducks</h1>
+            <h1>Free calculators for backyard chickens, quail and ducks</h1>
+            <div className="hero-side">
               <p className="lede">
                 How big should the coop be? How many hens does your family actually
                 need? What does a home-laid egg really cost? Answer all three in
@@ -67,9 +74,8 @@ export default function HomePage() {
                   Start with the quail coop calculator
                   <ArrowRight size={17} aria-hidden="true" />
                 </Link>
-                <Link className="btn-text" href="/how-many-chickens-do-i-need">
+                <Link className="btn" href="/how-many-chickens-do-i-need">
                   How many chickens do I need?
-                  <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </div>
               <ul className="hero-points">
@@ -87,34 +93,64 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
-
-            <nav className="hero-index" aria-label="All calculators">
-              <div className="hero-index-head">
-                <span>The calculators</span>
-                <span>05 tools</span>
-              </div>
-              {tools.map((t, i) => (
-                <Link key={t.slug} href={t.path} className="index-row">
-                  <span className="index-num" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="index-name">{t.name}</span>
-                  <ArrowUpRight size={18} aria-hidden="true" />
-                </Link>
-              ))}
-            </nav>
           </div>
         </div>
 
-        <section className="section-block" aria-labelledby="trust-heading">
+        <section className="section-block" aria-label="All calculators">
+          <div className="bento">
+            {tools.map((t, i) => {
+              const stat = STATS[t.slug];
+              return (
+                <Link
+                  key={t.slug}
+                  href={t.path}
+                  className={`bento-card${i === 0 ? " big" : ""}`}
+                >
+                  <span className="bento-top">
+                    <span className="bento-num">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <ArrowUpRight size={20} aria-hidden="true" />
+                  </span>
+                  <span className="bento-name">{t.name}</span>
+                  <p>{t.blurb}</p>
+                  <span className="bento-stat" aria-hidden="true">
+                    {stat.big}
+                    {stat.unit ? <small>{stat.unit}</small> : null}
+                  </span>
+                </Link>
+              );
+            })}
+            <div className="bento-card">
+              <span className="bento-top">
+                <span className="bento-num">Note</span>
+              </span>
+              <span className="bento-name">No sign-up. Ever.</span>
+              <p>
+                Every calculator runs entirely in your browser. Nothing you
+                type is sent anywhere, stored, or tracked — the numbers stay
+                on your screen.
+              </p>
+              <span className="bento-stat" aria-hidden="true">
+                0<small> data collected</small>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="section-block"
+          id="how-numbers-work"
+          aria-labelledby="trust-heading"
+        >
           <div className="prose-grid">
             <div>
               <p className="kicker" aria-hidden="true">
-                <span className="kicker-num">01</span> The numbers
+                <span>01</span>&nbsp;&nbsp;The numbers
               </p>
               <h2 id="trust-heading">How our numbers work</h2>
             </div>
-            <div>
+            <div className="body-col">
               <p>
                 Every figure on this site comes from published poultry-keeping
                 guidance — the same space allowances taught by university

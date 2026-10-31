@@ -104,18 +104,16 @@ export default function QuailCalc() {
 
   return (
     <div className="calc">
-      <div className="calc-mode">
-        <SegmentedControl
-          id="q-mode"
-          ariaLabel="Calculator mode"
-          options={MODE_SEGMENTS}
-          value={mode}
-          onChange={setMode}
-        />
-      </div>
+      <SegmentedControl
+        id="q-mode"
+        ariaLabel="Calculator mode"
+        options={MODE_SEGMENTS}
+        value={mode}
+        onChange={setMode}
+      />
 
       <div className="workbench">
-        <div>
+        <div className="calc-inputs">
           {mode === "forward" ? (
             <>
               <CountField
@@ -200,58 +198,60 @@ export default function QuailCalc() {
         <div className="result-panel" aria-live="polite">
           {mode === "forward" ? (
             <>
-              <h3>Your quail need</h3>
-              <p className="result-big">
-                {fmt(r1(needed))} sq ft of floor space
-              </p>
-              <div className="result-row">
-                <span className="k">In metric</span>
-                <span className="v">{fmt(r1(sqm(needed)))} m²</span>
-              </div>
-              <div className="result-row">
-                <span className="k">Per bird</span>
-                <span className="v">{rate} sq ft</span>
+              <p className="kicker">Your quail need</p>
+              <div className="result-hero">
+                <div className="rh-label">Floor space</div>
+                <div className="result-num">
+                  {fmt(r1(needed))}
+                  <span className="unit"> sq ft</span>
+                </div>
+                <div className="result-metric">
+                  {fmt(r1(sqm(needed)))} m² · {rate} sq ft per bird
+                </div>
               </div>
               {fitting.length > 0 ? (
-                <>
-                  <h3 className="result-subhead">Cage sizes that fit</h3>
-                  {fitting.map((c) => (
-                    <div className="result-row" key={`${c.l}x${c.w}`}>
-                      <span className="k">
-                        {c.l} × {c.w} ft cage ({c.area} sq ft)
+                <div className="result-chips">
+                  <div className="rs-label">Cage sizes that fit</div>
+                  <div>
+                    {fitting.map((c) => (
+                      <span className="chip" key={`${c.l}x${c.w}`}>
+                        {c.l} × {c.w} ft — up to {c.fits} quail
                       </span>
-                      <span className="v">up to {c.fits} quail</span>
-                    </div>
-                  ))}
-                </>
+                    ))}
+                  </div>
+                </div>
               ) : (
-                <p>
-                  Your flock needs more room than a standard single cage — look at a
-                  walk-in aviary or split the covey across two cages.
-                </p>
+                <div className="result-note">
+                  <p>
+                    Your flock needs more room than a standard single cage —
+                    look at a walk-in aviary or split the covey across two
+                    cages.
+                  </p>
+                </div>
               )}
             </>
           ) : (
             <>
-              <h3>Your cage fits</h3>
-              <p className="result-big">about {revStandard} quail</p>
-              <div className="result-row">
-                <span className="k">Cage floor area</span>
-                <span className="v">
-                  {fmt(revArea)} sq ft ({fmt(r1(sqm(revArea)))} m²)
-                </span>
+              <p className="kicker">Your cage fits</p>
+              <div className="result-hero">
+                <div className="rh-label">At the standard rate</div>
+                <div className="result-num">
+                  {revStandard}
+                  <span className="unit"> quail</span>
+                </div>
+                <div className="result-metric">
+                  Cage floor {fmt(revArea)} sq ft ({fmt(r1(sqm(revArea)))} m²)
+                </div>
               </div>
-              <div className="result-row">
-                <span className="k">At the standard rate</span>
-                <span className="v">{revStandard} quail</span>
-              </div>
-              <div className="result-row">
-                <span className="k">At minimum</span>
-                <span className="v">{revMinimum} quail</span>
-              </div>
-              <div className="result-row">
-                <span className="k">At roomy</span>
-                <span className="v">{revRoomy} quail</span>
+              <div className="result-stats">
+                <div>
+                  <div className="rs-label">At minimum</div>
+                  <div className="rs-value">{revMinimum} quail</div>
+                </div>
+                <div>
+                  <div className="rs-label">At roomy</div>
+                  <div className="rs-value">{revRoomy} quail</div>
+                </div>
               </div>
             </>
           )}

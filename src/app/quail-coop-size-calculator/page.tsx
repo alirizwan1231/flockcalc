@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import QuailCalc from "@/components/QuailCalc";
 import FaqSection from "@/components/FaqSection";
+import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
 import { site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
@@ -60,57 +60,69 @@ export default function QuailPage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema(tool)} />
 
-      <div className="page-head">
-        <p className="breadcrumb">
-          <Link href="/">Home</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">Quail Coop Size Calculator</span>
-        </p>
-        <h1>Quail Coop Size Calculator</h1>
-        <p className="lede">
-          Coturnix quail need about 1 sq ft of floor space per bird. Enter your
-          covey size for the exact floor area, cage sizes that fit — or flip it
-          around and check how many quail fit in the cage you already own.
-        </p>
-      </div>
+      <PageHead
+        crumb="Quail Coop Size Calculator"
+        title="Quail Coop Size Calculator"
+        lede="Coturnix quail need about 1 sq ft of floor space per bird. Enter your covey size for the exact floor area, cage sizes that fit — or flip it around and check how many quail fit in the cage you already own."
+      />
 
       <QuailCalc />
 
       <section className="section-block" aria-labelledby="how-heading">
-        <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">01</span> Method
-        </p>
-        <h2 id="how-heading">How it works</h2>
-        <p>
-          The maths is one multiplication:{" "}
-          <strong>birds × space per bird = floor space needed</strong>. The
-          standard planning figure for adult Coturnix quail is{" "}
-          <strong>1 sq ft (about 0.09 m²) per bird</strong> — the allowance
-          commonly cited in university extension quail guides, including the
-          poultry programmes of US land-grant universities published through
-          extension.org. Commercial cage systems run tighter, around 0.75 sq
-          ft per bird, which we show as the minimum; 1.25 sq ft per bird is
-          the roomy option most backyard keepers are happiest with.
-        </p>
-        <p>
-          Floor space is what matters for quail — they live on the ground and
-          do not roost, so perches and vertical space do not count toward the
-          total. The one exception is height for safety: keep ceilings either
-          low (about 12 inches) or aviary-tall (6 ft+), as explained in the
-          calculator above.
-        </p>
+        <div className="prose-grid">
+          <div>
+            <p className="kicker" aria-hidden="true">
+              <span>01</span>&nbsp;&nbsp;Method
+            </p>
+            <h2 id="how-heading">How it works</h2>
+          </div>
+          <div className="body-col">
+            <p>
+              The maths is one multiplication:{" "}
+              <strong>birds × space per bird = floor space needed</strong>. The
+              standard planning figure for adult Coturnix quail is{" "}
+              <strong>1 sq ft (about 0.09 m²) per bird</strong> — the allowance
+              commonly cited in university extension quail guides, including the
+              poultry programmes of US land-grant universities published through
+              extension.org. Commercial cage systems run tighter, around 0.75 sq
+              ft per bird, which we show as the minimum; 1.25 sq ft per bird is
+              the roomy option most backyard keepers are happiest with.
+            </p>
+            <p>
+              Floor space is what matters for quail — they live on the ground and
+              do not roost, so perches and vertical space do not count toward the
+              total. The one exception is height for safety: keep ceilings either
+              low (about 12 inches) or aviary-tall (6 ft+), as explained in the
+              calculator above.
+            </p>
+            <div className="btn-row">
+              <Link className="btn" href="/chicken-coop-size-calculator">
+                Chicken coop
+              </Link>
+              <Link className="btn" href="/duck-coop-size-calculator">
+                Duck coop
+              </Link>
+              <Link className="btn" href="/cost-per-egg-calculator">
+                Cost per egg
+              </Link>
+              <Link className="btn" href="/how-many-chickens-do-i-need">
+                How many chickens
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">02</span> Reference
+          <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Quail coop size chart</h2>
         <p>
           Ready-made floor space for common covey sizes. Standard (1 sq ft per
           bird) is the column most keepers should plan around.
         </p>
-        <div className="table-scroll">
+        <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>

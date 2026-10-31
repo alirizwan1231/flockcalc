@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import CoopCalc from "@/components/CoopCalc";
 import FaqSection from "@/components/FaqSection";
+import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
 import { site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
@@ -64,57 +64,75 @@ export default function CoopPage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema(tool)} />
 
-      <div className="page-head">
-        <p className="breadcrumb">
-          <Link href="/">Home</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">Chicken Coop Size Calculator</span>
-        </p>
-        <h1>Chicken Coop Size Calculator</h1>
-        <p className="lede">
-          The honest coop maths, adjusted for your birds&rsquo; size. Enter
-          your flock and get coop and run area, roost length and nesting boxes
-          — and see how many birds the ready-made coop sizes really hold.
-        </p>
-      </div>
+      <PageHead
+        crumb="Chicken Coop Size Calculator"
+        title="Chicken Coop Size Calculator"
+        lede={
+          <>
+            The honest coop maths, adjusted for your birds&rsquo; size. Enter
+            your flock and get coop and run area, roost length and nesting boxes
+            — and see how many birds the ready-made coop sizes really hold.
+          </>
+        }
+      />
 
       <CoopCalc />
 
       <section className="section-block" aria-labelledby="how-heading">
-        <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">01</span> Method
-        </p>
-        <h2 id="how-heading">How it works</h2>
-        <p>
-          Space per bird depends on bird size, following the allowances used
-          in university extension poultry guides:{" "}
-          <strong>bantams 2 sq ft coop / 6 sq ft run</strong>,{" "}
-          <strong>standard breeds 3.5 sq ft / 10 sq ft</strong>, and{" "}
-          <strong>large breeds 4.5 sq ft / 12 sq ft</strong>. Multiply by your
-          flock size for the totals. Roost length is 10 inches per bird, and
-          nesting boxes work out at one per four hens.
-        </p>
-        <p>
-          A word of honesty about minimums: some sources quote 2–3 sq ft per
-          bird indoors, and factory standards go lower still. Those figures
-          assume birds spend nearly all day outdoors and are managed
-          commercially. Backyard keepers who size to 3.5–4 sq ft indoors see
-          calmer flocks and far less feather-pecking — which is why this
-          calculator plans around the comfortable figures and labels them as
-          such. Planning a flock from scratch? Work out{" "}
-          <Link href="/how-many-chickens-do-i-need">
-            how many chickens you actually need
-          </Link>{" "}
-          first, then come back and size the coop.
-        </p>
+        <div className="prose-grid">
+          <div>
+            <p className="kicker" aria-hidden="true">
+              <span>01</span>&nbsp;&nbsp;Method
+            </p>
+            <h2 id="how-heading">How it works</h2>
+          </div>
+          <div className="body-col">
+            <p>
+              Space per bird depends on bird size, following the allowances used
+              in university extension poultry guides:{" "}
+              <strong>bantams 2 sq ft coop / 6 sq ft run</strong>,{" "}
+              <strong>standard breeds 3.5 sq ft / 10 sq ft</strong>, and{" "}
+              <strong>large breeds 4.5 sq ft / 12 sq ft</strong>. Multiply by your
+              flock size for the totals. Roost length is 10 inches per bird, and
+              nesting boxes work out at one per four hens.
+            </p>
+            <p>
+              A word of honesty about minimums: some sources quote 2–3 sq ft per
+              bird indoors, and factory standards go lower still. Those figures
+              assume birds spend nearly all day outdoors and are managed
+              commercially. Backyard keepers who size to 3.5–4 sq ft indoors see
+              calmer flocks and far less feather-pecking — which is why this
+              calculator plans around the comfortable figures and labels them as
+              such. Planning a flock from scratch? Work out{" "}
+              <Link href="/how-many-chickens-do-i-need">
+                how many chickens you actually need
+              </Link>{" "}
+              first, then come back and size the coop.
+            </p>
+            <div className="btn-row">
+              <Link className="btn" href="/quail-coop-size-calculator">
+                Quail coop
+              </Link>
+              <Link className="btn" href="/duck-coop-size-calculator">
+                Duck coop
+              </Link>
+              <Link className="btn" href="/cost-per-egg-calculator">
+                Cost per egg
+              </Link>
+              <Link className="btn" href="/how-many-chickens-do-i-need">
+                How many chickens
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">02</span> Reference
+          <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Chicken coop size chart (standard breeds)</h2>
-        <div className="table-scroll">
+        <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>

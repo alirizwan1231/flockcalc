@@ -46,6 +46,7 @@ export default function DuckCalc() {
 
   const summary = [
     "Duck Coop Size Calculator — FlockCalc",
+    `Number of ducks: ${ducks}`,
     `Coop space: ${fmt(r1(coop))} sq ft (${fmt(r1(sqm(coop)))} m²)`,
     `Run space: ${fmt(r1(run))} sq ft (${fmt(r1(sqm(run)))} m²)`,
     `Nesting boxes (ground level): ${boxes} ${boxes === 1 ? "box" : "boxes"} (1 per 4 ducks)`,
@@ -54,7 +55,7 @@ export default function DuckCalc() {
 
   return (
     <div className="workbench">
-      <div>
+      <div className="calc-inputs">
         <CountField
           id="d-ducks"
           label="Number of ducks"
@@ -99,46 +100,53 @@ export default function DuckCalc() {
       </div>
 
       <div className="result-panel" aria-live="polite">
-        <h3>Your duck housing</h3>
-        <p className="result-big">
-          {fmt(r1(coop))} sq ft coop · {fmt(r1(run))} sq ft run
-        </p>
-        <div className="result-row">
-          <span className="k">Coop space</span>
-          <span className="v">
-            {fmt(r1(coop))} sq ft ({fmt(r1(sqm(coop)))} m²)
-          </span>
+        <p className="kicker">Your duck housing</p>
+        <div className="result-hero-grid">
+          <div className="result-hero">
+            <div className="rh-label">Coop space</div>
+            <div className="result-num">
+              {fmt(r1(coop))}
+              <span className="unit"> sq ft</span>
+            </div>
+            <div className="result-metric">{fmt(r1(sqm(coop)))} m²</div>
+          </div>
+          <div className="result-hero">
+            <div className="rh-label">Run space</div>
+            <div className="result-num">
+              {fmt(r1(run))}
+              <span className="unit"> sq ft</span>
+            </div>
+            <div className="result-metric">{fmt(r1(sqm(run)))} m²</div>
+          </div>
         </div>
-        <div className="result-row">
-          <span className="k">Run space</span>
-          <span className="v">
-            {fmt(r1(run))} sq ft ({fmt(r1(sqm(run)))} m²)
-          </span>
+        <div className="result-stats">
+          <div>
+            <div className="rs-label">Nesting boxes (ground level)</div>
+            <div className="rs-value">
+              {boxes} {boxes === 1 ? "box" : "boxes"}
+            </div>
+          </div>
+          <div>
+            <div className="rs-label">Roost bars needed</div>
+            <div className="rs-value">None — ducks sleep on bedding</div>
+          </div>
         </div>
-        <div className="result-row">
-          <span className="k">Nesting boxes (ground level)</span>
-          <span className="v">
-            {boxes} {boxes === 1 ? "box" : "boxes"} (1 per 4 ducks)
-          </span>
+        <div className="result-note">
+          <ul className="tight">
+            <li>
+              <strong>Water splash zone:</strong> keep drinkers on a wire or
+              gravel patch outside the sleeping area, or bedding turns to soup.
+            </li>
+            <li>
+              <strong>Ground nesting:</strong> a quiet corner with deep straw is
+              enough; ducks rarely use raised boxes.
+            </li>
+            <li>
+              <strong>Swimming water is optional</strong> — ducks need deep
+              water to clean their bills and eyes, not a pond.
+            </li>
+          </ul>
         </div>
-        <div className="result-row">
-          <span className="k">Roost bars needed</span>
-          <span className="v">None — ducks sleep on bedding</span>
-        </div>
-        <ul className="tight" style={{ marginTop: 16 }}>
-          <li>
-            <strong>Water splash zone:</strong> keep drinkers on a wire or
-            gravel patch outside the sleeping area, or bedding turns to soup.
-          </li>
-          <li>
-            <strong>Ground nesting:</strong> a quiet corner with deep straw is
-            enough; ducks rarely use raised boxes.
-          </li>
-          <li>
-            <strong>Swimming water is optional</strong> — ducks need deep
-            water to clean their bills and eyes, not a pond.
-          </li>
-        </ul>
         <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>

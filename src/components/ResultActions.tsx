@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, Printer, RotateCcw } from "lucide-react";
 
 type Props = {
   /** Plain-text summary of the current results, written to the clipboard. */
@@ -11,9 +10,9 @@ type Props = {
 };
 
 /**
- * Quiet text actions for a result block: Copy results (real clipboard
- * write with a transient "Copied" confirmation), Reset (restores the
- * tool's defaults) and Print.
+ * Concept action row for the dark result panel: amber Copy results,
+ * outline-white Reset and Print. Copy performs a real clipboard write
+ * with a transient "Copied" confirmation.
  */
 export default function ResultActions({ summary, onReset }: Props) {
   const [copied, setCopied] = useState(false);
@@ -27,8 +26,10 @@ export default function ResultActions({ summary, onReset }: Props) {
   );
 
   async function copyResults() {
+    let ok = false;
     try {
       await navigator.clipboard.writeText(summary);
+      ok = true;
     } catch {
       // Clipboard API can be unavailable (permissions / insecure context):
       // fall back to a temporary textarea + execCommand.
@@ -39,12 +40,13 @@ export default function ResultActions({ summary, onReset }: Props) {
       document.body.appendChild(ta);
       ta.select();
       try {
-        document.execCommand("copy");
+        ok = document.execCommand("copy");
       } catch {
-        /* nothing more we can do — the button simply won't confirm */
+        ok = false;
       }
       document.body.removeChild(ta);
     }
+    if (!ok) return;
     setCopied(true);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setCopied(false), 2000);
@@ -54,28 +56,21 @@ export default function ResultActions({ summary, onReset }: Props) {
     <div className="result-actions no-print">
       <button
         type="button"
-        className="action-btn"
+        className="btn btn-primary"
         onClick={copyResults}
         aria-live="polite"
       >
-        {copied ? (
-          <Check size={16} aria-hidden="true" />
-        ) : (
-          <Copy size={16} aria-hidden="true" />
-        )}
         {copied ? "Copied" : "Copy results"}
       </button>
-      <button type="button" className="action-btn" onClick={onReset}>
-        <RotateCcw size={16} aria-hidden="true" />
+      <button type="button" className="btn btn-on-dark" onClick={onReset}>
         Reset
       </button>
       <button
         type="button"
-        className="action-btn"
+        className="btn btn-on-dark"
         onClick={() => window.print()}
       >
-        <Printer size={16} aria-hidden="true" />
-        Print this result
+        Print
       </button>
     </div>
   );

@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Lexend, Source_Sans_3 } from "next/font/google";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const lexend = Lexend({
+const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
   variable: "--font-display",
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-body",
   display: "swap",
 });
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${lexend.variable} ${sourceSans.variable}`}>
+    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable}`}>
       <body>
         <Header />
         <main>{children}</main>

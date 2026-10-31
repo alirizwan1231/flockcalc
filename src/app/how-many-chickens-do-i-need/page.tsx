@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import HensCalc from "@/components/HensCalc";
 import FaqSection from "@/components/FaqSection";
+import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
 import { site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
@@ -65,59 +65,70 @@ export default function HensPage() {
       <JsonLd data={faqSchema(faqs)} />
       <JsonLd data={breadcrumbSchema(tool)} />
 
-      <div className="page-head">
-        <p className="breadcrumb">
-          <Link href="/">Home</Link>
-          <ChevronRight size={13} aria-hidden="true" />
-          <span aria-current="page">How Many Chickens Do I Need?</span>
-        </p>
-        <h1>How Many Chickens Do I Need?</h1>
-        <p className="lede">
-          Work backwards from breakfast. Tell the calculator how many eggs your
-          household eats each week and how well your chosen breeds lay, and it
-          gives you the flock size — plus the extra buffer hen experienced
-          keepers swear by.
-        </p>
-      </div>
+      <PageHead
+        crumb="How Many Chickens Do I Need?"
+        title="How Many Chickens Do I Need?"
+        lede="Work backwards from breakfast. Tell the calculator how many eggs your household eats each week and how well your chosen breeds lay, and it gives you the flock size — plus the extra buffer hen experienced keepers swear by."
+      />
 
       <HensCalc />
 
       <section className="section-block" aria-labelledby="how-heading">
-        <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">01</span> Method
-        </p>
-        <h2 id="how-heading">How it works</h2>
-        <p>
-          The formula is:{" "}
-          <strong>
-            hens needed = your weekly eggs ÷ eggs laid per hen per week
-          </strong>
-          , rounded up. Laying rates come from typical breed performance used
-          in extension poultry guides: hybrid layers around 6 eggs a week,
-          standard dual-purpose breeds around 5, and heritage breeds around 4
-          in their prime laying years.
-        </p>
-        <p>
-          We then recommend <strong>one buffer hen</strong> on top. Hens pause
-          laying while moulting, some go broody and stop for weeks, and
-          everyone slows down in winter. The buffer hen is the difference
-          between &ldquo;usually enough eggs&rdquo; and &ldquo;eggs every
-          week&rdquo;. The coop and run figures shown use the standard
-          allowance of 3.5 sq ft of coop and 10 sq ft of run per bird — see
-          the{" "}
-          <Link href="/chicken-coop-size-calculator">
-            chicken coop size calculator
-          </Link>{" "}
-          to plan the build properly.
-        </p>
+        <div className="prose-grid">
+          <div>
+            <p className="kicker" aria-hidden="true">
+              <span>01</span>&nbsp;&nbsp;Method
+            </p>
+            <h2 id="how-heading">How it works</h2>
+          </div>
+          <div className="body-col">
+            <p>
+              The formula is:{" "}
+              <strong>
+                hens needed = your weekly eggs ÷ eggs laid per hen per week
+              </strong>
+              , rounded up. Laying rates come from typical breed performance used
+              in extension poultry guides: hybrid layers around 6 eggs a week,
+              standard dual-purpose breeds around 5, and heritage breeds around 4
+              in their prime laying years.
+            </p>
+            <p>
+              We then recommend <strong>one buffer hen</strong> on top. Hens pause
+              laying while moulting, some go broody and stop for weeks, and
+              everyone slows down in winter. The buffer hen is the difference
+              between &ldquo;usually enough eggs&rdquo; and &ldquo;eggs every
+              week&rdquo;. The coop and run figures shown use the standard
+              allowance of 3.5 sq ft of coop and 10 sq ft of run per bird — see
+              the{" "}
+              <Link href="/chicken-coop-size-calculator">
+                chicken coop size calculator
+              </Link>{" "}
+              to plan the build properly.
+            </p>
+            <div className="btn-row">
+              <Link className="btn" href="/quail-coop-size-calculator">
+                Quail coop
+              </Link>
+              <Link className="btn" href="/chicken-coop-size-calculator">
+                Chicken coop
+              </Link>
+              <Link className="btn" href="/duck-coop-size-calculator">
+                Duck coop
+              </Link>
+              <Link className="btn" href="/cost-per-egg-calculator">
+                Cost per egg
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
-          <span className="kicker-num">02</span> Reference
+          <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Hens needed by weekly egg target</h2>
-        <div className="table-scroll">
+        <div className="table-wrap">
           <table className="data">
             <thead>
               <tr>
@@ -139,7 +150,7 @@ export default function HensPage() {
             </tbody>
           </table>
         </div>
-        <p>
+        <p className="table-note">
           Minimum hens, before the buffer hen. Add 1 to whichever column matches
           your breeds for a flock that keeps laying through moulting season.
         </p>
