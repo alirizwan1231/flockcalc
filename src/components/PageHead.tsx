@@ -9,8 +9,8 @@ type Props = {
 };
 
 /**
- * super.cx page head: centred kicker with ⊕ icon, huge uppercase
- * Archivo h1, short centred intro paragraph.
+ * super.cx page head: centred kicker with ⊕ icon, big uppercase
+ * Sora h1, short centred intro paragraph.
  */
 export default function PageHead({ crumb, title, lede }: Props) {
   return (

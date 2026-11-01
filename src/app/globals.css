@@ -1,7 +1,8 @@
 /* ============================================================
    FlockCalc v4 — "super.cx" design language
    Off-white ground, deep indigo panels, violet brand, green
-   pill CTAs with dark arrow circles. Archivo throughout.
+   pill CTAs with dark arrow circles. Sora for display type,
+   Inter for body/UI; tabular figures throughout.
    Soft shadows only; everything rounded (28px cards, pills).
    ============================================================ */
 
@@ -15,6 +16,7 @@
   --violet-dark: #5b21b6;
   --green: #4be07f; /* CTA green */
   --secondary: #6b6785; /* secondary text */
+  --blurb: #55516e; /* card blurbs — a step darker for legibility */
   --lav: #f1edfd; /* summary panel tint */
   --lav-line: #e0d9f8; /* hairline on lav */
   --track: #e7e2f7; /* slider / bar track */
@@ -25,7 +27,8 @@
   --white: #ffffff;
 
   /* Type */
-  --font-sans: "Archivo", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
 
   /* Shape */
   --r-card: 28px;
@@ -109,25 +112,27 @@ strong {
 h1,
 h2,
 h3 {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   color: var(--ink);
   margin: 0;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 h1 {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  font-size: clamp(40px, 5vw, 68px);
-  line-height: 1.04;
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.08;
 }
 
 h2 {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  font-size: clamp(30px, 3.4vw, 44px);
-  line-height: 1.1;
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.12;
   margin: 12px 0 26px;
 }
 
@@ -142,10 +147,11 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 12.5px;
   font-weight: 700;
   line-height: 1.4;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--secondary);
   margin: 0;
@@ -167,9 +173,9 @@ h3 {
 }
 
 .lede {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--secondary);
   margin: 0;
   max-width: 56ch;
@@ -182,7 +188,7 @@ h3 {
 /* ---------- Sections ---------- */
 
 .section-block {
-  padding-top: 88px;
+  padding-top: 96px;
 }
 
 .section-block > p {
@@ -212,7 +218,7 @@ h3 {
 /* Two-column block: kicker + h2 left, prose right */
 .prose-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   gap: 24px 64px;
   align-items: start;
 }
@@ -230,16 +236,25 @@ h3 {
 }
 
 .prose-grid .body-col > p:first-child {
-  font-size: 19px;
+  font-size: 18px;
   color: var(--ink);
   margin-top: 0;
+}
+
+.prose-grid > * {
+  min-width: 0;
 }
 
 /* ---------- Focus ---------- */
 
 :focus-visible {
-  outline: 3px solid rgba(124, 58, 237, 0.45);
+  outline: 2px solid var(--violet);
   outline-offset: 2px;
+}
+
+input[type="range"].count-slider:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 4px;
 }
 
 /* ---------- Buttons ---------- */
@@ -279,7 +294,7 @@ h3 {
   background: var(--green);
   border-color: var(--green);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .btn-primary:hover {
@@ -309,6 +324,18 @@ h3 {
 .btn-arrow.sm {
   width: 28px;
   height: 28px;
+}
+
+/* Green CTA arrow circle slides a touch on hover */
+.btn.has-arrow .btn-arrow,
+.bento-pill .btn-arrow {
+  transition: transform 0.16s ease;
+}
+
+.btn.has-arrow:hover .btn-arrow,
+a:hover > .bento-foot .btn-arrow,
+.related-card:hover .btn-arrow {
+  transform: translate(1.5px, -1.5px);
 }
 
 .btn-row {
@@ -357,9 +384,10 @@ h3 {
 }
 
 .brand-name {
+  font-family: var(--font-display);
   font-size: 23px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1;
   color: var(--ink);
 }
@@ -496,9 +524,13 @@ h3 {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
   align-items: stretch;
+}
+
+.hero-grid > * {
+  min-width: 0;
 }
 
 /* Left: dark indigo panel holding the quick calculator */
@@ -510,6 +542,10 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.hero-dark > * {
+  min-width: 0;
 }
 
 .hero-tags {
@@ -525,6 +561,7 @@ h3 {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
   color: var(--white);
+  font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -559,12 +596,18 @@ h3 {
 }
 
 .hero-panel h1 {
-  font-size: clamp(40px, 4.6vw, 72px);
+  font-size: clamp(36px, 3.9vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
   margin: 16px 0 20px;
 }
 
 .hero-panel .lede {
   color: var(--secondary);
+  font-size: 17px;
+  line-height: 1.65;
+  max-width: 52ch;
 }
 
 .hero-strip {
@@ -612,8 +655,9 @@ h3 {
 }
 
 .quick-title {
-  font-size: 19px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -621,7 +665,8 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-family: var(--font-display);
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -629,6 +674,7 @@ h3 {
   background: var(--lav);
   border-radius: 999px;
   padding: 5px 12px;
+  flex: 0 0 auto;
 }
 
 .quick-live::before {
@@ -661,7 +707,8 @@ h3 {
 }
 
 .qs-row .qs-v {
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 19px;
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -804,6 +851,7 @@ h3 {
 }
 
 .gb-label {
+  font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -813,9 +861,10 @@ h3 {
 }
 
 .gb-value {
+  font-family: var(--font-display);
   font-size: clamp(28px, 3vw, 38px);
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.05;
   font-variant-numeric: tabular-nums;
 }
@@ -836,6 +885,10 @@ h3 {
 
 .donut-wrap svg {
   flex: 0 0 auto;
+}
+
+.donut-wrap svg text {
+  font-family: var(--font-display);
 }
 
 .donut-legend {
@@ -880,14 +933,15 @@ h3 {
   flex-direction: column;
   gap: 12px;
   min-height: 250px;
+  min-width: 0;
   color: var(--ink);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
 }
 
 .bento-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow);
   color: var(--ink);
 }
@@ -900,23 +954,26 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--violet);
 }
 
 .bento-name {
+  font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
 }
 
 .bento-card p {
   margin: 0;
-  color: var(--secondary);
+  color: var(--blurb);
   font-size: 16.5px;
   line-height: 1.55;
   max-width: none;
@@ -928,9 +985,10 @@ h3 {
 
 .bento-stat {
   margin-top: auto;
+  font-family: var(--font-display);
   font-size: 44px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -952,7 +1010,7 @@ h3 {
   gap: 10px;
   background: var(--green);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15.5px;
   border-radius: 999px;
   padding: 6px 6px 6px 18px;
@@ -996,7 +1054,7 @@ h3 {
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 20px;
 }
 
@@ -1005,6 +1063,12 @@ h3 {
   border-radius: var(--r-card);
   box-shadow: var(--shadow-sm);
   padding: 30px;
+  min-width: 0;
+  transition: box-shadow 0.16s ease;
+}
+
+.step-card:hover {
+  box-shadow: var(--shadow);
 }
 
 .step-num {
@@ -1016,18 +1080,20 @@ h3 {
   border-radius: 50%;
   background: var(--lav);
   color: var(--violet-dark);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 18px;
   margin-bottom: 16px;
 }
 
 .step-card h3 {
+  font-size: 22px;
   margin-bottom: 8px;
 }
 
 .step-card p {
   margin: 0;
-  color: var(--secondary);
+  color: var(--blurb);
   font-size: 16.5px;
   max-width: none;
 }
@@ -1074,6 +1140,7 @@ h3 {
 .page-head h1 {
   margin: 16px 0 18px;
   max-width: 20ch;
+  text-wrap: balance;
 }
 
 .page-head .lede {
@@ -1101,9 +1168,10 @@ h3 {
   padding: 8px 16px;
   background: var(--lav);
   border-radius: 999px;
+  font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--violet-dark);
 }
@@ -1123,8 +1191,9 @@ h3 {
 }
 
 .cih-title {
-  font-size: 21px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -1153,9 +1222,13 @@ h3 {
   box-shadow: var(--shadow);
   padding: clamp(24px, 3.6vw, 44px);
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(28px, 4vw, 52px);
   align-items: start;
+}
+
+.workbench > * {
+  min-width: 0;
 }
 
 .calc-inputs {
@@ -1228,9 +1301,11 @@ h3 {
   flex: 0 0 auto;
   min-height: 64px;
   text-align: center;
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
   padding: 0 10px;
 }
 
@@ -1269,22 +1344,26 @@ input[type="range"].count-slider {
 input[type="range"].count-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--white);
   border: 3px solid var(--violet);
-  box-shadow: 0 2px 8px rgba(22, 16, 46, 0.25);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 4px 12px rgba(22, 16, 46, 0.3);
   cursor: pointer;
 }
 
 input[type="range"].count-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--white);
   border: 3px solid var(--violet);
-  box-shadow: 0 2px 8px rgba(22, 16, 46, 0.25);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 4px 12px rgba(22, 16, 46, 0.3);
   cursor: pointer;
 }
 
@@ -1304,8 +1383,12 @@ input[type="range"].count-slider::-moz-range-track {
 
 .input-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 0 20px;
+}
+
+.input-row > * {
+  min-width: 0;
 }
 
 /* Unit affixes ($ / lb) */
@@ -1363,6 +1446,7 @@ input[type="range"].count-slider::-moz-range-track {
 
 .segment {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1431,8 +1515,9 @@ input[type="range"].count-slider::-moz-range-track {
 
 /* Inline mini rows (ready-made coop sizes in CoopCalc) */
 .subhead {
-  font-size: 21px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
   letter-spacing: -0.01em;
   margin: 6px 0 8px;
 }
@@ -1492,10 +1577,11 @@ input[type="range"].count-slider::-moz-range-track {
 }
 
 .result-num {
+  font-family: var(--font-display);
   font-size: clamp(42px, 4.4vw, 60px);
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
@@ -1518,10 +1604,11 @@ input[type="range"].count-slider::-moz-range-track {
 }
 
 .result-big-text {
+  font-family: var(--font-display);
   font-size: 36px;
   font-weight: 800;
   line-height: 1.12;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   color: var(--ink);
   margin: 0;
   max-width: none;
@@ -1678,8 +1765,9 @@ table.data {
 
 table.data th {
   text-align: left;
+  font-family: var(--font-display);
   font-size: 12.5px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 18px 22px 12px;
@@ -1690,7 +1778,7 @@ table.data th {
 table.data td {
   padding: 15px 22px;
   border-top: 1px solid var(--line);
-  font-size: 16.5px;
+  font-size: 16px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1734,10 +1822,12 @@ table.data td:first-child {
 }
 
 .faq-q {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 1.35;
   color: var(--ink);
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .faq-chevron {
@@ -1764,7 +1854,8 @@ table.data td:first-child {
 .faq-a p {
   margin: 0;
   color: var(--secondary);
-  font-size: 17px;
+  font-size: 16.5px;
+  line-height: 1.7;
   max-width: 68ch;
 }
 
@@ -1772,7 +1863,7 @@ table.data td:first-child {
 
 .related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 20px;
 }
 
@@ -1786,22 +1877,25 @@ table.data td:first-child {
   flex-direction: column;
   gap: 10px;
   color: var(--ink);
+  min-width: 0;
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
 }
 
 .related-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow);
   color: var(--ink);
 }
 
 .related-name {
+  font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.18;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
 }
 
 .related-card .bento-foot {
@@ -1863,7 +1957,7 @@ table.data td:first-child {
 
 .footer-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
   gap: 20px;
 }
 
@@ -1876,6 +1970,7 @@ table.data td:first-child {
   flex-direction: column;
   gap: 12px;
   align-items: flex-start;
+  min-width: 0;
 }
 
 .footer-card .brand-name {
@@ -1884,15 +1979,16 @@ table.data td:first-child {
 
 .footer-card p {
   margin: 0;
-  color: var(--secondary);
+  color: var(--blurb);
   font-size: 16.5px;
   max-width: none;
 }
 
 .footer-card .fc-kicker {
+  font-family: var(--font-display);
   font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--violet);
   display: inline-flex;
@@ -1901,8 +1997,8 @@ table.data td:first-child {
 }
 
 .footer-card h3 {
-  font-size: 27px;
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 1.12;
@@ -1968,9 +2064,10 @@ table.data td:first-child {
 }
 
 .footer-head {
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink);
   margin: 0 0 14px;
@@ -2045,17 +2142,20 @@ table.data td:first-child {
   }
 }
 
+/* Nav gets crowded below ~900px: About lives in the mobile menu there */
+@media (max-width: 900px) {
+  .header-right .about-link {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .wrap {
     padding: 0 18px;
   }
 
   body {
-    font-size: 17px;
-  }
-
-  h2 {
-    font-size: 29px;
+    font-size: 17.5px;
   }
 
   .hero {
@@ -2067,7 +2167,7 @@ table.data td:first-child {
   }
 
   .section-block {
-    padding-top: 60px;
+    padding-top: 64px;
   }
 
   .page-head {

@@ -1,15 +1,24 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Archivo } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const archivo = Archivo({
+/** Body / UI type. */
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+/** Display type — headings and big figures. */
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -36,7 +45,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={archivo.variable}>
+    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
       <body>
         <Header />
         <main>{children}</main>
