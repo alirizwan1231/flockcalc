@@ -15,6 +15,7 @@ import CountField from "./CountField";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
+import { GreenBlock, PropBar } from "./Viz";
 
 const SIZE_SEGMENTS = (Object.keys(CHICKEN_RATES) as ChickenSize[]).map(
   (id) => {
@@ -164,6 +165,36 @@ export default function CoopCalc() {
             ))}
           </div>
         </div>
+        <PropBar
+          segments={[
+            {
+              label: "Coop",
+              value: s.coopSqft,
+              display: `${fmt(r1(s.coopSqft))} sq ft`,
+              tone: "violet",
+            },
+            {
+              label: "Run",
+              value: s.runSqft,
+              display: `${fmt(r1(s.runSqft))} sq ft`,
+              tone: "green",
+            },
+          ]}
+        />
+        <GreenBlock
+          items={[
+            {
+              label: "Coop floor needed",
+              value: fmt(r1(s.coopSqft)),
+              unit: "sq ft",
+            },
+            {
+              label: "Run space needed",
+              value: fmt(r1(s.runSqft)),
+              unit: "sq ft",
+            },
+          ]}
+        />
         <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>

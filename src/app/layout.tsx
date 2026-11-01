@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { DM_Sans, DM_Serif_Display } from "next/font/google";
+import { Archivo } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const dmSerif = DM_Serif_Display({
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-body",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -43,7 +36,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${dmSerif.variable} ${dmSans.variable}`}>
+    <html lang="en" className={archivo.variable}>
       <body>
         <Header />
         <main>{children}</main>

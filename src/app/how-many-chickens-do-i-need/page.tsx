@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CirclePlus } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import HensCalc from "@/components/HensCalc";
 import { CalcBadge } from "@/components/CalcChrome";
@@ -79,6 +80,7 @@ export default function HensPage() {
         <div className="prose-grid">
           <div>
             <p className="kicker" aria-hidden="true">
+              <CirclePlus size={16} />
               <span>01</span>&nbsp;&nbsp;Method
             </p>
             <h2 id="how-heading">How it works</h2>
@@ -127,6 +129,7 @@ export default function HensPage() {
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
+          <CirclePlus size={16} />
           <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Hens needed by weekly egg target</h2>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, CirclePlus } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
 import QuickCoopCalc from "@/components/QuickCoopCalc";
@@ -44,14 +44,139 @@ const faqs: Faq[] = [
   },
 ];
 
-/** Giant bottom stat per tool for the bento cards (display figures). */
-const STATS: Record<string, { big: string; unit?: string }> = {
-  "quail-coop-size-calculator": { big: "1", unit: " sq ft per bird" },
-  "how-many-chickens-do-i-need": { big: "+1", unit: " buffer hen" },
-  "cost-per-egg-calculator": { big: "$0.22", unit: " per egg" },
-  "duck-coop-size-calculator": { big: "4", unit: " sq ft per duck" },
-  "chicken-coop-size-calculator": { big: "3.5", unit: " sq ft per bird" },
+/** Kicker word + one-line blurb + wide/narrow span per bento card. */
+const CARDS: Record<
+  string,
+  { kicker: string; blurb: string; wide?: boolean }
+> = {
+  "quail-coop-size-calculator": {
+    kicker: "Quail",
+    blurb: "Floor space for Coturnix quail — plus how many fit in your cage.",
+    wide: true,
+  },
+  "how-many-chickens-do-i-need": {
+    kicker: "Chickens",
+    blurb: "Eggs your household eats → hens you actually need, buffer included.",
+    wide: true,
+  },
+  "cost-per-egg-calculator": {
+    kicker: "Egg costs",
+    blurb: "Your real cost per egg and per dozen, feed counted.",
+  },
+  "duck-coop-size-calculator": {
+    kicker: "Ducks",
+    blurb: "Coop and run space for ducks — no roosts, splash zones planned.",
+  },
+  "chicken-coop-size-calculator": {
+    kicker: "Chickens",
+    blurb: "Coop, run, roost and boxes for bantam to large breeds.",
+  },
 };
+
+/** Small visual element per card (bars / sparkline / stat). */
+function CardVisual({ slug }: { slug: string }) {
+  if (slug === "quail-coop-size-calculator") {
+    return (
+      <div className="mini-bars" aria-hidden="true">
+        <div className="mini-bar-row">
+          <span>Minimum</span>
+          <span className="mini-bar-track">
+            <span className="mini-bar-fill" style={{ display: "block", width: "60%" }} />
+          </span>
+        </div>
+        <div className="mini-bar-row hl">
+          <span>Standard</span>
+          <span className="mini-bar-track">
+            <span className="mini-bar-fill" style={{ display: "block", width: "80%" }} />
+          </span>
+        </div>
+        <div className="mini-bar-row">
+          <span>Roomy</span>
+          <span className="mini-bar-track">
+            <span className="mini-bar-fill" style={{ display: "block", width: "100%" }} />
+          </span>
+        </div>
+      </div>
+    );
+  }
+  if (slug === "cost-per-egg-calculator") {
+    return (
+      <svg
+        viewBox="0 0 220 56"
+        width="100%"
+        height="56"
+        aria-hidden="true"
+        style={{ display: "block" }}
+      >
+        <polyline
+          points="0,44 30,38 60,42 90,28 120,32 150,18 180,22 205,10"
+          fill="none"
+          stroke="#7c3aed"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="205" cy="10" r="6" fill="#4be07f" stroke="#16102e" strokeWidth="2" />
+      </svg>
+    );
+  }
+  if (slug === "chicken-coop-size-calculator") {
+    return (
+      <div className="mini-bars" aria-hidden="true">
+        <div className="mini-bar-row">
+          <span>Coop</span>
+          <span className="mini-bar-track">
+            <span className="mini-bar-fill" style={{ display: "block", width: "35%" }} />
+          </span>
+        </div>
+        <div className="mini-bar-row hl">
+          <span>Run</span>
+          <span className="mini-bar-track">
+            <span className="mini-bar-fill" style={{ display: "block", width: "100%" }} />
+          </span>
+        </div>
+      </div>
+    );
+  }
+  if (slug === "how-many-chickens-do-i-need") {
+    return (
+      <span className="bento-stat" aria-hidden="true">
+        +1<small> buffer hen, always</small>
+      </span>
+    );
+  }
+  return (
+    <span className="bento-stat" aria-hidden="true">
+      4<small> sq ft per duck</small>
+    </span>
+  );
+}
+
+/** Space rates straight from lib/math.ts + the calculators (planning figures). */
+const RATES = [
+  { bird: "Chicken (standard)", coop: "3.5 sq ft", run: "10 sq ft", feed: "0.25 lb/day" },
+  { bird: "Chicken (bantam)", coop: "2 sq ft", run: "6 sq ft", feed: "—" },
+  { bird: "Duck (standard)", coop: "4 sq ft", run: "10–15 sq ft", feed: "—" },
+  { bird: "Quail (Coturnix)", coop: "1 sq ft", run: "Not needed", feed: "—" },
+];
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Enter your birds",
+    text: "How many birds, and what size — bantam, standard or large. Ten seconds, no account, nothing leaves your browser.",
+  },
+  {
+    n: "02",
+    title: "Get your sizes",
+    text: "Coop and run area, roost length, nesting boxes — in square feet and square metres, updating as you type.",
+  },
+  {
+    n: "03",
+    title: "Build with confidence",
+    text: "Copy or print the numbers for your build or shopping list, sized to the figures extension services recommend.",
+  },
+];
 
 export default function HomePage() {
   return (
@@ -60,109 +185,191 @@ export default function HomePage() {
       <JsonLd data={faqSchema(faqs)} />
       <div className="wrap">
         <div className="hero">
-          <p className="kicker">Free calculators — no sign-up</p>
           <div className="hero-grid">
-            <div className="hero-main">
+            {/* Left: dark panel with the working quick calculator */}
+            <div className="hero-dark">
+              <div className="hero-tags" aria-hidden="true">
+                <span className="tag-pill">Free</span>
+                <span className="tag-pill">No sign-up</span>
+                <span className="tag-pill">Instant</span>
+              </div>
+              <QuickCoopCalc />
+            </div>
+
+            {/* Right: white intro panel */}
+            <div className="hero-panel">
+              <p className="kicker">
+                <CirclePlus size={16} aria-hidden="true" />
+                Small flock calculators
+              </p>
               <h1>Free calculators for backyard chickens, quail and ducks</h1>
               <p className="lede">
-                How big should the coop be? How many hens does your family actually
-                need? What does a home-laid egg really cost? Answer all three in
-                under a minute — no sign-up, no fluff, just the numbers extension
-                services recommend.
+                How big should the coop be? How many hens do you actually need?
+                What does a home-laid egg really cost? Get the answers in
+                seconds — straight from extension-service numbers.
               </p>
               <div className="btn-row">
-                <Link className="btn btn-primary" href="/quail-coop-size-calculator">
-                  Start with the quail coop calculator
-                  <ArrowRight size={17} aria-hidden="true" />
+                <Link
+                  className="btn btn-primary has-arrow"
+                  href="/quail-coop-size-calculator"
+                >
+                  Start calculating
+                  <span className="btn-arrow" aria-hidden="true">
+                    <ArrowUpRight size={17} />
+                  </span>
                 </Link>
-                <Link className="btn" href="/how-many-chickens-do-i-need">
-                  How many chickens do I need?
+                <Link className="btn" href="#calculators">
+                  See all calculators
                 </Link>
               </div>
-              <ul className="hero-points">
-                <li>
-                  <Check size={16} strokeWidth={3} aria-hidden="true" />
-                  100% free — no sign-up
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} aria-hidden="true" />
-                  Extension-service numbers
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} aria-hidden="true" />
-                  Metric &amp; imperial results
-                </li>
-              </ul>
+              <div className="hero-strip">
+                <div className="hero-strip-inner">
+                  <span>
+                    <strong>5 free calculators</strong>
+                  </span>
+                  <span className="dot" aria-hidden="true">·</span>
+                  <span>Quail</span>
+                  <span className="dot" aria-hidden="true">·</span>
+                  <span>Chickens</span>
+                  <span className="dot" aria-hidden="true">·</span>
+                  <span>Ducks</span>
+                  <span className="dot" aria-hidden="true">·</span>
+                  <span>Eggs</span>
+                </div>
+              </div>
             </div>
-            <QuickCoopCalc />
           </div>
         </div>
-      </div>
 
-      <div className="ink-strip">
-        <div className="wrap ink-strip-inner">
-          <span>5 free calculators</span>
-          <span className="strip-dot" aria-hidden="true">
-            ·
-          </span>
-          <span>No sign-up</span>
-          <span className="strip-dot" aria-hidden="true">
-            ·
-          </span>
-          <span>Results as you type</span>
-        </div>
-      </div>
-
-      <div className="wrap">
         <section
-          className="section-block bento-section"
+          className="section-block"
+          id="calculators"
           aria-label="All calculators"
         >
+          <div className="section-head">
+            <p className="kicker">
+              <CirclePlus size={16} aria-hidden="true" />
+              The calculators
+            </p>
+            <h2>Pick your calculator</h2>
+            <p className="lede">
+              Five tools, one job — the right space for your birds and the true
+              cost of your eggs.
+            </p>
+          </div>
           <div className="bento">
-            {tools.map((t, i) => {
-              const stat = STATS[t.slug];
+            {tools.map((t) => {
+              const card = CARDS[t.slug];
               return (
                 <Link
                   key={t.slug}
                   href={t.path}
-                  className={`bento-card${i === 0 ? " big" : ""}`}
+                  className={`bento-card${card.wide ? " wide" : ""}`}
                 >
-                  <span className="bento-top">
-                    <span className="bento-num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <ArrowUpRight size={20} aria-hidden="true" />
-                  </span>
+                  <span className="bento-kicker">{card.kicker}</span>
                   <span className="bento-name">{t.name}</span>
-                  <p>{t.blurb}</p>
-                  <span className="bento-stat" aria-hidden="true">
-                    {stat.big}
-                    {stat.unit ? <small>{stat.unit}</small> : null}
+                  <p>{card.blurb}</p>
+                  <span className="bento-visual">
+                    <CardVisual slug={t.slug} />
                   </span>
                   <span className="bento-foot">
-                    <span className="bento-tag">Free calculator</span>
-                    <span className="bento-go">
+                    <span className="bento-pill">
                       Calculate
-                      <ArrowRight size={16} aria-hidden="true" />
+                      <span className="btn-arrow sm" aria-hidden="true">
+                        <ArrowUpRight size={15} />
+                      </span>
                     </span>
                   </span>
                 </Link>
               );
             })}
             <div className="bento-card">
-              <span className="bento-top">
-                <span className="bento-num">Note</span>
-              </span>
+              <span className="bento-kicker">Privacy</span>
               <span className="bento-name">No sign-up. Ever.</span>
               <p>
                 Every calculator runs entirely in your browser. Nothing you
-                type is sent anywhere, stored, or tracked — the numbers stay
-                on your screen.
+                type is sent anywhere, stored, or tracked.
               </p>
-              <span className="bento-stat" aria-hidden="true">
-                0<small> data collected</small>
+              <span className="bento-visual">
+                <span className="bento-stat" aria-hidden="true">
+                  0<small> data collected</small>
+                </span>
+              </span>
+              <span className="bento-foot">
+                <span className="bento-pill">
+                  Try one
+                  <span className="btn-arrow sm" aria-hidden="true">
+                    <ArrowUpRight size={15} />
+                  </span>
+                </span>
               </span>
             </div>
+          </div>
+        </section>
+
+        <section
+          className="section-block"
+          id="rates"
+          aria-labelledby="rates-heading"
+        >
+          <div className="section-head">
+            <p className="kicker">
+              <CirclePlus size={16} aria-hidden="true" />
+              Space rates
+            </p>
+            <h2 id="rates-heading">Rates at a glance</h2>
+            <p className="lede">
+              The planning figures every calculator on this site uses — per
+              bird, no surprises.
+            </p>
+          </div>
+          <div className="table-wrap">
+            <table className="data">
+              <thead>
+                <tr>
+                  <th>Bird</th>
+                  <th>Coop per bird</th>
+                  <th>Run per bird</th>
+                  <th>Feed per day</th>
+                </tr>
+              </thead>
+              <tbody>
+                {RATES.map((r) => (
+                  <tr key={r.bird}>
+                    <td>{r.bird}</td>
+                    <td>{r.coop}</td>
+                    <td>{r.run}</td>
+                    <td>{r.feed}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="table-note" style={{ textAlign: "center" }}>
+            Feed figure is for a laying hen — the standard planning rate of
+            about 0.25 lb a day (7.5 lb a month).
+          </p>
+        </section>
+
+        <section
+          className="section-block"
+          aria-labelledby="steps-heading"
+        >
+          <div className="section-head">
+            <p className="kicker">
+              <CirclePlus size={16} aria-hidden="true" />
+              How it works
+            </p>
+            <h2 id="steps-heading">Three steps. Sixty seconds.</h2>
+          </div>
+          <div className="steps">
+            {STEPS.map((s) => (
+              <div className="step-card" key={s.n}>
+                <span className="step-num">{s.n}</span>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -174,6 +381,7 @@ export default function HomePage() {
           <div className="prose-grid">
             <div>
               <p className="kicker" aria-hidden="true">
+                <CirclePlus size={16} />
                 <span>01</span>&nbsp;&nbsp;The numbers
               </p>
               <h2 id="trust-heading">How our numbers work</h2>
@@ -216,6 +424,31 @@ export default function HomePage() {
         </section>
 
         <FaqSection faqs={faqs} index="02" />
+
+        <section className="section-block" aria-labelledby="cta-heading">
+          <div className="cta-band">
+            <p className="kicker">
+              <CirclePlus size={16} aria-hidden="true" />
+              No sign-up · Free forever
+            </p>
+            <h2 id="cta-heading">Size it before you build it</h2>
+            <p>
+              A coop built to the wrong number costs lumber and unhappy birds.
+              Sixty seconds with a calculator first is cheaper.
+            </p>
+            <div className="btn-row" style={{ justifyContent: "center" }}>
+              <Link
+                className="btn btn-primary has-arrow"
+                href="/chicken-coop-size-calculator"
+              >
+                Start calculating
+                <span className="btn-arrow" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </>
   );

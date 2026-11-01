@@ -1,24 +1,17 @@
-/** The FlockCalc egg mark — amber fill, ink stroke (from the approved concept). */
-export default function EggMark({
-  width = 30,
-  height = 36,
-}: {
-  width?: number;
-  height?: number;
-}) {
+/** The FlockCalc mark — white egg on a violet rounded square (super.cx style). */
+export default function EggMark({ size = 40 }: { size?: number }) {
   return (
     <svg
-      width={width}
-      height={height}
-      viewBox="0 0 28 34"
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
       aria-hidden="true"
       focusable="false"
     >
+      <rect width="40" height="40" rx="12" fill="#7C3AED" />
       <path
-        d="M14 1C7 1 1 12 1 21a13 13 0 0 0 26 0C27 12 21 1 14 1Z"
-        fill="#F4B31F"
-        stroke="#10231A"
-        strokeWidth="2.5"
+        d="M20 6.5c-4.9 0-8.7 7.8-8.7 13a8.7 8.7 0 0 0 17.4 0c0-5.2-3.8-13-8.7-13Z"
+        fill="#ffffff"
       />
     </svg>
   );

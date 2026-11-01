@@ -6,6 +6,8 @@ import CountField from "./CountField";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
+import SliderField from "./SliderField";
+import { GreenBlock, RateBars } from "./Viz";
 
 const RATES = [
   { id: "minimum", label: "Minimum — 0.75 sq ft per bird", rate: 0.75 },
@@ -161,30 +163,28 @@ export default function QuailCalc() {
             </>
           ) : (
             <>
-              <div className="input-row">
-                <div className="field">
-                  <label htmlFor="q-len">Cage length (ft)</label>
-                  <input
-                    id="q-len"
-                    type="number"
-                    min="0"
-                    step="0.5"
-                    value={lenIn}
-                    onChange={(e) => setLenIn(e.target.value)}
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="q-wid">Cage width (ft)</label>
-                  <input
-                    id="q-wid"
-                    type="number"
-                    min="0"
-                    step="0.5"
-                    value={widIn}
-                    onChange={(e) => setWidIn(e.target.value)}
-                  />
-                </div>
-              </div>
+              <SliderField
+                id="q-len"
+                label="Cage length (ft)"
+                sliderLabel="Cage length in feet"
+                value={lenIn}
+                onChange={setLenIn}
+                min={0}
+                max={12}
+                step={0.5}
+                suffix="ft"
+              />
+              <SliderField
+                id="q-wid"
+                label="Cage width (ft)"
+                sliderLabel="Cage width in feet"
+                value={widIn}
+                onChange={setWidIn}
+                min={0}
+                max={12}
+                step={0.5}
+                suffix="ft"
+              />
               <div className="form-note">
                 <p>
                   That cage is <strong>{fmt(revArea)} sq ft</strong> (
@@ -231,6 +231,28 @@ export default function QuailCalc() {
                   </p>
                 </div>
               )}
+              <RateBars
+                rows={RATES.map((r) => ({
+                  label: r.id === "minimum" ? "Minimum" : r.id === "standard" ? "Standard" : "Roomy",
+                  value: birds * r.rate,
+                  display: `${fmt(r1(birds * r.rate))} sq ft`,
+                  highlight: r.id === "standard",
+                }))}
+              />
+              <GreenBlock
+                items={[
+                  {
+                    label: "Floor space needed",
+                    value: fmt(r1(needed)),
+                    unit: "sq ft",
+                  },
+                  {
+                    label: "In metric",
+                    value: fmt(r1(sqm(needed))),
+                    unit: "m²",
+                  },
+                ]}
+              />
             </>
           ) : (
             <>
@@ -255,6 +277,27 @@ export default function QuailCalc() {
                   <div className="rs-value">{revRoomy} quail</div>
                 </div>
               </div>
+              <RateBars
+                rows={[
+                  { label: "Minimum", value: revMinimum, display: `${revMinimum} quail` },
+                  { label: "Standard", value: revStandard, display: `${revStandard} quail`, highlight: true },
+                  { label: "Roomy", value: revRoomy, display: `${revRoomy} quail` },
+                ]}
+              />
+              <GreenBlock
+                items={[
+                  {
+                    label: "Your cage fits",
+                    value: `${revStandard}`,
+                    unit: "quail",
+                  },
+                  {
+                    label: "Cage floor",
+                    value: fmt(revArea),
+                    unit: "sq ft",
+                  },
+                ]}
+              />
             </>
           )}
           <div className="result-note">

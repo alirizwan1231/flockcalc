@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Plus } from "lucide-react";
+import { ChevronDown, CirclePlus } from "lucide-react";
 import type { Faq } from "@/lib/schema";
 
 type Props = {
@@ -11,9 +11,9 @@ type Props = {
 };
 
 /**
- * FAQ in the concept language: white 2px-bordered blocks with a plus
- * toggle. First item is open by default so content is visible (and
- * present for no-JS readers); printing expands every item.
+ * FAQ in the super.cx language: light-gray pill rows with a green
+ * circle chevron button. First item is open by default so content is
+ * visible (and present for no-JS readers); printing expands every item.
  */
 export default function FaqSection({ faqs, index }: Props) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -44,8 +44,9 @@ export default function FaqSection({ faqs, index }: Props) {
   }, []);
 
   return (
-    <section className="section-block" aria-labelledby="faq-heading">
+    <section className="section-block" id="faq" aria-labelledby="faq-heading">
       <p className="kicker" aria-hidden="true">
+        <CirclePlus size={16} />
         <span>{index}</span>&nbsp;&nbsp;Questions
       </p>
       <h2 id="faq-heading">Frequently asked questions</h2>
@@ -54,7 +55,9 @@ export default function FaqSection({ faqs, index }: Props) {
           <details className="faq-item" key={f.q} open={i === 0}>
             <summary>
               <span className="faq-q">{f.q}</span>
-              <Plus className="faq-icon" size={22} aria-hidden="true" />
+              <span className="faq-chevron" aria-hidden="true">
+                <ChevronDown size={19} strokeWidth={2.6} />
+              </span>
             </summary>
             <div className="faq-a">
               <p>{f.a}</p>

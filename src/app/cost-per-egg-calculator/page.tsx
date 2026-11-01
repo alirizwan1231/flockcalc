@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CirclePlus } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import EggCostCalc from "@/components/EggCostCalc";
 import { CalcBadge } from "@/components/CalcChrome";
@@ -85,6 +86,7 @@ export default function EggCostPage() {
         <div className="prose-grid">
           <div>
             <p className="kicker" aria-hidden="true">
+              <CirclePlus size={16} />
               <span>01</span>&nbsp;&nbsp;Method
             </p>
             <h2 id="how-heading">How it works</h2>
@@ -125,6 +127,7 @@ export default function EggCostPage() {
 
       <section className="section-block" aria-labelledby="table-heading">
         <p className="kicker" aria-hidden="true">
+          <CirclePlus size={16} />
           <span>02</span>&nbsp;&nbsp;Reference
         </p>
         <h2 id="table-heading">Cost per egg by flock size</h2>

@@ -13,14 +13,24 @@ type Props = {
   min: number;
   max: number;
   step?: number;
-  /** Show the small min/max scale under the slider (concept fields omit it). */
+  /** Show the small min/max scale under the slider. */
   showScale?: boolean;
 };
 
+/** Inline style that paints the filled (violet) part of the slider track. */
+export function sliderFill(value: number, min: number, max: number) {
+  const pct =
+    max > min ? Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100)) : 0;
+  return {
+    background: `linear-gradient(to right, var(--violet) ${pct}%, var(--track) ${pct}%)`,
+  } as const;
+}
+
 /**
- * Concept count field: a big DM Serif number input paired with a synced
- * range slider (amber accent) writing into the same state. Typing stays
- * free-form; the slider clamps to its range.
+ * Bloomkite count field: a BIG bold number input paired with a synced
+ * range slider (violet filled track, round thumb) writing into the same
+ * state, with min/max labels at both ends. Typing stays free-form; the
+ * slider clamps to its range.
  */
 export default function CountField({
   id,
@@ -31,7 +41,7 @@ export default function CountField({
   min,
   max,
   step = 1,
-  showScale = false,
+  showScale = true,
 }: Props) {
   const parsed = parseFloat(value);
   const sliderValue = Number.isFinite(parsed)
@@ -50,23 +60,26 @@ export default function CountField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        <input
-          className="count-slider"
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={sliderValue}
-          aria-label={sliderLabel}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </div>
-      {showScale ? (
-        <div className="slider-scale" aria-hidden="true">
-          <span>{min}</span>
-          <span>{max}</span>
+        <div className="count-slider-wrap">
+          <input
+            className="count-slider"
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={sliderValue}
+            aria-label={sliderLabel}
+            style={sliderFill(sliderValue, min, max)}
+            onChange={(e) => onChange(e.target.value)}
+          />
+          {showScale ? (
+            <div className="slider-scale" aria-hidden="true">
+              <span>{min}</span>
+              <span>{max}</span>
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }

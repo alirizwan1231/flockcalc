@@ -6,6 +6,7 @@ import CountField from "./CountField";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
+import { GreenBlock, PropBar } from "./Viz";
 
 const SIZES = [
   { id: "light", label: "Light breeds — 3 sq ft (Runners, Campbell)", coop: 3 },
@@ -133,6 +134,22 @@ export default function DuckCalc() {
             <div className="rs-value">None — ducks sleep on bedding</div>
           </div>
         </div>
+        <PropBar
+          segments={[
+            {
+              label: "Coop",
+              value: coop,
+              display: `${fmt(r1(coop))} sq ft`,
+              tone: "violet",
+            },
+            {
+              label: "Run",
+              value: run,
+              display: `${fmt(r1(run))} sq ft`,
+              tone: "green",
+            },
+          ]}
+        />
         <div className="result-note">
           <ul className="tight">
             <li>
@@ -149,6 +166,12 @@ export default function DuckCalc() {
             </li>
           </ul>
         </div>
+        <GreenBlock
+          items={[
+            { label: "Coop space needed", value: fmt(r1(coop)), unit: "sq ft" },
+            { label: "Run space needed", value: fmt(r1(run)), unit: "sq ft" },
+          ]}
+        />
         <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>

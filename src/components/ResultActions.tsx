@@ -10,9 +10,9 @@ type Props = {
 };
 
 /**
- * Concept action row for the dark result panel: amber Copy results,
- * outline-white Reset and Print. Copy performs a real clipboard write
- * with a transient "Copied" confirmation.
+ * Action row for the summary panel: green Copy results pill, white
+ * Reset and Print pills. Copy performs a real clipboard write with a
+ * transient "Copied" confirmation.
  */
 export default function ResultActions({ summary, onReset }: Props) {
   const [copied, setCopied] = useState(false);
@@ -62,12 +62,12 @@ export default function ResultActions({ summary, onReset }: Props) {
       >
         {copied ? "Copied" : "Copy results"}
       </button>
-      <button type="button" className="btn btn-on-dark" onClick={onReset}>
+      <button type="button" className="btn" onClick={onReset}>
         Reset
       </button>
       <button
         type="button"
-        className="btn btn-on-dark"
+        className="btn"
         onClick={() => window.print()}
       >
         Print

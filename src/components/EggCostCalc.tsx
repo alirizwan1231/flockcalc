@@ -5,6 +5,60 @@ import { eggCost, fmt, money, num, r2 } from "@/lib/math";
 import CountField from "./CountField";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
+import SliderField from "./SliderField";
+import { GreenBlock } from "./Viz";
+
+/** Donut of the monthly cost split: feed (violet) vs other costs (green). */
+function CostDonut({ feed, extra }: { feed: number; extra: number }) {
+  const total = feed + extra;
+  const R = 52;
+  const C = 2 * Math.PI * R;
+  const feedShare = total > 0 ? feed / total : 0;
+  const extraShare = total > 0 ? extra / total : 0;
+  return (
+    <div className="donut-wrap">
+      <svg width="128" height="128" viewBox="0 0 128 128" role="img"
+        aria-label={`Feed is ${Math.round(feedShare * 100)} percent of monthly cost`}>
+        <circle cx="64" cy="64" r={R} fill="none" stroke="#e4def7" strokeWidth="15" />
+        <circle
+          cx="64" cy="64" r={R} fill="none" stroke="#7c3aed" strokeWidth="15"
+          strokeDasharray={`${feedShare * C} ${C}`}
+          transform="rotate(-90 64 64)" strokeLinecap="butt"
+        />
+        {extraShare > 0 ? (
+          <circle
+            cx="64" cy="64" r={R} fill="none" stroke="#4be07f" strokeWidth="15"
+            strokeDasharray={`${extraShare * C} ${C}`}
+            strokeDashoffset={-feedShare * C}
+            transform="rotate(-90 64 64)" strokeLinecap="butt"
+          />
+        ) : null}
+        <text x="64" y="62" textAnchor="middle" fontSize="23" fontWeight="800" fill="#16102e">
+          {Math.round(feedShare * 100)}%
+        </text>
+        <text x="64" y="82" textAnchor="middle" fontSize="12.5" fontWeight="600" fill="#6b6785">
+          feed
+        </text>
+      </svg>
+      <div className="donut-legend">
+        <div className="dl-row">
+          <span className="prop-dot tone-violet" aria-hidden="true" />
+          <span className="dl-k">Feed</span>
+          <span className="dl-v">{money(r2(feed))} / month</span>
+        </div>
+        <div className="dl-row">
+          <span className="prop-dot tone-green" aria-hidden="true" />
+          <span className="dl-k">Other costs</span>
+          <span className="dl-v">{money(r2(extra))} / month</span>
+        </div>
+        <div className="dl-row">
+          <span className="dl-k" style={{ marginLeft: 19 }}>Total</span>
+          <span className="dl-v">{money(r2(total))} / month</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const DEFAULTS = {
   hens: "6",
@@ -65,85 +119,71 @@ export default function EggCostCalc() {
           min={1}
           max={100}
         />
-        <div className="field">
-          <label htmlFor="e-eggs">Eggs per hen, per week</label>
-          <input
-            id="e-eggs"
-            type="number"
-            min="0"
-            step="0.5"
-            value={eggsIn}
-            onChange={(e) => setEggsIn(e.target.value)}
-          />
-        </div>
-        <div className="input-row">
-          <div className="field">
-            <label htmlFor="e-price">Feed bag price ($)</label>
-            <div className="input-affix">
-              <span className="affix affix-pre" aria-hidden="true">
-                $
-              </span>
-              <input
-                id="e-price"
-                type="number"
-                min="0"
-                step="0.5"
-                value={priceIn}
-                onChange={(e) => setPriceIn(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label htmlFor="e-weight">Bag weight (lb)</label>
-            <div className="input-affix">
-              <input
-                id="e-weight"
-                type="number"
-                min="0"
-                value={weightIn}
-                onChange={(e) => setWeightIn(e.target.value)}
-              />
-              <span className="affix affix-post" aria-hidden="true">
-                lb
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="field">
-          <label htmlFor="e-extra">
-            Other monthly costs — bedding, treats, grit ($)
-            <span className="hint">Optional. Leave at 0 for feed-only cost.</span>
-          </label>
-          <div className="input-affix">
-            <span className="affix affix-pre" aria-hidden="true">
-              $
-            </span>
-            <input
-              id="e-extra"
-              type="number"
-              min="0"
-              step="1"
-              value={extraIn}
-              onChange={(e) => setExtraIn(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="field">
-          <label htmlFor="e-store">Store price per dozen ($)</label>
-          <div className="input-affix">
-            <span className="affix affix-pre" aria-hidden="true">
-              $
-            </span>
-            <input
-              id="e-store"
-              type="number"
-              min="0"
-              step="0.25"
-              value={storeIn}
-              onChange={(e) => setStoreIn(e.target.value)}
-            />
-          </div>
-        </div>
+        <SliderField
+          id="e-eggs"
+          label="Eggs per hen, per week"
+          sliderLabel="Eggs per hen, per week"
+          value={eggsIn}
+          onChange={setEggsIn}
+          min={0}
+          max={7}
+          step={0.5}
+        />
+        <SliderField
+          id="e-price"
+          label="Feed bag price ($)"
+          sliderLabel="Feed bag price in dollars"
+          value={priceIn}
+          onChange={setPriceIn}
+          min={0}
+          max={80}
+          step={0.5}
+          prefix="$"
+          minLabel="$0"
+          maxLabel="$80"
+        />
+        <SliderField
+          id="e-weight"
+          label="Bag weight (lb)"
+          sliderLabel="Bag weight in pounds"
+          value={weightIn}
+          onChange={setWeightIn}
+          min={0}
+          max={100}
+          step={1}
+          suffix="lb"
+        />
+        <SliderField
+          id="e-extra"
+          label={
+            <>
+              Other monthly costs — bedding, treats, grit ($)
+              <span className="hint">Optional. Leave at 0 for feed-only cost.</span>
+            </>
+          }
+          sliderLabel="Other monthly costs in dollars"
+          value={extraIn}
+          onChange={setExtraIn}
+          min={0}
+          max={60}
+          step={1}
+          prefix="$"
+          minLabel="$0"
+          maxLabel="$60"
+        />
+        <SliderField
+          id="e-store"
+          label="Store price per dozen ($)"
+          sliderLabel="Store price per dozen in dollars"
+          value={storeIn}
+          onChange={setStoreIn}
+          min={0}
+          max={15}
+          step={0.25}
+          prefix="$"
+          minLabel="$0"
+          maxLabel="$15"
+        />
       </div>
 
       <div className="result-panel" aria-live="polite">
@@ -155,6 +195,7 @@ export default function EggCostCalc() {
             {money(r2(r.costPerDozen))} per dozen
           </div>
         </div>
+        <CostDonut feed={r.feedCost} extra={num(extraIn)} />
         <div className="result-stats three">
           <div>
             <div className="rs-label">Feed used per month</div>
@@ -187,6 +228,12 @@ export default function EggCostCalc() {
             )}
           </p>
         </div>
+        <GreenBlock
+          items={[
+            { label: "Cost per dozen", value: money(r2(r.costPerDozen)) },
+            { label: "Cost per egg", value: money(r2(r.costPerEgg)) },
+          ]}
+        />
         <ResultActions summary={summary} onReset={reset} />
       </div>
     </div>

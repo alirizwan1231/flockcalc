@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import PageHead from "@/components/PageHead";
 import { site, tools } from "@/lib/site";
 
@@ -25,7 +26,7 @@ export default function AboutPage() {
         lede="FlockCalc is a small, free collection of calculators for backyard poultry keepers — the quick flock maths you would otherwise do on the back of a feed bag."
       />
 
-      <section className="section-block" aria-labelledby="about-tools-heading">
+      <section className="info-card" aria-labelledby="about-tools-heading">
         <div className="prose-grid">
           <div>
             <p className="kicker" aria-hidden="true">
@@ -55,7 +56,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-block" aria-labelledby="about-sources-heading">
+      <section className="info-card" aria-labelledby="about-sources-heading">
         <div className="prose-grid">
           <div>
             <p className="kicker" aria-hidden="true">
@@ -83,7 +84,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-block" aria-labelledby="about-contact-heading">
+      <section className="info-card dark" aria-labelledby="about-contact-heading">
         <div className="prose-grid">
           <div>
             <p className="kicker" aria-hidden="true">
@@ -100,8 +101,11 @@ export default function AboutPage() {
               when better guidance wins the argument.
             </p>
             <p style={{ marginBottom: 0 }}>
-              <Link className="btn btn-primary" href="/">
+              <Link className="btn btn-primary has-arrow" href="/">
                 Browse the calculators
+                <span className="btn-arrow" aria-hidden="true">
+                  <ArrowUpRight size={17} />
+                </span>
               </Link>
             </p>
           </div>

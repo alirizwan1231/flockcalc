@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import EggMark from "./EggMark";
 import { site, tools } from "@/lib/site";
 
-/** Concept nav: Calculators (quail) · How it works (home anchor) · About. */
+/** Floating pill nav links — short labels, super.cx style. */
 const NAV = [
-  { href: tools[0].path, label: "Calculators" },
-  { href: "/#how-numbers-work", label: "How it works" },
-  { href: "/about", label: "About" },
+  { href: tools[0].path, label: "Quail Coop" },
+  { href: tools[1].path, label: "Chickens" },
+  { href: tools[2].path, label: "Cost per Egg" },
+  { href: tools[3].path, label: "Ducks" },
+  { href: tools[4].path, label: "Chicken Coop" },
 ] as const;
 
 export default function Header() {
@@ -23,55 +25,70 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) =>
-    href.startsWith("/#") ? pathname === "/" : pathname === href;
+  const isActive = (href: string) => pathname === href;
 
   return (
-    <header className="site-header no-print">
-      <div className="wrap header-inner">
-        <Link href="/" className="brand" aria-label={`${site.name} home`}>
-          <EggMark />
-          <span className="brand-name">{site.name}</span>
-        </Link>
-
-        <nav className="main-nav" aria-label="Site">
-          {NAV.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={isActive(item.href) ? "is-active" : undefined}
-              aria-current={
-                isActive(item.href) && !item.href.startsWith("/#")
-                  ? "page"
-                  : undefined
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Link href={tools[0].path} className="btn btn-primary header-cta">
-            Open a tool
+    <header className="site-header no-print" id="top">
+      <div className="wrap">
+        <div className="nav-pill">
+          <Link href="/" className="brand" aria-label={`${site.name} home`}>
+            <EggMark size={38} />
+            <span className="brand-name">
+              Flock<em>Calc</em>
+            </span>
           </Link>
-        </nav>
 
-        <button
-          type="button"
-          className="menu-toggle"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
+          <nav className="main-nav" aria-label="Site">
+            {NAV.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={isActive(item.href) ? "is-active" : undefined}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="header-right">
+            <Link
+              href="/about"
+              className="about-link"
+              aria-current={pathname === "/about" ? "page" : undefined}
+            >
+              About
+            </Link>
+            <Link
+              href="/chicken-coop-size-calculator"
+              className="btn btn-primary has-arrow nav-cta"
+            >
+              <span className="cta-label">Start calculating</span>
+              <span className="btn-arrow" aria-hidden="true">
+                <ArrowUpRight size={17} />
+              </span>
+            </Link>
+            <button
+              type="button"
+              className="menu-toggle"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? (
+                <X size={22} aria-hidden="true" />
+              ) : (
+                <Menu size={22} aria-hidden="true" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="mobile-menu"
+          className={`mobile-menu${open ? " is-open" : ""}`}
         >
-          {open ? (
-            <X size={22} aria-hidden="true" />
-          ) : (
-            <Menu size={22} aria-hidden="true" />
-          )}
-        </button>
-      </div>
-
-      <div id="mobile-menu" className={`mobile-menu${open ? " is-open" : ""}`}>
-        <div className="wrap">
           <nav className="mobile-nav" aria-label="Site">
             {[...tools, { path: "/about", name: "About" }].map((t) => (
               <Link
@@ -85,11 +102,11 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href={tools[0].path}
-              className="btn btn-primary mobile-cta"
+              href="/chicken-coop-size-calculator"
+              className="mobile-cta"
               onClick={() => setOpen(false)}
             >
-              Open a tool
+              Start calculating
             </Link>
           </nav>
         </div>

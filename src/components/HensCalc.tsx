@@ -7,6 +7,8 @@ import { chickenSpace, fmt, num, r1, sqm } from "@/lib/math";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
+import SliderField from "./SliderField";
+import { GreenBlock, PropBar } from "./Viz";
 
 const RATES = [
   { id: "6", label: "Heavy layer — about 6 eggs/week (e.g. ISA Brown, Leghorn)" },
@@ -57,32 +59,32 @@ export default function HensCalc() {
     <div className="workbench">
       <div className="calc-inputs">
         <InputsHead />
-        <div className="field">
-          <label htmlFor="h-people">People in your household</label>
-          <input
-            id="h-people"
-            type="number"
-            min="1"
-            value={peopleIn}
-            onChange={(e) => setPeopleIn(e.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="h-eggs">
-            Eggs eaten per person, per week
-            <span className="hint">
-              Count breakfasts, baking and cooking. The average person eats
-              roughly 5 eggs a week.
-            </span>
-          </label>
-          <input
-            id="h-eggs"
-            type="number"
-            min="0"
-            value={eggsIn}
-            onChange={(e) => setEggsIn(e.target.value)}
-          />
-        </div>
+        <SliderField
+          id="h-people"
+          label="People in your household"
+          sliderLabel="People in your household"
+          value={peopleIn}
+          onChange={setPeopleIn}
+          min={1}
+          max={12}
+        />
+        <SliderField
+          id="h-eggs"
+          label={
+            <>
+              Eggs eaten per person, per week
+              <span className="hint">
+                Count breakfasts, baking and cooking. The average person eats
+                roughly 5 eggs a week.
+              </span>
+            </>
+          }
+          sliderLabel="Eggs eaten per person, per week"
+          value={eggsIn}
+          onChange={setEggsIn}
+          min={0}
+          max={21}
+        />
         <div className="field">
           <span className="field-label" id="h-rate-label">
             How well your hens will lay
@@ -134,6 +136,22 @@ export default function HensCalc() {
             </div>
           </div>
         </div>
+        <PropBar
+          segments={[
+            {
+              label: "Minimum hens",
+              value: hensNeeded,
+              display: `${hensNeeded}`,
+              tone: "violet",
+            },
+            {
+              label: "Buffer hen",
+              value: Math.max(0, recommended - hensNeeded),
+              display: `+${Math.max(0, recommended - hensNeeded)}`,
+              tone: "green",
+            },
+          ]}
+        />
         <div className="result-note">
           <p>
             <strong>Why the extra hen?</strong> Hens stop laying while moulting,
@@ -141,6 +159,19 @@ export default function HensCalc() {
             eggs coming through all of it — most keepers are glad they added her.
           </p>
         </div>
+        <GreenBlock
+          items={[
+            {
+              label: "Recommended flock",
+              value: `${recommended}`,
+              unit: "hens",
+            },
+            {
+              label: "Eggs per week",
+              value: fmt(recommended * rate),
+            },
+          ]}
+        />
         <ResultActions summary={summary} onReset={reset} />
         <div className="result-link">
           <Link className="btn btn-primary" href="/chicken-coop-size-calculator">
