@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import CoopCalc from "@/components/CoopCalc";
+import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
@@ -76,6 +77,7 @@ export default function CoopPage() {
         }
       />
 
+      <CalcBadge />
       <CoopCalc />
 
       <section className="section-block" aria-labelledby="how-heading">

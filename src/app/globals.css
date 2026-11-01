@@ -46,9 +46,15 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 18px;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 19px;
+  }
 }
 
 ::selection {
@@ -127,7 +133,7 @@ h3 {
 /* Kicker — breadcrumb / section / field labels (concept .k) */
 .kicker {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.12em;
@@ -149,8 +155,9 @@ h3 {
 
 .lede {
   font-size: 20px;
+  font-weight: 500;
   line-height: 1.6;
-  color: var(--intro);
+  color: var(--ink);
   margin: 0;
   max-width: 520px;
 }
@@ -161,9 +168,14 @@ h3 {
   padding-top: 96px;
 }
 
+/* First section after the ink strip sits closer to it */
+.bento-section {
+  padding-top: 48px;
+}
+
 .section-block > p {
   font-size: 19px;
-  color: var(--intro);
+  color: var(--ink);
 }
 
 .section-block > p a {
@@ -184,7 +196,8 @@ h3 {
 
 .prose-grid .body-col > p:first-child {
   font-size: 20px;
-  color: var(--intro);
+  font-weight: 500;
+  color: var(--ink);
   margin-top: 0;
 }
 
@@ -382,8 +395,12 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 48px;
-  align-items: end;
+  align-items: start;
   margin: 20px 0 0;
+}
+
+.hero-main h1 {
+  margin-bottom: 24px;
 }
 
 .hero-side {
@@ -407,7 +424,7 @@ h3 {
   gap: 9px;
   font-size: 16px;
   font-weight: 500;
-  color: var(--intro);
+  color: var(--ink);
 }
 
 .hero-points svg {
@@ -459,7 +476,7 @@ h3 {
 
 .bento-card .bento-num {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--ink-2);
@@ -474,7 +491,7 @@ h3 {
 
 .bento-card p {
   margin: 0;
-  color: var(--ink-2);
+  color: var(--ink);
   font-size: 17px;
   line-height: 1.55;
   max-width: none;
@@ -491,18 +508,154 @@ h3 {
   font-size: 22px;
 }
 
+/* Bottom affordance row on home tool cards */
+.bento-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--row-rule);
+  padding-top: 16px;
+  margin-top: 20px;
+}
+
+.bento-tag {
+  display: inline-block;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bento-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- Ink ticker strip (home, under hero) ---------- */
+
+.ink-strip {
+  background: var(--ink);
+  color: var(--bg);
+  margin-top: 56px;
+}
+
+.ink-strip-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.strip-dot {
+  color: var(--amber);
+}
+
+/* ---------- Quick coop calculator (home hero) ---------- */
+
+.quick-card {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--r-card);
+  padding: 28px;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.quick-card > .kicker {
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.quick-card .field {
+  margin-bottom: 22px;
+}
+
+.quick-card .field:last-child {
+  margin-bottom: 0;
+}
+
+.quick-result {
+  background: var(--ink);
+  color: var(--white);
+  border-radius: var(--r-btn);
+  padding: 20px 22px;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.qr-label {
+  color: var(--on-dark-muted);
+  font-size: 14.5px;
+  margin-bottom: 2px;
+}
+
+.qr-num {
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.qr-num .qr-unit {
+  font-size: 16px;
+  color: var(--white);
+}
+
+.qr-metric {
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.quick-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-weight: 700;
+  font-size: 17px;
+}
+
 /* ---------- Page head (tool pages) ---------- */
 
 .page-head {
-  padding-top: 16px;
+  padding-top: 12px;
 }
 
 .page-head-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 48px;
-  margin: 36px 0 48px;
+  gap: 20px 48px;
+  margin: 14px 0 14px;
   align-items: end;
+}
+
+/* Compressed tool-page head: calculator reaches the first viewport */
+.page-head h1 {
+  font-size: clamp(38px, 4.5vw, 60px);
+}
+
+.page-head .lede {
+  max-width: 46ch;
 }
 
 /* ---------- Calculator workbench ---------- */
@@ -511,6 +664,48 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+/* Amber badge directly above every calculator */
+.calc-badge-row {
+  margin-bottom: 20px;
+}
+
+.calc-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 18px;
+  background: var(--amber);
+  border: var(--border);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+/* Header row inside the input card */
+.calc-inputs-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding-bottom: 18px;
+  border-bottom: var(--border);
+}
+
+.calc-inputs-head .kicker {
+  color: var(--ink);
+}
+
+.cih-note {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-2);
 }
 
 .workbench {
@@ -541,7 +736,7 @@ h3 {
 .field-label {
   display: block;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -724,7 +919,7 @@ h3 {
 .form-note {
   margin-top: auto;
   padding-top: 18px;
-  color: var(--ink-2);
+  color: var(--ink);
   font-size: 17px;
   line-height: 1.6;
 }
@@ -753,7 +948,7 @@ h3 {
   gap: 16px;
   padding: 9px 0;
   border-bottom: 1px solid var(--row-rule);
-  font-size: 16.5px;
+  font-size: 17px;
 }
 
 .mini-row .k {
@@ -943,6 +1138,15 @@ h3 {
   margin-top: auto;
 }
 
+/* Results stay in view while a long input form scrolls (desktop) */
+@media (min-width: 1024px) {
+  .result-panel {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+}
+
 .result-link {
   margin-top: 16px;
 }
@@ -966,7 +1170,7 @@ table.data {
 table.data th {
   text-align: left;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -979,6 +1183,7 @@ table.data th {
 table.data td {
   padding: 16px 20px;
   border-bottom: 1px solid var(--row-rule);
+  font-size: 17px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1046,7 +1251,8 @@ table.data tbody tr:last-child td {
 
 .faq-a p {
   margin: 0;
-  color: var(--ink-2);
+  color: var(--ink);
+  font-size: 18px;
   max-width: 68ch;
 }
 
@@ -1107,7 +1313,7 @@ table.data tbody tr:last-child td {
 }
 
 .footer-head {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1196,7 +1402,8 @@ table.data tbody tr:last-child td {
   }
 
   .calc-inputs,
-  .result-panel {
+  .result-panel,
+  .quick-card {
     padding: 26px;
   }
 

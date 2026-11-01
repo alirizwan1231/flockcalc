@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
 import CountField from "./CountField";
 import ResultActions from "./ResultActions";
+import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
 
 const RATES = [
@@ -114,6 +115,7 @@ export default function QuailCalc() {
 
       <div className="workbench">
         <div className="calc-inputs">
+        <InputsHead />
           {mode === "forward" ? (
             <>
               <CountField

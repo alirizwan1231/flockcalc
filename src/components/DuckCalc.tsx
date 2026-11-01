@@ -4,6 +4,7 @@ import { useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
 import CountField from "./CountField";
 import ResultActions from "./ResultActions";
+import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
 
 const SIZES = [
@@ -56,6 +57,7 @@ export default function DuckCalc() {
   return (
     <div className="workbench">
       <div className="calc-inputs">
+        <InputsHead />
         <CountField
           id="d-ducks"
           label="Number of ducks"

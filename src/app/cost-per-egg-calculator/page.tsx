@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import EggCostCalc from "@/components/EggCostCalc";
+import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
@@ -77,6 +78,7 @@ export default function EggCostPage() {
         }
       />
 
+      <CalcBadge />
       <EggCostCalc />
 
       <section className="section-block" aria-labelledby="how-heading">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import DuckCalc from "@/components/DuckCalc";
+import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
@@ -70,6 +71,7 @@ export default function DuckPage() {
         lede="Ducks need more floor than chickens and none of the perches. Enter your flock size and breed type for coop space, run space and nesting spots — plus the duck-specific details that chicken calculators miss."
       />
 
+      <CalcBadge />
       <DuckCalc />
 
       <section className="section-block" aria-labelledby="how-heading">

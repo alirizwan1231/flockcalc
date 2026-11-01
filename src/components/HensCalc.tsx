@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { chickenSpace, fmt, num, r1, sqm } from "@/lib/math";
 import ResultActions from "./ResultActions";
+import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
 
 const RATES = [
@@ -55,6 +56,7 @@ export default function HensCalc() {
   return (
     <div className="workbench">
       <div className="calc-inputs">
+        <InputsHead />
         <div className="field">
           <label htmlFor="h-people">People in your household</label>
           <input

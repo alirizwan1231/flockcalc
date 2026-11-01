@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
+import QuickCoopCalc from "@/components/QuickCoopCalc";
 import { site, tools } from "@/lib/site";
 import { faqSchema, websiteSchema, type Faq } from "@/lib/schema";
 
@@ -61,8 +62,8 @@ export default function HomePage() {
         <div className="hero">
           <p className="kicker">Free calculators — no sign-up</p>
           <div className="hero-grid">
-            <h1>Free calculators for backyard chickens, quail and ducks</h1>
-            <div className="hero-side">
+            <div className="hero-main">
+              <h1>Free calculators for backyard chickens, quail and ducks</h1>
               <p className="lede">
                 How big should the coop be? How many hens does your family actually
                 need? What does a home-laid egg really cost? Answer all three in
@@ -93,10 +94,30 @@ export default function HomePage() {
                 </li>
               </ul>
             </div>
+            <QuickCoopCalc />
           </div>
         </div>
+      </div>
 
-        <section className="section-block" aria-label="All calculators">
+      <div className="ink-strip">
+        <div className="wrap ink-strip-inner">
+          <span>5 free calculators</span>
+          <span className="strip-dot" aria-hidden="true">
+            ·
+          </span>
+          <span>No sign-up</span>
+          <span className="strip-dot" aria-hidden="true">
+            ·
+          </span>
+          <span>Results as you type</span>
+        </div>
+      </div>
+
+      <div className="wrap">
+        <section
+          className="section-block bento-section"
+          aria-label="All calculators"
+        >
           <div className="bento">
             {tools.map((t, i) => {
               const stat = STATS[t.slug];
@@ -117,6 +138,13 @@ export default function HomePage() {
                   <span className="bento-stat" aria-hidden="true">
                     {stat.big}
                     {stat.unit ? <small>{stat.unit}</small> : null}
+                  </span>
+                  <span className="bento-foot">
+                    <span className="bento-tag">Free calculator</span>
+                    <span className="bento-go">
+                      Calculate
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </span>
                   </span>
                 </Link>
               );

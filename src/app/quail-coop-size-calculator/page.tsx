@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import QuailCalc from "@/components/QuailCalc";
+import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
@@ -66,6 +67,7 @@ export default function QuailPage() {
         lede="Coturnix quail need about 1 sq ft of floor space per bird. Enter your covey size for the exact floor area, cage sizes that fit — or flip it around and check how many quail fit in the cage you already own."
       />
 
+      <CalcBadge />
       <QuailCalc />
 
       <section className="section-block" aria-labelledby="how-heading">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import HensCalc from "@/components/HensCalc";
+import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
@@ -71,6 +72,7 @@ export default function HensPage() {
         lede="Work backwards from breakfast. Tell the calculator how many eggs your household eats each week and how well your chosen breeds lay, and it gives you the flock size — plus the extra buffer hen experienced keepers swear by."
       />
 
+      <CalcBadge />
       <HensCalc />
 
       <section className="section-block" aria-labelledby="how-heading">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { eggCost, fmt, money, num, r2 } from "@/lib/math";
 import CountField from "./CountField";
 import ResultActions from "./ResultActions";
+import { InputsHead } from "./CalcChrome";
 
 const DEFAULTS = {
   hens: "6",
@@ -54,6 +55,7 @@ export default function EggCostCalc() {
   return (
     <div className="workbench">
       <div className="calc-inputs">
+        <InputsHead />
         <CountField
           id="e-hens"
           label="Number of hens"

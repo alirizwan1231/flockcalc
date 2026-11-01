@@ -13,6 +13,7 @@ import {
 } from "@/lib/math";
 import CountField from "./CountField";
 import ResultActions from "./ResultActions";
+import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
 
 const SIZE_SEGMENTS = (Object.keys(CHICKEN_RATES) as ChickenSize[]).map(
@@ -72,6 +73,7 @@ export default function CoopCalc() {
   return (
     <div className="workbench">
       <div className="calc-inputs">
+        <InputsHead />
         <CountField
           id="c-birds"
           label="Number of chickens"
