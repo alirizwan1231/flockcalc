@@ -4,7 +4,8 @@ import { ArrowUpRight, CirclePlus } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import FaqSection from "@/components/FaqSection";
 import QuickCoopCalc from "@/components/QuickCoopCalc";
-import { site, tools } from "@/lib/site";
+import { TOOL_KICKERS } from "@/components/RelatedTools";
+import { ogImage, site, tools } from "@/lib/site";
 import { faqSchema, websiteSchema, type Faq } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -17,11 +18,13 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — Free Backyard Chicken, Quail & Duck Calculators`,
     description: site.description,
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${site.name} — Free Backyard Chicken, Quail & Duck Calculators`,
     description: site.description,
+    images: [ogImage.url],
   },
 };
 
@@ -152,6 +155,31 @@ function CardVisual({ slug }: { slug: string }) {
   );
 }
 
+/** One-line description per tool for the all-calculators grid. */
+const SHORT_LINES: Record<string, string> = {
+  "quail-coop-size-calculator":
+    "Floor space for Coturnix quail — and how many fit your cage.",
+  "how-many-chickens-do-i-need":
+    "Eggs you eat → hens you need, buffer included.",
+  "cost-per-egg-calculator": "Your real cost per egg and per dozen, feed counted.",
+  "duck-coop-size-calculator":
+    "Coop and run for ducks — no roosts, splash zones planned.",
+  "chicken-coop-size-calculator":
+    "Coop, run, roost and boxes for bantam to large breeds.",
+  "egg-production-calculator":
+    "Eggs per week, month and year from your flock's laying rate.",
+  "chicken-feed-calculator":
+    "Daily and monthly feed amounts, bags and cost for your flock.",
+  "how-many-quail-do-i-need": "Eggs you want → quail hens and cage space you need.",
+  "chicken-run-size-calculator":
+    "Run area, buildable dimensions and fencing length.",
+  "hatch-date-calculator": "Hatch day, lockdown and candling dates for five species.",
+  "nesting-box-calculator": "Boxes at 1 per 4 hens, roost at 10 inches per bird.",
+  "how-many-ducks-do-i-need": "Eggs you want → duck hens, coop and run you need.",
+  "quail-feed-calculator": "Quail feed per day and month, in grams and pounds.",
+  "brooder-planner": "Brooder space week by week, plus the heat schedule.",
+};
+
 /** Space rates straight from lib/math.ts + the calculators (planning figures). */
 const RATES = [
   { bird: "Chicken (standard)", coop: "3.5 sq ft", run: "10 sq ft", feed: "0.25 lb/day" },
@@ -225,7 +253,7 @@ export default function HomePage() {
               <div className="hero-strip">
                 <div className="hero-strip-inner">
                   <span>
-                    <strong>5 free calculators</strong>
+                    <strong>14 free calculators</strong>
                   </span>
                   <span className="dot" aria-hidden="true">·</span>
                   <span>Quail</span>
@@ -253,12 +281,13 @@ export default function HomePage() {
             </p>
             <h2>Pick your calculator</h2>
             <p className="lede">
-              Five tools, one job — the right space for your birds and the true
-              cost of your eggs.
+              Fourteen tools, one job — the right space for your birds, the
+              true cost of your eggs, and a hatch you can plan to the day. The
+              five most-used, first:
             </p>
           </div>
           <div className="bento">
-            {tools.map((t) => {
+            {tools.slice(0, 5).map((t) => {
               const card = CARDS[t.slug];
               return (
                 <Link
@@ -304,6 +333,40 @@ export default function HomePage() {
                 </span>
               </span>
             </div>
+          </div>
+        </section>
+
+        <section
+          className="section-block"
+          aria-labelledby="all-calcs-heading"
+        >
+          <div className="section-head">
+            <p className="kicker">
+              <CirclePlus size={16} aria-hidden="true" />
+              All the calculators
+            </p>
+            <h2 id="all-calcs-heading">Every tool, one page</h2>
+            <p className="lede">
+              Housing, feed, eggs and hatching — the complete set of fourteen,
+              all free and all instant.
+            </p>
+          </div>
+          <div className="tool-grid">
+            {tools.map((t) => (
+              <Link key={t.slug} href={t.path} className="tool-chip-card">
+                <span className="bento-kicker">{TOOL_KICKERS[t.slug]}</span>
+                <span className="tool-chip-name">{t.name}</span>
+                <p className="tool-chip-line">{SHORT_LINES[t.slug]}</p>
+                <span className="bento-foot">
+                  <span className="bento-pill">
+                    Calculate
+                    <span className="btn-arrow sm" aria-hidden="true">
+                      <ArrowUpRight size={15} />
+                    </span>
+                  </span>
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
 

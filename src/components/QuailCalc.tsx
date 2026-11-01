@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
 import CountField from "./CountField";
+import MobileResultBar from "./MobileResultBar";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
@@ -312,6 +313,31 @@ export default function QuailCalc() {
           <ResultActions summary={summary} onReset={reset} />
         </div>
       </div>
+      {mode === "forward" ? (
+        <MobileResultBar
+          items={[
+            {
+              label: "Floor space",
+              value: `${fmt(r1(needed))} sq ft`,
+              headline: true,
+            },
+            { label: "Metric", value: `${fmt(r1(sqm(needed)))} m²` },
+            { label: "Quail", value: `${birds}` },
+          ]}
+        />
+      ) : (
+        <MobileResultBar
+          items={[
+            {
+              label: "Cage fits",
+              value: `${revStandard} quail`,
+              headline: true,
+            },
+            { label: "Cage floor", value: `${fmt(revArea)} sq ft` },
+            { label: "Metric", value: `${fmt(r1(sqm(revArea)))} m²` },
+          ]}
+        />
+      )}
     </div>
   );
 }

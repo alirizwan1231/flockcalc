@@ -7,14 +7,14 @@ import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
-import { site, toolBySlug } from "@/lib/site";
+import { ogImage, site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
 import { fmt, r1, sqm } from "@/lib/math";
 
 const tool = toolBySlug("quail-coop-size-calculator");
-const TITLE = `Quail Coop Size Calculator — How Much Space Do Quail Need? | ${site.name}`;
+const TITLE = `Quail Coop Size Calculator — How Much Space Do Quail Need?`;
 const DESC =
-  "Free quail coop size calculator: floor space for Coturnix quail at 1 sq ft per bird, cage sizes that fit your covey, and a reverse mode — how many quail fit in your cage?";
+  "Free quail coop size calculator: floor space for Coturnix quail at 1 sq ft per bird, cage sizes for your covey, and a reverse mode for the cage you already own.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -26,8 +26,14 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: TITLE,
     description: DESC,
+    images: [ogImage],
   },
-  twitter: { card: "summary", title: TITLE, description: DESC },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
+  },
 };
 
 const faqs: Faq[] = [

@@ -7,13 +7,13 @@ import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
-import { site, toolBySlug } from "@/lib/site";
+import { ogImage, site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
 
 const tool = toolBySlug("how-many-chickens-do-i-need");
-const TITLE = `How Many Chickens Do I Need? — Hens Per Household Calculator | ${site.name}`;
+const TITLE = `How Many Chickens Do I Need? — Hens Per Household Calculator`;
 const DESC =
-  "How many chickens do you need for your household's eggs? Enter your family size and weekly egg use — get the hens required, a buffer hen for moulting, and the coop space they'll need.";
+  "How many chickens do you need for your eggs? Enter weekly egg use and laying rate to get your hens, a buffer hen for moulting season, and their coop space.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -25,8 +25,14 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: TITLE,
     description: DESC,
+    images: [ogImage],
   },
-  twitter: { card: "summary", title: TITLE, description: DESC },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
+  },
 };
 
 const faqs: Faq[] = [

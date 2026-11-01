@@ -7,14 +7,14 @@ import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
-import { site, toolBySlug } from "@/lib/site";
+import { ogImage, site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
 import { chickenSpace, fmt, r1, sqm } from "@/lib/math";
 
 const tool = toolBySlug("chicken-coop-size-calculator");
-const TITLE = `Chicken Coop Size Calculator — Coop & Run Space Per Chicken | ${site.name}`;
+const TITLE = `Chicken Coop Size Calculator — Coop & Run Space Per Chicken`;
 const DESC =
-  "Free chicken coop size calculator, breed-aware: coop and run square footage for bantam, standard and large chickens, roost length, nesting boxes and coop footprints that fit.";
+  "Free chicken coop size calculator: coop and run space for bantam, standard and large breeds, roost length, nesting boxes and ready-made coop sizes that fit.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -26,8 +26,14 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: TITLE,
     description: DESC,
+    images: [ogImage],
   },
-  twitter: { card: "summary", title: TITLE, description: DESC },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
+  },
 };
 
 const faqs: Faq[] = [

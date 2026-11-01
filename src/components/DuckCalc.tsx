@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { fmt, num, r1, sqm } from "@/lib/math";
 import CountField from "./CountField";
+import MobileResultBar from "./MobileResultBar";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
@@ -174,6 +175,20 @@ export default function DuckCalc() {
         />
         <ResultActions summary={summary} onReset={reset} />
       </div>
+      <MobileResultBar
+        items={[
+          {
+            label: "Coop",
+            value: `${fmt(r1(coop))} sq ft`,
+            headline: true,
+          },
+          { label: "Run", value: `${fmt(r1(run))} sq ft` },
+          {
+            label: "Nesting boxes",
+            value: `${boxes} ${boxes === 1 ? "box" : "boxes"}`,
+          },
+        ]}
+      />
     </div>
   );
 }

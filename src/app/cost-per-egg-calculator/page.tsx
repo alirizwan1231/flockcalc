@@ -7,12 +7,12 @@ import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
-import { site, toolBySlug } from "@/lib/site";
+import { ogImage, site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
 import { eggCost, fmt, money, r2 } from "@/lib/math";
 
 const tool = toolBySlug("cost-per-egg-calculator");
-const TITLE = `Cost Per Egg Calculator — What Do Backyard Eggs Really Cost? | ${site.name}`;
+const TITLE = `Cost Per Egg Calculator — What Do Backyard Eggs Really Cost?`;
 const DESC =
   "Free cost per egg calculator: enter hens, laying rate and your feed bag price to see your true cost per egg and per dozen, and whether you beat the store price.";
 
@@ -26,8 +26,14 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: TITLE,
     description: DESC,
+    images: [ogImage],
   },
-  twitter: { card: "summary", title: TITLE, description: DESC },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
+  },
 };
 
 const faqs: Faq[] = [

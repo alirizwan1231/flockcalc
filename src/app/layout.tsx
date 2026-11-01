@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Inter, Sora } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { site } from "@/lib/site";
+import { ogImage, site } from "@/lib/site";
 import "./globals.css";
 
 /** Body / UI type. */
@@ -35,11 +35,13 @@ export const metadata: Metadata = {
     url: site.url,
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+    images: [ogImage],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+    images: [ogImage.url],
   },
 };
 

@@ -1265,6 +1265,7 @@ a:hover > .bento-foot .btn-arrow,
 }
 
 .field input[type="number"],
+.field input[type="date"],
 .field select {
   width: 100%;
   min-height: 58px;
@@ -1336,7 +1337,12 @@ input[type="range"].count-slider {
   height: 6px;
   border-radius: 999px;
   background: var(--track);
-  margin: 0;
+  /* 40px-tall touch strip without changing layout: the padding is
+     cancelled by equal negative margins, and background-clip keeps the
+     visible track at 6px. */
+  padding: 17px 0;
+  margin: -17px 0;
+  background-clip: content-box;
   cursor: pointer;
   display: block;
 }
@@ -1898,6 +1904,12 @@ table.data td:first-child {
   overflow-wrap: break-word;
 }
 
+.related-blurb {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--secondary);
+}
+
 .related-card .bento-foot {
   padding-top: 4px;
 }
@@ -2112,6 +2124,121 @@ table.data td:first-child {
 
 /* ---------- Responsive ---------- */
 
+/* ---------- Mobile sticky result bar ---------- */
+
+/* Fixed bar shown only under 1024px on calculator pages: keeps the
+   headline results in view while the user works the sliders above. */
+.mobile-result-bar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .mobile-result-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    background: linear-gradient(120deg, var(--indigo), var(--indigo-2));
+    border-radius: 18px 18px 0 0;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+    box-shadow: 0 -10px 34px rgba(22, 16, 46, 0.3);
+  }
+
+  /* Room at the foot of the page so the bar never covers content. */
+  body.has-result-bar main {
+    padding-bottom: 96px;
+  }
+}
+
+.mrb-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mrb-label {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  white-space: nowrap;
+}
+
+.mrb-value {
+  font-family: var(--font-display);
+  font-size: 17.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.mrb-value.is-headline {
+  color: var(--green);
+}
+
+/* ---------- Home: all-calculators compact grid ---------- */
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+  gap: 14px;
+}
+
+.tool-chip-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background: var(--white);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+  padding: 20px 22px;
+  text-decoration: none;
+  color: var(--ink);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.tool-chip-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+}
+
+.tool-chip-card .bento-kicker {
+  margin-bottom: 0;
+}
+
+.tool-chip-name {
+  font-family: var(--font-display);
+  font-size: 18.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.tool-chip-line {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--blurb);
+  margin: 0;
+  max-width: none;
+}
+
+.tool-chip-card .bento-foot {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
 @media (max-width: 1180px) {
   .main-nav {
     display: none;
@@ -2171,7 +2298,16 @@ table.data td:first-child {
   }
 
   .page-head {
-    padding-top: 36px;
+    padding-top: 32px;
+    padding-bottom: 24px;
+  }
+
+  .page-head h1 {
+    margin: 12px 0 12px;
+  }
+
+  .page-head .lede {
+    font-size: 16.5px;
   }
 
   .result-num {

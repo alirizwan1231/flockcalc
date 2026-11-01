@@ -12,6 +12,7 @@ import {
   type ChickenSize,
 } from "@/lib/math";
 import CountField from "./CountField";
+import MobileResultBar from "./MobileResultBar";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
@@ -197,6 +198,17 @@ export default function CoopCalc() {
         />
         <ResultActions summary={summary} onReset={reset} />
       </div>
+      <MobileResultBar
+        items={[
+          {
+            label: "Coop",
+            value: `${fmt(r1(s.coopSqft))} sq ft`,
+            headline: true,
+          },
+          { label: "Run", value: `${fmt(r1(s.runSqft))} sq ft` },
+          { label: "Roost", value: `${fmt(r1(s.roostFeet))} ft` },
+        ]}
+      />
     </div>
   );
 }

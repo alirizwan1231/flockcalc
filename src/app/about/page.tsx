@@ -2,18 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import PageHead from "@/components/PageHead";
-import { site, tools } from "@/lib/site";
+import { ogImage, site, tools } from "@/lib/site";
+
+const TITLE = `About ${site.name} — Free Chicken, Quail & Duck Calculators`;
+const DESC = `What ${site.name} is, where its poultry space and feed figures come from, how the free chicken, quail and duck calculators work, and how to get in touch.`;
 
 export const metadata: Metadata = {
-  title: `About | ${site.name}`,
-  description: `What ${site.name} is, where its poultry space and feed figures come from, and how to get in touch.`,
+  title: TITLE,
+  description: DESC,
   alternates: { canonical: `${site.url}/about` },
   openGraph: {
     type: "website",
     url: `${site.url}/about`,
     siteName: site.name,
-    title: `About | ${site.name}`,
-    description: `What ${site.name} is, where its poultry space and feed figures come from, and how to get in touch.`,
+    title: TITLE,
+    description: DESC,
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
   },
 };
 

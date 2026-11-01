@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { chickenSpace, fmt, num, r1, sqm } from "@/lib/math";
+import MobileResultBar from "./MobileResultBar";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SegmentedControl from "./SegmentedControl";
@@ -180,6 +181,17 @@ export default function HensCalc() {
           </Link>
         </div>
       </div>
+      <MobileResultBar
+        items={[
+          {
+            label: "Hens to get",
+            value: `${recommended} hens`,
+            headline: true,
+          },
+          { label: "Eggs / week", value: fmt(recommended * rate) },
+          { label: "Coop", value: `${fmt(r1(space.coopSqft))} sq ft` },
+        ]}
+      />
     </div>
   );
 }

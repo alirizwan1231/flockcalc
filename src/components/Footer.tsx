@@ -47,8 +47,8 @@ export default function Footer() {
                 ))}
               </div>
               <p>
-                Five tools, one job: size the housing before you build it, and
-                know what your eggs really cost.
+                Fourteen tools, one job: size the housing before you build it,
+                and know what your eggs really cost.
               </p>
             </div>
 

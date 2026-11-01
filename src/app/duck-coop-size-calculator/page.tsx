@@ -7,14 +7,14 @@ import { CalcBadge } from "@/components/CalcChrome";
 import FaqSection from "@/components/FaqSection";
 import PageHead from "@/components/PageHead";
 import RelatedTools from "@/components/RelatedTools";
-import { site, toolBySlug } from "@/lib/site";
+import { ogImage, site, toolBySlug } from "@/lib/site";
 import { breadcrumbSchema, faqSchema, toolSchema, type Faq } from "@/lib/schema";
 import { fmt, r1, sqm } from "@/lib/math";
 
 const tool = toolBySlug("duck-coop-size-calculator");
-const TITLE = `Duck Coop Size Calculator — How Much Space Do Ducks Need? | ${site.name}`;
+const TITLE = `Duck Coop Size Calculator — How Much Space Do Ducks Need?`;
 const DESC =
-  "Free duck coop size calculator: coop and run space by breed size (3–5 sq ft per duck), ground nesting boxes, and the duck-only rules — no roosts, splash zones, extra ventilation.";
+  "Free duck coop size calculator: coop and run space by breed size (3–5 sq ft per duck), ground nesting boxes, and duck-only rules like no roosts and splash zones.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -26,8 +26,14 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: TITLE,
     description: DESC,
+    images: [ogImage],
   },
-  twitter: { card: "summary", title: TITLE, description: DESC },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESC,
+    images: [ogImage.url],
+  },
 };
 
 const faqs: Faq[] = [

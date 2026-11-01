@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { eggCost, fmt, money, num, r2 } from "@/lib/math";
 import CountField from "./CountField";
+import MobileResultBar from "./MobileResultBar";
 import ResultActions from "./ResultActions";
 import { InputsHead } from "./CalcChrome";
 import SliderField from "./SliderField";
@@ -236,6 +237,17 @@ export default function EggCostCalc() {
         />
         <ResultActions summary={summary} onReset={reset} />
       </div>
+      <MobileResultBar
+        items={[
+          {
+            label: "Per egg",
+            value: money(r2(r.costPerEgg)),
+            headline: true,
+          },
+          { label: "Per dozen", value: money(r2(r.costPerDozen)) },
+          { label: "Per month", value: money(r2(r.totalMonthly)) },
+        ]}
+      />
     </div>
   );
 }
